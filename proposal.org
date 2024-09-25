@@ -1,0 +1,73 @@
+#+title: Proposal - Connextion
+
+
+* TOPIC AND SUBJECT AREA
+
+This project focuses on the development of a social network platform for professionals, with an emphasis on enhancing networking opportunities. The platform will allow users to create profiles, visualize their current professional connections, and explore other users' networks. It will also enable users to expand their connections through local and global events, both formal and ad-hoc.
+
+The project falls under the domain of *web development*, with key elements in *network visualization*, *social networking*, and *event management*.
+
+
+* PROBLEM STATEMENT
+
+While professional networking platforms exist, they often focus more on static profiles and broad job-seeking activities rather than encouraging active networking based on events and personal connections. Many professionals struggle to break into new networks beyond their immediate circles, especially after attending conferences or talks.
+
+This project aims to address the gap by creating a platform that helps users *visualize their current networks*, facilitates *networking at events*, and allows them to *explore other users' networks* post-event. It also aims to simplify the organization of conferences, particularly smaller, ad-hoc gatherings.
+
+
+* PRIOR KNOWLEDGE REQUIREMENTS
+
+To successfully execute this project, the following areas of prior knowledge are essential:
+- *.NET Development*: Proficiency in .NET technologies (e.g., ASP.NET Core, C#) to efficiently build the platform's backend and deliver a robust and scalable solution.
+- *Graph-Based Database Management*: Familiarity with graph databases (e.g., Neo4j or Microsoft’s Cosmos DB with a Gremlin API) to efficiently store and query complex user connections and relationships.
+- *Data Visualization*: Experience with libraries or frameworks for visualizing network graphs (e.g., D3.js) to represent users' connections interactively.
+
+
+
+* PROJECT GOALS
+
+The primary goal of this project is to build a platform that empowers professionals to:
+- *Visualize their current network*: Provide users with a clear, dynamic map of their existing professional connections.
+- *Break into new networks*: Offer suggestions and tools to help users connect with others in their field after attending events or conferences.
+- *Create and participate in events*: Allow users to organize, join, and follow up on both large conferences and small, ad-hoc professional gatherings.
+- *Expand global and local professional reach*: Encourage networking both at the local level and across borders.
+
+
+* PROJECT OBJECTIVES
+The project will achieve the following objectives:
+1. Develop a user-friendly interface that allows professionals to create and manage profiles.
+2. Implement a network visualization feature that helps users see and understand their current professional connections.
+3. Integrate event management functionalities that allow users to organize and join conferences.
+4. Implement a post-event networking feature that allows users to explore and connect with others after attending an event.
+5. Ensure the platform scales for local and global use, with localization features where necessary.
+
+
+* METHODOLOGY AND DELIVERABLES
+
+- The project will be developed using the *Rapid Application Development (RAD)* methodology to ensure fast and efficient iteration.
+- Key deliverables include working prototypes at each stage, with user-testing results and feedback collected and analyzed iteratively, until the platform meets the desired functionality and user satisfaction.
+
+
+
+* LEARNING OUTCOMES
+
+Upon completion of this project, I expect to achieve the following learning outcomes:
+1. Develop advanced proficiency in *web development* frameworks and libraries for both frontend and backend.
+2. Gain a strong understanding of *data visualization techniques* through the implementation of interactive network maps.
+3. Improve my ability to design and implement a *scalable, user-centric social platform*.
+
+
+* PRELIMINARY PROJECT TIME MANAGEMENT PLAN
+
+Here’s the updated *Section 8* with a 7-week timeframe starting from Week 2:
+
+|   | Week     | Task                                                                |
+|---+----------+---------------------------------------------------------------------|
+| / |          |                                                                     |
+|   | *Week 2* | Research and finalize platform features and technical stack         |
+|   | *Week 3* | Chose core architechure requirements (DB, Lnaguage, Framework)      |
+|   | *Week 4* | Develop core features: user profiles and network visualization      |
+|   | *Week 5* | Develop event management features: creating and joining events      |
+|   | *Week 6* | Integrate user authentication and finalize backend logic            |
+|   | *Week 7* | Perform testing and fix bugs based on user feedback                 |
+|   | *Week 8* | Finalize deployment, gather final feedback, and refine the platform |
