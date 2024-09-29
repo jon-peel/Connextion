@@ -1,0 +1,27 @@
+#+OPTIONS: toc:nil title:nil
+
+#+LaTeX_CLASS_OPTIONS: [a4paper, 12pt]
+#+LATEX_HEADER: \newcommand\studentnumber{IR2001D10154385}
+
+
+#+BEGIN_EXPORT latex
+
+\makeatletter
+\begin{titlepage}
+\begin{center}
+\vspace*{260pt}
+{\fontsize{20}{30}\selectfont\textbf\@title}\par
+\vspace*{220pt}
+{\fontsize{14}{21}
+    \textbf\@author\par
+    \textbf\studentnumber\par
+    \modulename\par
+    \modulenumber\par
+    \vspace{1em}
+    \@date 
+}
+\end{center}
+\end{titlepage}
+\makeatother
+
+#+END_EXPORT

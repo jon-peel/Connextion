@@ -1,0 +1,20 @@
+#+OPTIONS: toc:nil title:nil
+
+#+LaTeX_HEADER: \usepackage[table, xcdraw]{xcolor}
+#+LATEX_HEADER: \definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
+#+LATEX_HEADER: \definecolor{mint-bg}{gray}{0.23}
+#+LATEX_HEADER: \definecolor{shadecolor}{rgb}{1.0, 0.94, 0.96}
+
+#+LATEX_HEADER: \usepackage{mathptmx} % usepackage{lmodern} % Ensures we have the right font
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \linespread{1.5}
+#+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
+#+LaTeX_HEADER: %\usepackage{natbib}
+#+LaTeX_HEADER: \usepackage[UKenglish]{babel}
+#+LaTeX_HEADER: \usepackage{graphicx}
+#+LaTeX_HEADER: %\usepackage{pygmentize}
+
+
+
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper, 12pt]

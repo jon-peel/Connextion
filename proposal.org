@@ -1,5 +1,33 @@
 #+title: Proposal - Connextion
+#+AUTHOR: Jonathan Peel
+#+STARTUP: overview
+#+EXPORT_FILE_NAME: ~/Documents/Proposal
+#+OPTIONS: toc:3
+#+OPTIONS: ^:nil
 
+#+MODULE: UU-COM-4010-MW Computer Science Project
+
+
+#+SETUPFILE: ".org/setup.org"
+
+#+LATEX_HEADER: \newcommand\modulename{Information Systems and Network Security}
+#+LATEX_HEADER: \newcommand\modulenumber{UU-COM-4024-MW}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LaTeX_HEADER: \usepackage{pdfpages}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: % \renewcommand*{\thesection}{\arabic{section}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsection}{\alph{subsection}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsubsection}{\roman{subsubsection}}
+#+LATEX_HEADER: \let\oldsection\section
+#+LATEX_HEADER: \renewcommand\section{\clearpage\oldsection}
+#+LATEX_HEADER: \usepackage{pgfplots}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{backgrounds}
+#+LATEX_HEADER: \usemintedstyle{native}
+#+LATEX_HEADER: \usepackage{array}
+
+#+INCLUDE: ".org/cover.org"
 
 * TOPIC AND SUBJECT AREA
 
