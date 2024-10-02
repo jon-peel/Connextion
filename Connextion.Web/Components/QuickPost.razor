@@ -1,0 +1,12 @@
+@inject ILogger<QuickPost> Logger;
+@inject QuickPostViewModel ViewModel;
+
+<form @onsubmit="ViewModel.SubmitAsync">
+    <fieldset>
+        <label>
+            Update your status
+            <InputTextArea @bind-Value="ViewModel.StatusText" />
+        </label>
+    </fieldset>
+    <button type="submit">Post</button>
+</form>
