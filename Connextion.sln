@@ -13,8 +13,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Connextion", "src\Connextio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comp", "comp", "{9E137347-946E-4715-96AC-198D1E4F0210}"
 	ProjectSection(SolutionItems) = preProject
-		compose.yaml = compose.yaml
-		.devcontainer\devcontainer.json = .devcontainer\devcontainer.json
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Global

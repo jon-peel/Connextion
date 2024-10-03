@@ -1,6 +1,8 @@
 using Connextion.Web.Components;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication
+    .CreateBuilder(args);
+    //.UseUrls("http://*:80");
 
 // Add services to the container.
 builder.Services
@@ -10,6 +12,7 @@ builder.Services
     ;
 
 var app = builder.Build();
+app.Urls.Add("http://*:8080");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

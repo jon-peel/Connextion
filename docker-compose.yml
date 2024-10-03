@@ -1,0 +1,8 @@
+﻿services:
+  connextion.web:
+    image: connextion.web
+    build:
+      context: .
+      dockerfile: src/Connextion.Web/Dockerfile
+    ports:
+      - "8080:8080"
