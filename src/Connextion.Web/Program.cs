@@ -11,6 +11,7 @@ var builder = WebApplication
 builder.Services
     .AddGraphDb()
     .AddTransient<QuickPostViewModel>()
+    .AddCascadingValue("CurrentUser", _ => "---")
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 

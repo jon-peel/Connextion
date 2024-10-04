@@ -10,3 +10,13 @@
     </fieldset>
     <button type="submit">Post</button>
 </form>
+
+@code {
+    [CascadingParameter(Name = "CurrentUser")] string CurrentUser { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        ViewModel.Initialize(CurrentUser);
+    }
+
+}

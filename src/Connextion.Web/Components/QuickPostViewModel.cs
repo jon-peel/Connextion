@@ -1,17 +1,24 @@
+using Connextion.Posts;
+using Microsoft.AspNetCore.Components;
+
 namespace Connextion.Web.Components;
 
-public class QuickPostViewModel(ILogger<QuickPostViewModel> logger)
+public class QuickPostViewModel(ILogger<QuickPostViewModel> logger, IPostRepository postRepository)
 {
-    readonly ILogger<QuickPostViewModel> _logger = logger;
-
     public string StatusText { get; set; } = "";
+    private string CurrentUser { get; set; } = "";
     
     public async Task SubmitAsync()
     {
-        // Connextion.Lib.PostsModule.addPost(StatusText);
-        
-        _logger.LogInformation("Post: {StatusText}", StatusText);
-        await Task.Delay(2).ConfigureAwait(false);
+        var status = new SubmitStatus(CurrentUser, StatusText);
+        await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
         StatusText = "";
     }
+
+    public void Initialize(string currentUser)
+    {
+        CurrentUser = currentUser;
+    }
+
+    
 }

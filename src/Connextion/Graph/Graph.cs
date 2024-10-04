@@ -1,3 +1,4 @@
+using Connextion.Posts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
@@ -11,7 +12,9 @@ public static class GraphDbServiceExtensions
         return services
             .AddSingleton<IDriver>(_ =>
                 GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IPostRepository, PostRepository>();
+        
     }
 
     public static T ConfigureGraphDb<T>(this T host) where T : IHost
@@ -23,34 +26,7 @@ public static class GraphDbServiceExtensions
     }
 }
 
-public interface IUserRepository
-{
-    public Task InitializeUsersAsync();
-    public Task<string[]> GetUsernamesAsync();
-}
 
-public class UserRepository(IDriver driver) : IUserRepository
-{
-    private readonly IDriver _driver = driver;
-
-    public async Task InitializeUsersAsync()
-    {
-        var userNames = await GetUsernamesAsync().ConfigureAwait(false);
-        if (userNames.Length != 0) return;
-        await _driver
-            .ExecutableQuery("CREATE (jonathan:User {userName: 'jonathan', name: 'Jonathan Peel'}), (jack:User {userName: 'jack', name: 'Jack Pool'})")
-            .ExecuteAsync();
-    }
-
-    public async Task<string[]> GetUsernamesAsync()
-    {
-        var (queryResults, _) = await _driver
-            .ExecutableQuery("MATCH (user:User) RETURN user.userName")
-            .ExecuteAsync();
-        var userNames = queryResults.Select(x => x["user.userName"].As<string>()).ToArray();
-        return userNames;
-    }
-}
 
 // Bellow the line
 
