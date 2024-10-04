@@ -1,15 +1,18 @@
 using Connextion.Web.Components;
+using Connextion.Graph;
 
 var builder = WebApplication
     .CreateBuilder(args);
     //.UseUrls("http://*:80");
 
+    
+
 // Add services to the container.
 builder.Services
+    .AddGraphDb()
     .AddTransient<QuickPostViewModel>()
     .AddRazorComponents()
-    .AddInteractiveServerComponents()
-    ;
+    .AddInteractiveServerComponents();
 
 var app = builder.Build();
 app.Urls.Add("http://*:8080");
@@ -26,4 +29,4 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.Run();
+app.ConfigureGraphDb().Run();

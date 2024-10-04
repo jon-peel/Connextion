@@ -8,7 +8,7 @@ public class QuickPostViewModel(ILogger<QuickPostViewModel> logger)
     
     public async Task SubmitAsync()
     {
-        Connextion.Lib.PostsModule.addPost(StatusText);
+        // Connextion.Lib.PostsModule.addPost(StatusText);
         
         _logger.LogInformation("Post: {StatusText}", StatusText);
         await Task.Delay(2).ConfigureAwait(false);

@@ -1,0 +1,29 @@
+@using Connextion.Graph
+@inject IUserRepository UserRepository; 
+
+@if (_users.Any())
+{
+    <InputSelect @bind-Value="@_selectedUser">
+        @foreach (var user in _users)
+        {
+            <option>@user</option>
+        }
+    </InputSelect>
+    <hr />
+    <CascadingValue Value="@_selectedUser">
+        @ChildContent
+    </CascadingValue>
+}
+
+@code {
+    string[] _users = [];
+    string _selectedUser;
+
+    [Parameter] public RenderFragment ChildContent { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
+        _selectedUser = _users.First();
+    }
+}

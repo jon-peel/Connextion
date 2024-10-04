@@ -9,13 +9,13 @@
 
     
     <ItemGroup>
-        <ProjectReference Include="../Connextion/Connextion.fsproj" />
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
     
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <ProjectReference Include="..\Connextion\Connextion.csproj" />
     </ItemGroup>
 </Project>
