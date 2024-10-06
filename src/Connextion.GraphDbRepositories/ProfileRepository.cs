@@ -1,22 +1,6 @@
-using Connextion.Graph;
-using Connextion.Posts;
 using Neo4j.Driver;
 
-namespace Connextion;
-
-public record RelationShip(string Description, User User);
-
-public class Profile(string fullName, IEnumerable<Post> latestPosts, IEnumerable<RelationShip> relationShips)
-{
-    public string FullName { get; } = fullName;
-    public IReadOnlyList<Post> LatestPosts { get; } = latestPosts.ToArray();
-    public IReadOnlyList<RelationShip> RelationShips { get; } = relationShips.ToArray();
-}
-
-public interface IProfileRepository
-{
-    Task<Profile> GetProfileAsync(string username);
-}
+namespace Connextion.GraphDbRepositories;
 
 public class ProfileRepository(IDriver driver, IPostRepository postRepository) : IProfileRepository
 {
@@ -50,7 +34,7 @@ public class ProfileRepository(IDriver driver, IPostRepository postRepository) :
                 r["postedAt"].As<DateTime>(),
                 new User(userName, fullName),
                 r["status"].As<string>()
-                ))
+            ))
             .ToArray();
         return new Profile(fullName, latestPosts, []);
     }

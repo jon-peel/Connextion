@@ -1,6 +1,4 @@
-using Connextion.Posts;
 using Connextion.ViewModels;
-using Microsoft.AspNetCore.Components;
 
 namespace Connextion.Web.Components.Posts;
 
@@ -12,7 +10,7 @@ public class QuickPostViewModel(IPostRepository postRepository, UserDetails curr
     
     public async Task SubmitAsync()
     {
-        var status = new SubmitStatus(currentUser.UserName, StatusText);
+        var status = new CreatePostCmd(currentUser.UserName, StatusText);
         await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
         StatusText = "";
     }

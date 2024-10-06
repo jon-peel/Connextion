@@ -1,15 +1,6 @@
 using Neo4j.Driver;
 
-namespace Connextion.Graph;
-
-public record User(string Username, string FullName);
-
-
-public interface IUserRepository
-{
-    public Task InitializeUsersAsync();
-    public Task<User[]> GetUsernamesAsync();
-}
+namespace Connextion.GraphDbRepositories;
 
 public class UserRepository(IDriver driver) : IUserRepository
 {

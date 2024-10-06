@@ -1,5 +1,4 @@
-﻿using Connextion.Posts;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Connextion.ViewModels;
 
@@ -35,11 +34,6 @@ public class PostViewModel(DateTime postedAt, string postedBy, string status)
     };
 
     public string AuthorProfileUrl => $"/profile/{postedBy}";
-
-    public static PostViewModel Create(TimelineStatus status)
-    {
-        return new PostViewModel(status.PostedAt, status.PostedBy, status.Status);
-    }
 
     public static PostViewModel Create(Post post)
     {

@@ -1,6 +1,3 @@
-using Connextion.Graph;
-using Connextion.Posts;
-
 namespace Connextion.ViewModels;
 
 public class UserProfileViewModel(IProfileRepository profileRepository)

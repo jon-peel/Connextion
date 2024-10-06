@@ -16,6 +16,7 @@
 
     
     <ItemGroup>
+      <ProjectReference Include="..\Connextion.GraphDbRepositories\Connextion.GraphDbRepositories.csproj" />
       <ProjectReference Include="..\Connextion.ViewModels\Connextion.ViewModels.csproj" />
       <ProjectReference Include="..\Connextion\Connextion.csproj" />
     </ItemGroup>
