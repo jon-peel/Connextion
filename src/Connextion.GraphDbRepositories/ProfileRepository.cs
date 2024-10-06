@@ -21,7 +21,15 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
                                    }
                                    ORDER BY p.postedAt DESC
                                    LIMIT $nPosts
-                               } AS posts;
+                               } AS posts,
+                               COLLECT {
+                                 MATCH (u)-[:FOLLOWS]->(f:User)
+                                 RETURN { userName: f.userName, fullName: f.fullName }
+                               } as following,
+                               COLLECT {
+                                 MATCH (u)<-[:FOLLOWS]-(f:User)
+                                 RETURN { userName: f.userName, fullName: f.fullName }
+                               } as followers
                              """)
             .WithParameters(new { userName, nPosts = 10 })
             .WithMap(Mapping.Profile)

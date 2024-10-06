@@ -27,7 +27,15 @@ public static class Mapping
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
             .Select(Post)
             .ToArray();
-        return new Profile(fullName, posts, []);
+        var following = data["following"]
+            .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+            .Select(User)
+            .ToArray();
+        var followers = data["followers"]
+            .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+            .Select(User)
+            .ToArray();
+        return new Profile(fullName, posts, following, followers);
     }
 }
 

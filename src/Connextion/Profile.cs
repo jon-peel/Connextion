@@ -1,12 +1,11 @@
 namespace Connextion;
 
-public record Relationship(string Description, User User);
-
-public class Profile(string fullName, IEnumerable<Post> latestPosts, IEnumerable<Relationship> relationships)
+public class Profile(string fullName, IEnumerable<Post> latestPosts, IEnumerable<User> following, IEnumerable<User> followers)
 {
     public string FullName { get; } = fullName;
     public IReadOnlyList<Post> LatestPosts { get; } = latestPosts.ToArray();
-    public IReadOnlyList<Relationship> RelationShips { get; } = relationships.ToArray();
+    public IReadOnlyList<User> Following { get; } = following.ToArray();
+    public IReadOnlyList<User> Followers { get; } = followers.ToArray();
 }
 
 public interface IProfileRepository
