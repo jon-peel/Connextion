@@ -1,0 +1,13 @@
+<article style="border: 1px solid black; margin-bottom: 10px">
+    <p>@ViewModel.Status</p>
+    <footer>
+        <address>
+            <time>@ViewModel.Time</time>
+            by <NavLink rel="author" href="@ViewModel.AuthorProfileUrl">@ViewModel.PostedBy</NavLink>
+        </address>
+    </footer>
+</article>
+
+@code {
+    [Parameter] public required PostViewModel ViewModel { get; init; }
+}

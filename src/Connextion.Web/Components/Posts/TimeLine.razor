@@ -1,0 +1,15 @@
+@inject TimeLineViewModel ViewModel;
+
+@foreach (var post in ViewModel.Posts)
+{
+    <Post ViewModel="post" />
+}
+
+@code {
+    [CascadingParameter] public UserDetails User { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.InitializeAsync(User!).ConfigureAwait(false);
+    }
+}

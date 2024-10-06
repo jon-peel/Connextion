@@ -1,17 +1,23 @@
 using Connextion.Web.Components;
 using Connextion.Graph;
+using Connextion.Posts;
+using Connextion.ViewModels;
+using Connextion.Web.Components.Posts;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication
     .CreateBuilder(args);
-    //.UseUrls("http://*:80");
+//.UseUrls("http://*:80");
 
-    
 
 // Add services to the container.
 builder.Services
     .AddGraphDb()
-    .AddTransient<QuickPostViewModel>()
-    .AddCascadingValue("CurrentUser", _ => "---")
+    .AddViewModels()
+    .AddTransient<QuickPostViewModelFactory>(sx =>
+        user => new QuickPostViewModel(sx.GetRequiredService<IPostRepository>(), user))
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 

@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comp", "comp", "{9E137347-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connextion", "src\Connextion\Connextion.csproj", "{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connextion.ViewModels", "src\Connextion.ViewModels\Connextion.ViewModels.csproj", "{26559E49-460D-4821-B14E-213A3BA6F5B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connextion.Graph", "src\Connextion.Graph\Connextion.Graph.csproj", "{E786803D-067F-4CB8-B7ED-148D245AAAE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +28,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{252ADC1A-B6E8-4DF9-BFF3-C9AB4E53FAE0} = {B4269569-51DF-4EB6-BC1A-226E345FA0B6}
 		{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5} = {B4269569-51DF-4EB6-BC1A-226E345FA0B6}
+		{26559E49-460D-4821-B14E-213A3BA6F5B2} = {B4269569-51DF-4EB6-BC1A-226E345FA0B6}
+		{E786803D-067F-4CB8-B7ED-148D245AAAE7} = {B4269569-51DF-4EB6-BC1A-226E345FA0B6}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{252ADC1A-B6E8-4DF9-BFF3-C9AB4E53FAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -34,5 +40,13 @@ Global
 		{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26559E49-460D-4821-B14E-213A3BA6F5B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26559E49-460D-4821-B14E-213A3BA6F5B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26559E49-460D-4821-B14E-213A3BA6F5B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26559E49-460D-4821-B14E-213A3BA6F5B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E786803D-067F-4CB8-B7ED-148D245AAAE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E786803D-067F-4CB8-B7ED-148D245AAAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E786803D-067F-4CB8-B7ED-148D245AAAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E786803D-067F-4CB8-B7ED-148D245AAAE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

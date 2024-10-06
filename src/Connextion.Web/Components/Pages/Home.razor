@@ -1,7 +1,15 @@
 ﻿@page "/"
 
 <PageTitle>conNEXTion</PageTitle>
-
 <h1>conNEXTion</h1>
 
-<QuickPost />
+@* <pre> *@
+@*     @User *@
+@* </pre> *@
+
+<QuickPost/>
+<TimeLine/>
+
+@code {
+    [CascadingParameter] public UserDetails User { get; set; } = null!;
+}

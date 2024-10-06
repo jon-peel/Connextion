@@ -2,10 +2,13 @@ using Neo4j.Driver;
 
 namespace Connextion.Graph;
 
+public record User(string Username, string FullName);
+
+
 public interface IUserRepository
 {
     public Task InitializeUsersAsync();
-    public Task<string[]> GetUsernamesAsync();
+    public Task<User[]> GetUsernamesAsync();
 }
 
 public class UserRepository(IDriver driver) : IUserRepository
@@ -16,16 +19,16 @@ public class UserRepository(IDriver driver) : IUserRepository
         if (userNames.Length != 0) return;
         await driver
             .ExecutableQuery(
-                "CREATE (jonathan:User {userName: 'jonathan', name: 'Jonathan Peel'}), (jack:User {userName: 'jack', name: 'Jack Pool'})")
+                "CREATE (jonathan:User {userName: 'jonathan', fullName: 'Jonathan Peel'}), (jack:User {userName: 'jack', fullName: 'Jack Pool'})")
             .ExecuteAsync();
     }
 
-    public async Task<string[]> GetUsernamesAsync()
+    public async Task<User[]> GetUsernamesAsync()
     {
         var (queryResults, _) = await driver
-            .ExecutableQuery("MATCH (user:User) RETURN user.userName")
+            .ExecutableQuery("MATCH (user:User) RETURN user.userName, user.fullName")
+            .WithMap(r => new User(r["user.userName"].As<string>(), r["user.fullName"].As<string>()))
             .ExecuteAsync();
-        var userNames = queryResults.Select(x => x["user.userName"].As<string>()).ToArray();
-        return userNames;
+        return queryResults.ToArray();
     }
 }

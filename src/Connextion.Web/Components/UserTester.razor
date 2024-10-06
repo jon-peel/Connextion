@@ -1,29 +1,50 @@
 @using Connextion.Graph
+@using Connextion.ViewModels
 @inject IUserRepository UserRepository; 
 
 @if (_users.Any())
 {
-    <InputSelect @bind-Value="@_selectedUser">
+    <InputSelect @bind-Value="_selectedUserName" @oninput="UserSelected" >
         @foreach (var user in _users)
         {
-            <option>@user</option>
+            <option value="@user.UserName">@user.FullName</option>
         }
     </InputSelect>
-    <hr />
-    <CascadingValue Name="CurrentUser" Value="@_selectedUser">
-        @ChildContent
-    </CascadingValue>
+    <hr/>
+   
+}
+@if (_user is not null)
+{
+<CascadingValue Value="_user!">
+    @ChildContent
+</CascadingValue>
+}
+@if (_user is null)
+{
+    <p>Setting User</p>
 }
 
+
 @code {
-    string[] _users = [];
-    string _selectedUser;
+    UserDetails[] _users = [];
+    UserDetails? _user = null;
+    string _selectedUserName = "";
 
     [Parameter] public RenderFragment ChildContent { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
-        _users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
-        _selectedUser = _users.First();
+        var users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
+        _users = users.Select(x => new UserDetails(x.Username, x.FullName)).ToArray();
+        _user = _users.FirstOrDefault();
+        _selectedUserName = _user?.UserName ?? "";
+    }
+
+    private async Task UserSelected(ChangeEventArgs arg)
+    {
+        _user = null;
+        await Task.Delay(1000).ConfigureAwait(false);
+        _user = _users.FirstOrDefault(x => x.UserName == arg.Value?.ToString());
     }
 }
+

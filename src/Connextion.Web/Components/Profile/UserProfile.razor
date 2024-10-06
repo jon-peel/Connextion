@@ -1,0 +1,17 @@
+@page "/Profile/{userName}"
+@inject UserProfileViewModel ViewModel;
+
+<section>
+    <h2>@ViewModel.FullName</h2>
+    @foreach(var post in ViewModel.LatestPosts)
+    {
+        <Post ViewModel="post" />
+    }
+</section>
+
+@code {
+    [Parameter] public required string UserName { get; init; }
+    [CascadingParameter] public required UserDetails CurrentUser { get; init; }
+
+    protected override Task OnInitializedAsync() => ViewModel.InitializeAsync(UserName, CurrentUser);
+}
