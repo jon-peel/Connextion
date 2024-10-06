@@ -6,18 +6,20 @@ namespace Connextion.GraphDbRepositories;
 
 public static class HostAndServiceExtensions
 {
-    public static IServiceCollection AddGraphDbRepositories(this IServiceCollection services) => 
+    public static IServiceCollection AddGraphDbRepositories(this IServiceCollection services) =>
         services
-        .AddSingleton<IDriver>(_ => GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
-        .AddScoped<IUserRepository, UserRepository>()
-        .AddScoped<IPostRepository, PostRepository>()
-        .AddScoped<IProfileRepository, ProfileRepository>();
-    
+            .AddSingleton<IDriver>(_ =>
+                GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IPostRepository, PostRepository>()
+            .AddScoped<IProfileRepository, ProfileRepository>();
+
     public static T ConfigureGraphDb<T>(this T host) where T : IHost
     {
         using var scope = host.Services.CreateScope();
+        var driver = scope.ServiceProvider.GetRequiredService<IDriver>();
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-        userRepository.InitializeUsersAsync().GetAwaiter().GetResult();
+        new ConfigureTheDatabase(driver, userRepository).RunAsync().GetAwaiter().GetResult();
         return host;
     }
 }

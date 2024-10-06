@@ -4,16 +4,6 @@ namespace Connextion.GraphDbRepositories;
 
 public class UserRepository(IDriver driver) : IUserRepository
 {
-    public async Task InitializeUsersAsync()
-    {
-        var userNames = await GetUsernamesAsync().ConfigureAwait(false);
-        if (userNames.Length != 0) return;
-        await driver
-            .ExecutableQuery(
-                "CREATE (jonathan:User {userName: 'jonathan', fullName: 'Jonathan Peel'}), (jack:User {userName: 'jack', fullName: 'Jack Pool'})")
-            .ExecuteAsync();
-    }
-
     public async Task<User[]> GetUsernamesAsync()
     {
         var (queryResults, _) = await driver
