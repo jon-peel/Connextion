@@ -10,6 +10,6 @@ public class UserProfileViewModel(IProfileRepository profileRepository)
     {
         var profile = await profileRepository.GetProfileAsync(profileUser).ConfigureAwait(false);
         FullName = profile.FullName;
-        LatestPosts = profile.LatestPosts.Select( PostViewModel.Create).ToArray();
+        LatestPosts = profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();
     } 
 }

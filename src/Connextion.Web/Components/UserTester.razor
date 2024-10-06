@@ -11,9 +11,9 @@
     <hr/>
    
 }
-@if (_user is not null)
+@if (_user is {} user)
 {
-<CascadingValue Value="_user!">
+<CascadingValue Value="user">
     @ChildContent
 </CascadingValue>
 }
