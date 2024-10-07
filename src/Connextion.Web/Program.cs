@@ -8,9 +8,9 @@ var builder = WebApplication
     .CreateBuilder(args);
 //.UseUrls("http://*:80");
 
-
 // Add services to the container.
 builder.Services
+    .AddServices()
     .AddGraphDbRepositories()
     .AddViewModels()
     .AddTransient<QuickPostViewModelFactory>(sx =>

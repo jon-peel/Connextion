@@ -8,10 +8,10 @@ public class Post(Guid id, User postedBy, DateTime postedAt, string status)
     public string Status { get; } = status;
 }
 
-public record CreatePostCmd(string UserName, string Status);
+public record CreatePostCmd(string Username, string Status);
 
 public interface IPostRepository
 {
     Task SubmitStatusAsync(CreatePostCmd status);
-    Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(string userName);
+    Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(string username);
 }

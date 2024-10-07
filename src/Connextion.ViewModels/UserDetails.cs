@@ -1,3 +1,3 @@
 namespace Connextion.ViewModels;
 
-public record UserDetails(string UserName, string FullName);
+public record UserDetails(string username, string FullName);

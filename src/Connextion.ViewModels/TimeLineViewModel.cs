@@ -11,7 +11,7 @@ public class TimeLineViewModel(IPostRepository postRepository)
 
     private async Task<IReadOnlyList<PostViewModel>> GetPostsAsync(UserDetails user)
     {
-        var posts = await postRepository.GetTimelineStatusesAsync(user.UserName).ConfigureAwait(false);
+        var posts = await postRepository.GetTimelineStatusesAsync(user.username).ConfigureAwait(false);
         return posts.Select(post => new PostViewModel(post)).ToArray();
     }
 }

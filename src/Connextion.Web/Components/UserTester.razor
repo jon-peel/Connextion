@@ -2,10 +2,10 @@
 
 @if (_users.Any())
 {
-    <InputSelect @bind-Value="_selectedUserName" @oninput="UserSelected" >
+    <InputSelect @bind-Value="_selectedusername" @oninput="UserSelected" >
         @foreach (var user in _users)
         {
-            <option value="@user.UserName">@user.FullName</option>
+            <option value="@user.username">@user.FullName</option>
         }
     </InputSelect>
     <hr/>
@@ -26,7 +26,7 @@
 @code {
     UserDetails[] _users = [];
     UserDetails? _user = null;
-    string _selectedUserName = "";
+    string _selectedusername = "";
 
     [Parameter] public RenderFragment ChildContent { get; set; } = null!;
 
@@ -35,14 +35,14 @@
         var users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
         _users = users.Select(x => new UserDetails(x.Username, x.FullName)).ToArray();
         _user = _users.FirstOrDefault();
-        _selectedUserName = _user?.UserName ?? "";
+        _selectedusername = _user?.username ?? "";
     }
 
     private async Task UserSelected(ChangeEventArgs arg)
     {
         _user = null;
         await Task.Delay(1000).ConfigureAwait(false);
-        _user = _users.FirstOrDefault(x => x.UserName == arg.Value?.ToString());
+        _user = _users.FirstOrDefault(x => x.username == arg.Value?.ToString());
     }
 }
 

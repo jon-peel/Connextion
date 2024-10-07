@@ -6,9 +6,9 @@ public static class Mapping
 {
     public static User User(IReadOnlyDictionary<string, object> userData)
     {
-        var userName = userData["userName"].As<string>();
+        var username = userData["username"].As<string>();
         var fullName = userData["fullName"].As<string>();
-        return new User(userName, fullName);
+        return new User(username, fullName);
     }
 
     public static Post Post(IReadOnlyDictionary<string, object> postData)
@@ -22,7 +22,7 @@ public static class Mapping
 
     public static Profile Profile(IReadOnlyDictionary<string, object> data)
     {
-        var fullName = data["fullName"].As<string>();
+        var user = User(data["user"].As<IReadOnlyDictionary<string, object>>());
         var posts = data["posts"]
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
             .Select(Post)
@@ -35,7 +35,7 @@ public static class Mapping
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
             .Select(User)
             .ToArray();
-        return new Profile(fullName, posts, following, followers);
+        return new Profile(user, posts, following, followers);
     }
 }
 
@@ -46,15 +46,15 @@ public class PostRepository(IDriver driver) : IPostRepository
     {
         var parameters = new
         {
-            userName = status.UserName,
+            username = status.Username,
             id = Guid.NewGuid().ToString(),
             status = status.Status,
-            postedAt = DateTime.Now,
+            postedAt = DateTime.Now
         };
         var (_, result) = await driver
             .ExecutableQuery(
                 """
-                MATCH (u:User {userName:$userName})
+                MATCH (u:User {username:$username})
                 CREATE (p:Post {id:$id, status:$status, postedAt:$postedAt})
                 CREATE (p)-[:POSTED_BY]->(u);
                 """)
@@ -64,7 +64,7 @@ public class PostRepository(IDriver driver) : IPostRepository
         Console.WriteLine(result.ToString());
     }
 
-    public async Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(string userName)
+    public async Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(string username)
     {
         var (result, _) = await driver
             .ExecutableQuery(
@@ -72,7 +72,7 @@ public class PostRepository(IDriver driver) : IPostRepository
                 MATCH (p:Post)-[:POSTED_BY]->(u:User)
                 RETURN 
                     p.id AS id,
-                    { userName: u.userName, fullName: u.fullName } AS postedBy,
+                    { username: u.username, fullName: u.fullName } AS postedBy,
                     p.postedAt AS postedAt,
                     p.status AS status
                 ORDER BY p.postedAt DESC

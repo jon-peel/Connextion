@@ -1,0 +1,20 @@
+@using Connextion.ViewModels.Profiles
+<span>
+    @ViewModel.Description
+    @if (ViewModel.CanFollow)
+    {
+        <form @onsubmit="ViewModel.FollowAsync">
+            <button type="submit">Follow</button>
+        </form>
+    }
+    @if (ViewModel.IsBusy)
+    {
+        <BusyIndicator />
+    }
+</span>
+
+
+
+@code {
+    [Parameter] public required RelationshipStatusViewModel ViewModel { get; init; }
+}

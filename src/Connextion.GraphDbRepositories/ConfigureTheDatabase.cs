@@ -16,7 +16,7 @@ internal class ConfigureTheDatabase(IDriver driver, IUserRepository userReposito
     {
         string[] constraints =
         [
-            "CREATE CONSTRAINT IF NOT EXISTS FOR (user:User) REQUIRE user.userName IS UNIQUE",
+            "CREATE CONSTRAINT IF NOT EXISTS FOR (user:User) REQUIRE user.username IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (post:Post) REQUIRE post.id IS UNIQUE",
             "CREATE INDEX IF NOT EXISTS FOR (p:Post) ON (p.postedAt)"
         ];
@@ -34,26 +34,26 @@ internal class ConfigureTheDatabase(IDriver driver, IUserRepository userReposito
                 """
                 CREATE 
                 // Create 20 User nodes
-                (u1:User {userName: "jdoe", fullName: "John Doe"}),
-                (u2:User {userName: "jsmith", fullName: "Jane Smith"}),
-                (u3:User {userName: "mjohnson", fullName: "Michael Johnson"}),
-                (u4:User {userName: "edavis", fullName: "Emily Davis"}),
-                (u5:User {userName: "jbrown", fullName: "James Brown"}),
-                (u6:User {userName: "ptaylor", fullName: "Patricia Taylor"}),
-                (u7:User {userName: "rmiller", fullName: "Robert Miller"}),
-                (u8:User {userName: "landerson", fullName: "Linda Anderson"}),
-                (u9:User {userName: "dwilson", fullName: "David Wilson"}),
-                (u10:User {userName: "bthomas", fullName: "Barbara Thomas"}),
-                (u11:User {userName: "jjackson", fullName: "Joseph Jackson"}),
-                (u12:User {userName: "lwhite", fullName: "Lisa White"}),
-                (u13:User {userName: "charris", fullName: "Charles Harris"}),
-                (u14:User {userName: "kmartin", fullName: "Karen Martin"}),
-                (u15:User {userName: "dthompson", fullName: "Daniel Thompson"}),
-                (u16:User {userName: "sgarcia", fullName: "Susan Garcia"}),
-                (u17:User {userName: "pmartinez", fullName: "Paul Martinez"}),
-                (u18:User {userName: "srobinson", fullName: "Sarah Robinson"}),
-                (u19:User {userName: "mclark", fullName: "Mark Clark"}),
-                (u20:User {userName: "nlewis", fullName: "Nancy Lewis"}),
+                (u1:User {username: "jdoe", fullName: "John Doe"}),
+                (u2:User {username: "jsmith", fullName: "Jane Smith"}),
+                (u3:User {username: "mjohnson", fullName: "Michael Johnson"}),
+                (u4:User {username: "edavis", fullName: "Emily Davis"}),
+                (u5:User {username: "jbrown", fullName: "James Brown"}),
+                (u6:User {username: "ptaylor", fullName: "Patricia Taylor"}),
+                (u7:User {username: "rmiller", fullName: "Robert Miller"}),
+                (u8:User {username: "landerson", fullName: "Linda Anderson"}),
+                (u9:User {username: "dwilson", fullName: "David Wilson"}),
+                (u10:User {username: "bthomas", fullName: "Barbara Thomas"}),
+                (u11:User {username: "jjackson", fullName: "Joseph Jackson"}),
+                (u12:User {username: "lwhite", fullName: "Lisa White"}),
+                (u13:User {username: "charris", fullName: "Charles Harris"}),
+                (u14:User {username: "kmartin", fullName: "Karen Martin"}),
+                (u15:User {username: "dthompson", fullName: "Daniel Thompson"}),
+                (u16:User {username: "sgarcia", fullName: "Susan Garcia"}),
+                (u17:User {username: "pmartinez", fullName: "Paul Martinez"}),
+                (u18:User {username: "srobinson", fullName: "Sarah Robinson"}),
+                (u19:User {username: "mclark", fullName: "Mark Clark"}),
+                (u20:User {username: "nlewis", fullName: "Nancy Lewis"}),
 
                 // Create hardcoded FOLLOWS relationships
                 (u1)-[:FOLLOWS]->(u2),  // John Doe follows Jane Smith

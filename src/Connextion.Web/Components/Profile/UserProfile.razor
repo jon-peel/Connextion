@@ -1,38 +1,51 @@
-@page "/Profile/{userName}"
+@page "/Profile/{username}"
 @inject UserProfileViewModel ViewModel;
 
 <main>
-    <h2>@ViewModel.FullName</h2>
-    <section>
-        <h3>Following</h3>
-        <ul>
-            @foreach (var u in ViewModel.Followeing)
-            {
-                <li>@u.FullName</li>
-            }
-        </ul>
-    </section>
-    <section>
-        <h3>Followers</h3>
-        <ul>
-            @foreach (var u in ViewModel.Followers)
-            {
-            <li>@u.FullName</li>
-            }
-        </ul>
-    </section>
-    <section>
-        <h3>Recent Posts</h3>
-        @foreach(var post in ViewModel.LatestPosts)
+    @if(ViewModel.IsBusy) { <BusyIndicator /> }
+    @if (!ViewModel.IsBusy)
+    {
+        <h2>@ViewModel.FullName</h2>
+        @if (ViewModel.RelationshipStatus is { } rs)
         {
-        <Post ViewModel="post" />
+            <RelationshipStatus ViewModel="rs"/>
         }
-    </section>
+
+        <section>
+            <h3>Following</h3>
+            <ul>
+                @foreach (var u in ViewModel.Following)
+                {
+                    <li>
+                        <UserProfileLink ViewModel="u"/>
+                    </li>
+                }
+            </ul>
+        </section>
+        <section>
+            <h3>Followers</h3>
+            <ul>
+                @foreach (var u in ViewModel.Followers)
+                {
+                    <li>
+                        <UserProfileLink ViewModel="u"/>
+                    </li>
+                }
+            </ul>
+        </section>
+        <section>
+            <h3>Recent Posts</h3>
+            @foreach (var post in ViewModel.LatestPosts)
+            {
+                <Post ViewModel="post"/>
+            }
+        </section>
+    }
 </main>
 
 @code {
-    [Parameter] public required string UserName { get; init; }
+    [Parameter] public required string Username { get; init; }
     [CascadingParameter] public required UserDetails CurrentUser { get; init; }
 
-    protected override Task OnInitializedAsync() => ViewModel.InitializeAsync(UserName, CurrentUser);
+    protected override Task OnParametersSetAsync() => ViewModel.InitializeAsync(Username, CurrentUser);
 }

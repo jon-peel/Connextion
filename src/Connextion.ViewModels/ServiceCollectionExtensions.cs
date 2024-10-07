@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Connextion.ViewModels.Profiles;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Connextion.ViewModels;
 
