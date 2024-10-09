@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
@@ -38,12 +39,11 @@ public static class Mapping
         return new Profile(user, posts, following, followers);
     }
 }
-
-
-public class PostRepository(IDriver driver) : IPostRepository
+public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IPostRepository
 {
     public async Task SubmitStatusAsync(CreatePostCmd status)
     {
+        logger.LogInformation("{User} wrote {Status}", status.Username, status.Status);
         var parameters = new
         {
             username = status.Username,

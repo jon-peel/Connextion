@@ -1,11 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<UserTester>
+<h1>conNEXTion</h1>
+<nav>
+    <NavLink href="/">Home</NavLink>
+    @* <NavLink href=@($"/profile/{User.username}")>Profile</NavLink> *@
+</nav>
 @Body
-</UserTester>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    [CascadingParameter] public required UserDetails User { get; init; }
+}

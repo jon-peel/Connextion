@@ -1,8 +1,9 @@
+using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class ProfileRepository(IDriver driver) : IProfileRepository
+public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver) : IProfileRepository
 {
     public async Task<Profile> GetProfileAsync(string username)
     {
@@ -40,6 +41,7 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
 
     public async Task FollowAsync(string currentUser, string toFollow)
     {
+        logger.LogInformation("{FollowingUser} is following {FollowedUser}", currentUser, toFollow);
         var (_, results) = await driver
             .ExecutableQuery("""
                              MATCH (currentUser:User {username: $currentUser}),

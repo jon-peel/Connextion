@@ -12,14 +12,14 @@ public static class HostAndServiceExtensions
                 GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPostRepository, PostRepository>()
-            .AddScoped<IProfileRepository, ProfileRepository>();
+            .AddScoped<IProfileRepository, ProfileRepository>()
+            .AddScoped<ConfigureTheDatabase>();
 
     public static T ConfigureGraphDb<T>(this T host) where T : IHost
     {
         using var scope = host.Services.CreateScope();
-        var driver = scope.ServiceProvider.GetRequiredService<IDriver>();
-        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-        new ConfigureTheDatabase(driver, userRepository).RunAsync().GetAwaiter().GetResult();
+        var configureTheDatabase = scope.ServiceProvider.GetRequiredService<ConfigureTheDatabase>();
+        configureTheDatabase.RunAsync().GetAwaiter().GetResult();
         return host;
     }
 }

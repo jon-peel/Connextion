@@ -8,7 +8,7 @@
       dockerfile: src/Connextion.Web/Dockerfile
     ports:
       - "8080:8080"
-    restart: always
+    # restart: always
   
   neo4j:
     image: neo4j:latest
