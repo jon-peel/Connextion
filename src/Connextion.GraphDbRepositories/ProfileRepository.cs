@@ -5,11 +5,12 @@ namespace Connextion.GraphDbRepositories;
 
 public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver) : IProfileRepository
 {
-    public async Task<Profile> GetProfileAsync(string username)
+    public async Task<Profile> GetProfileAsync(string username, string currentUser)
     {
         var (results, _) = await driver
             .ExecutableQuery("""
-                             MATCH (u:User {username: $username} ) 
+                             MATCH (u:User { username: $username })
+                             MATCH (me:User { username: $currentUser })
                              RETURN 
                                { username: u.username, fullName: u.fullName } as user,
                                COLLECT {
@@ -25,14 +26,26 @@ public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver
                                } AS posts,
                                COLLECT {
                                  MATCH (u)-[:FOLLOWS]->(f:User)
-                                 RETURN { username: f.username, fullName: f.fullName }
+                                 RETURN { 
+                                   username: f.username, 
+                                   fullName: f.fullName,
+                                   degrees: CASE WHEN me = f THEN 0
+                                            ELSE length(shortestPath( (f)-[*]-(me) ))
+                                            END
+                                 }
                                } as following,
                                COLLECT {
                                  MATCH (u)<-[:FOLLOWS]-(f:User)
-                                 RETURN { username: f.username, fullName: f.fullName }
+                                 RETURN { 
+                                   username: f.username, 
+                                   fullName: f.fullName,
+                                   degrees: CASE WHEN me = f THEN 0
+                                            ELSE length(shortestPath( (f)-[*]-(me) ))
+                                            END
+                                 }
                                } as followers
                              """)
-            .WithParameters(new { username, nPosts = 10 })
+            .WithParameters(new { username, currentUser, nPosts = 10 })
             .WithMap(Mapping.Profile)
             .ExecuteAsync()
             .ConfigureAwait(false);

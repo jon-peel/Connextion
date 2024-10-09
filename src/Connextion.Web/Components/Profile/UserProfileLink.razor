@@ -1,4 +1,7 @@
-<NavLink href="@ViewModel.Url">@ViewModel.FullName</NavLink>
+<NavLink href="@ViewModel.Url">
+    @ViewModel.FullName
+    @if(ViewModel.Degrees >0) { <text>[@ViewModel.Degrees]</text> }
+</NavLink>
 
 @code {
     [Parameter] public required UserProfileLinkViewModel ViewModel { get; init; }

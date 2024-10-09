@@ -9,7 +9,8 @@ public static class Mapping
     {
         var username = userData["username"].As<string>();
         var fullName = userData["fullName"].As<string>();
-        return new User(username, fullName);
+        var degrees = userData.TryGetValue("degrees", out var degreesData) ? degreesData.As<int>() : 0;
+        return new User(username, fullName, degrees);
     }
 
     public static Post Post(IReadOnlyDictionary<string, object> postData)

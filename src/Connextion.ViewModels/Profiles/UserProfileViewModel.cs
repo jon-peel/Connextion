@@ -16,7 +16,7 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
         if (_profileUser == profileUser) return;
         IsBusy = true;
         _profileUser = profileUser;
-        var profile = await profileRepository.GetProfileAsync(profileUser).ConfigureAwait(false);
+        var profile = await profileRepository.GetProfileAsync(profileUser, currentUser.username).ConfigureAwait(false);
         RelationshipStatus = new RelationshipStatusViewModel(profileService, profile, currentUser);
         FullName = profile.User.FullName;
         LatestPosts = profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();

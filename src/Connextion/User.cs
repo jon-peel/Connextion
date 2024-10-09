@@ -1,6 +1,6 @@
 namespace Connextion;
 
-public record User(string Username, string FullName);
+public record User(string Username, string FullName, int Degrees = 0);
 public record CreateUserCmd(string Username, string FullName);
 
 

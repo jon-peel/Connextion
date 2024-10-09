@@ -15,7 +15,7 @@ public class Profile(User user, IEnumerable<Post> latestPosts, IEnumerable<User>
 
 public interface IProfileRepository
 {
-    Task<Profile> GetProfileAsync(string username);
+    Task<Profile> GetProfileAsync(string username, string currentUser);
     Task FollowAsync(string currentUser, string toFollow);
 }
 
@@ -23,7 +23,7 @@ public class ProfileService(IProfileRepository profileRepository)
 {
     public async Task<bool> FollowAsync(string currentUser, string toFollow)
     {
-        var profile = await profileRepository.GetProfileAsync(currentUser).ConfigureAwait(false);
+        var profile = await profileRepository.GetProfileAsync(currentUser, currentUser).ConfigureAwait(false);
         var result = profile.CanFollow(toFollow);
         if (result) await profileRepository.FollowAsync(currentUser, toFollow).ConfigureAwait(false);
         return result;
