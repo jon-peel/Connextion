@@ -2,12 +2,15 @@
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
+EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Connextion.Web/Connextion.Web.csproj", "src/Connextion.Web/"]
-COPY ["src/Connextion/Connextion.fsproj", "src/Connextion/"]
+COPY ["src/Connextion.GraphDbRepositories/Connextion.GraphDbRepositories.csproj", "src/Connextion.GraphDbRepositories/"]
+COPY ["src/Connextion/Connextion.csproj", "src/Connextion/"]
+COPY ["src/Connextion.ViewModels/Connextion.ViewModels.csproj", "src/Connextion.ViewModels/"]
 RUN dotnet restore "src/Connextion.Web/Connextion.Web.csproj"
 COPY . .
 WORKDIR "/src/src/Connextion.Web"

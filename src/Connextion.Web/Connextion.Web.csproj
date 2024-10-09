@@ -10,13 +10,6 @@
 
     
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    
-    <ItemGroup>
       <ProjectReference Include="..\Connextion.GraphDbRepositories\Connextion.GraphDbRepositories.csproj" />
       <ProjectReference Include="..\Connextion.ViewModels\Connextion.ViewModels.csproj" />
       <ProjectReference Include="..\Connextion\Connextion.csproj" />
@@ -25,5 +18,12 @@
     
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    </ItemGroup>
+
+    
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 </Project>
