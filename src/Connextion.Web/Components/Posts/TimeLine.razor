@@ -6,10 +6,20 @@
 }
 
 @code {
-    [CascadingParameter] public UserDetails User { get; set; } = null!;
+    [CascadingParameter] public required UserDetails User { get; init; }
 
     protected override async Task OnInitializedAsync()
     {
-        await ViewModel.InitializeAsync(User!).ConfigureAwait(false);
+        if (User is null) return;
+        await ViewModel.InitializeAsync(User).ConfigureAwait(false);
     }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (User is null) return;
+        await ViewModel.InitializeAsync(User).ConfigureAwait(false);
+    }
+    
+    
+
 }

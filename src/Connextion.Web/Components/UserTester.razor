@@ -13,7 +13,7 @@
 }
 @if (_user is {} user)
 {
-<CascadingValue Value="user">
+<CascadingValue TValue="UserDetails" Value="user!">
     @ChildContent
 </CascadingValue>
 }
@@ -25,7 +25,7 @@
 
 @code {
     UserDetails[] _users = [];
-    UserDetails? _user = null;
+    UserDetails? _user = null!;
     string _selectedusername = "";
 
     [Parameter] public RenderFragment ChildContent { get; set; } = null!;
