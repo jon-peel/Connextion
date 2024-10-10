@@ -10,7 +10,7 @@ public class QuickPostViewModel(IPostRepository postRepository, UserDetails curr
     
     public async Task SubmitAsync()
     {
-        var status = new CreatePostCmd(currentUser.username, StatusText);
+        var status = new CreatePostCmd(currentUser.username, StatusText, DateTime.Now);
         await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
         StatusText = "";
     }

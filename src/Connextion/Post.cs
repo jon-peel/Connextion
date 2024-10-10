@@ -8,7 +8,7 @@ public class Post(Guid id, User postedBy, DateTime postedAt, string status)
     public string Status { get; } = status;
 }
 
-public record CreatePostCmd(string Username, string Status);
+public record CreatePostCmd(string Username, string Status, DateTime PostedAt);
 
 public interface IPostRepository
 {

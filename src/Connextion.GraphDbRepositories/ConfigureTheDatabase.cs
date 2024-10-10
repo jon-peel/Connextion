@@ -50,10 +50,19 @@ internal class ConfigureTheDatabase(
             {
                 var postCmd = new CreatePostCmd(
                     Username: user.Username,
-                    Status: $"Status {i} from {user.FullName}"
+                    Status: $"Status {i} from {user.FullName}",
+                    PostedAt: CreateRandomDate()
                 );
                 await postRepository.SubmitStatusAsync(postCmd).ConfigureAwait(false);
             }
+        }
+        return;
+        
+        DateTime CreateRandomDate()
+        {
+            var month = random.Next(1, 9);
+            var day = random.Next(1, 28);
+            return new (2024, month, day);
         }
     }
 

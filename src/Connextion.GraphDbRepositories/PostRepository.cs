@@ -50,7 +50,7 @@ public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IP
             username = status.Username,
             id = Guid.NewGuid().ToString(),
             status = status.Status,
-            postedAt = DateTime.Now
+            postedAt = status.PostedAt
         };
         var (_, result) = await driver
             .ExecutableQuery(
