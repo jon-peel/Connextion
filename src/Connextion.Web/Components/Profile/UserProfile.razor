@@ -45,7 +45,7 @@
 
 @code {
     [Parameter] public required string Username { get; init; }
-    [CascadingParameter] public required UserDetails CurrentUser { get; init; }
+    [CascadingParameter(Name = "CurrentUser")] public required UserDetails CurrentUser { get; init; }
 
     protected override Task OnParametersSetAsync() => ViewModel.InitializeAsync(Username, CurrentUser);
 }

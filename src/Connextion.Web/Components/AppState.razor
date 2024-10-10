@@ -1,0 +1,40 @@
+@using System.ComponentModel
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private UserDetails? _currentUser;
+    readonly List<EventCallback<StatePropertyChangedArgs>> _callbacks = []; 
+    
+    [Parameter] public required RenderFragment ChildContent { get; init; }
+
+    public void RegisterCallback(EventCallback<StatePropertyChangedArgs> callback)
+    {
+         if(!_callbacks.Contains(callback)) _callbacks.Add(callback);
+    }
+
+    void NotifyPropertyChanged(StatePropertyChangedArgs args)
+    {
+        foreach (var callback in _callbacks)
+            try
+            {
+                callback.InvokeAsync(args);
+            }
+            catch (Exception) { }
+    }
+    
+    public UserDetails? CurrentUser
+    {
+        get => _currentUser;
+        set
+        {
+            _currentUser = value;
+            InvokeAsync(StateHasChanged);
+            NotifyPropertyChanged(new("CurrentUser", value));
+        }
+    }
+
+    public record StatePropertyChangedArgs(string PropertyName, object? NewVale);
+
+}

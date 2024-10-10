@@ -6,19 +6,19 @@
 }
 
 @code {
-    [CascadingParameter] public required UserDetails User { get; init; }
+    [CascadingParameter] public required AppState AppState { get; init; }
 
     protected override async Task OnInitializedAsync()
     {
-        if (User is null) return;
-        await ViewModel.InitializeAsync(User).ConfigureAwait(false);
+        if (AppState.CurrentUser is {} user) 
+            await ViewModel.InitializeAsync(user).ConfigureAwait(false);
     }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        if (User is null) return;
-        await ViewModel.InitializeAsync(User).ConfigureAwait(false);
-    }
+    // public override async Task SetParametersAsync(ParameterView parameters)
+    // {
+    //     if (User is null) return;
+    //     await ViewModel.InitializeAsync(User).ConfigureAwait(false);
+    // }
     
     
 

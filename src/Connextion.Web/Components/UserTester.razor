@@ -2,47 +2,31 @@
 
 @if (_users.Any())
 {
-    <InputSelect @bind-Value="_selectedusername" @oninput="UserSelected" >
+    <InputSelect 
+        ValueExpression="() => CurrentUserName"
+        ValueChanged="(string value) => CurrentUserValueChanged(value)">
         @foreach (var user in _users)
         {
             <option value="@user.username">@user.FullName</option>
         }
     </InputSelect>
     <hr/>
-   
 }
-@if (_user is {} user)
-{
-<CascadingValue TValue="UserDetails" Value="user!">
-    @ChildContent
-</CascadingValue>
-}
-@if (_user is null)
-{
-    <p>Setting User</p>
-}
-
 
 @code {
     UserDetails[] _users = [];
-    UserDetails? _user = null!;
-    string _selectedusername = "";
+    
+    string? CurrentUserName => AppState.CurrentUser?.username;
 
-    [Parameter] public RenderFragment ChildContent { get; set; } = null!;
-
+    [CascadingParameter] public required AppState AppState { get; init; }
+    
+    UserDetails? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.username));
+    void CurrentUserValueChanged(string value) => AppState.CurrentUser = Get(value); 
+    
     protected override async Task OnInitializedAsync()
     {
         var users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
         _users = users.Select(x => new UserDetails(x.Username, x.FullName)).ToArray();
-        _user = _users.FirstOrDefault();
-        _selectedusername = _user?.username ?? "";
-    }
-
-    private async Task UserSelected(ChangeEventArgs arg)
-    {
-        _user = null;
-        await Task.Delay(1000).ConfigureAwait(false);
-        _user = _users.FirstOrDefault(x => x.username == arg.Value?.ToString());
+        AppState.CurrentUser = _users.FirstOrDefault();
     }
 }
-

@@ -32,5 +32,5 @@ services:
     - "/home/me/Code/Connextion:/src:rw"
     - "/home/me/.local/share/JetBrains/RiderRemoteDebugger/2024.2.5/Linux64:/opt/rider-debugger"
     - "/home/me/.local/share/JetBrains/Toolbox/apps/rider/bin:/etc/opt/rider-debugger/backend-log.xml"
-    - "/home/me/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2024_10_09_21_21_15:/var/opt/rider-debugger:rw"
+    - "/home/me/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2024_10_10_15_13_09:/var/opt/rider-debugger:rw"
     working_dir: "/app"

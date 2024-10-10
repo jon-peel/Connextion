@@ -7,9 +7,10 @@
 @*     @User *@
 @* </pre> *@
 
+<pre>@(AppState.CurrentUser?.username)</pre>
 <QuickPost/>
 <TimeLine/>
 
 @code {
-    [CascadingParameter] public UserDetails User { get; set; } = null!;
+    [CascadingParameter] public required AppState AppState { get; init; }
 }
