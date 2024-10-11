@@ -14,7 +14,7 @@ public class MiniProfile(string username, string fullName, byte degrees) : User(
     public byte Degrees { get; } = degrees;
 }
 
-public record CreateUserCmd(string Username, string FullName);
+public record CreateUserCmd(string Username, string DisplayName);
 
 public interface IUserRepository
 {

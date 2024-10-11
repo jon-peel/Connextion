@@ -16,10 +16,10 @@ public class UserRepository(ILogger<UserRepository> logger, IDriver driver) : IU
 
     public Task CreateUserAsync(CreateUserCmd cmd)
     {
-        logger.LogInformation("Creating user {FullName} with username {Username}", cmd.FullName, cmd.Username);
+        logger.LogInformation("Creating user profile {FullDisplayName} with username {Username}", cmd.DisplayName, cmd.Username);
         return driver
-            .ExecutableQuery(@"CREATE (u:User {username: $username, fullName: $fullName})")
-            .WithParameters(new { username = cmd.Username, fullName = cmd.FullName })
+            .ExecutableQuery(@"CREATE (u:User:Profile { id: $username, username: $username, displayName: $displayName })")
+            .WithParameters(new { username = cmd.Username, displayName = cmd.DisplayName })
             .ExecuteAsync();
     }
 }
