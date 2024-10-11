@@ -1,17 +1,22 @@
-using Connextion.ViewModels;
+namespace Connextion.ViewModels;
 
-namespace Connextion.Web.Components.Posts;
-
-public delegate QuickPostViewModel QuickPostViewModelFactory(UserDetails currentUser);
-
-public class QuickPostViewModel(IPostRepository postRepository, UserDetails currentUser)
+public class QuickPostViewModel(IPostRepository postRepository)
 {
+    CurrentUser? _currentUser;
     public string StatusText { get; set; } = "";
     
     public async Task SubmitAsync()
     {
-        var status = new CreatePostCmd(currentUser.username, StatusText, DateTime.Now);
-        await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
-        StatusText = "";
+        if (_currentUser is { Username: { } username })
+        {
+            var status = new CreatePostCmd(username, StatusText, DateTime.Now);
+            await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
+            StatusText = "";
+        }
+    }
+
+    public void Initialize(CurrentUser currentUser)
+    {
+        _currentUser = currentUser;
     }
 }

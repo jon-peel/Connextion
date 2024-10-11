@@ -5,11 +5,11 @@ namespace Connextion.GraphDbRepositories;
 
 public class UserRepository(ILogger<UserRepository> logger, IDriver driver) : IUserRepository
 {
-    public async Task<User[]> GetUsernamesAsync()
+    public async Task<User[]> GetAllUsersAsync()
     {
         var (queryResults, _) = await driver
-            .ExecutableQuery("MATCH (user:User) RETURN user.username, user.fullName")
-            .WithMap(r => new User(r["user.username"].As<string>(), r["user.fullName"].As<string>()))
+            .ExecutableQuery("MATCH (user:User) RETURN user.username AS username, user.fullName AS fullName, 0 AS degrees")
+            .WithMap(Mapping.MiniProfile)
             .ExecuteAsync();
         return queryResults.ToArray();
     }

@@ -4,7 +4,7 @@
 </CascadingValue>
 
 @code {
-    private UserDetails? _currentUser;
+    private CurrentUser? _currentUser;
     readonly List<EventCallback<StatePropertyChangedArgs>> _callbacks = []; 
     
     [Parameter] public required RenderFragment ChildContent { get; init; }
@@ -24,7 +24,7 @@
             catch (Exception) { }
     }
     
-    public UserDetails? CurrentUser
+    public CurrentUser? CurrentUser
     {
         get => _currentUser;
         set

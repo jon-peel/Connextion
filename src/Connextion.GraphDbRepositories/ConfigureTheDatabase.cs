@@ -11,7 +11,7 @@ internal class ConfigureTheDatabase(
     public async Task RunAsync()
     {
         await ConfigureConstraintsAsync().ConfigureAwait(false);
-        var users = await userRepository.GetUsernamesAsync().ConfigureAwait(false);
+        var users = await userRepository.GetAllUsersAsync().ConfigureAwait(false);
         if (users.Length != 0) return;
         await ConfigureDefaultUsers().ConfigureAwait(false);
     }

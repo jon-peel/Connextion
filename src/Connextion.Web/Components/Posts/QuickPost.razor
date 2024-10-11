@@ -1,25 +1,23 @@
 @inject ILogger<QuickPost> Logger;
-@inject QuickPostViewModelFactory ViewModelFactory;
+@inject QuickPostViewModel ViewModel;
 
-@if (_viewModel != null)
-{
-    <form @onsubmit="_viewModel.SubmitAsync">
-        <fieldset>
-            <label>
-                Update your status
-                <InputTextArea @bind-Value="_viewModel.StatusText"/>
-            </label>
-        </fieldset>
-        <button type="submit">Post</button>
-    </form>
-}
+<form @onsubmit="ViewModel.SubmitAsync">
+    <fieldset>
+        <label>
+            Update your status
+            <InputTextArea @bind-Value="ViewModel.StatusText"/>
+        </label>
+    </fieldset>
+    <button type="submit">Post</button>
+</form>
 
 @code{
-    QuickPostViewModel? _viewModel;
-    [CascadingParameter] public UserDetails CurrentUser { get; set; } = null!;
-    
+
+    [CascadingParameter] public CurrentUser CurrentUser { get; set; } = null!;
+
     protected override void OnInitialized()
     {
-        _viewModel = ViewModelFactory(CurrentUser);
+        ViewModel.Initialize(CurrentUser);
     }
+
 }

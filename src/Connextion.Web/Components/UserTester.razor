@@ -7,26 +7,26 @@
         ValueChanged="(string value) => CurrentUserValueChanged(value)">
         @foreach (var user in _users)
         {
-            <option value="@user.username">@user.FullName</option>
+            <option value="@user.Username">@user.FullName</option>
         }
     </InputSelect>
     <hr/>
 }
 
 @code {
-    UserDetails[] _users = [];
+    CurrentUser[] _users = [];
     
-    string? CurrentUserName => AppState.CurrentUser?.username;
+    string? CurrentUserName => AppState.CurrentUser?.Username;
 
     [CascadingParameter] public required AppState AppState { get; init; }
     
-    UserDetails? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.username));
+    CurrentUser? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.Username));
     void CurrentUserValueChanged(string value) => AppState.CurrentUser = Get(value); 
     
     protected override async Task OnInitializedAsync()
     {
-        var users = await UserRepository.GetUsernamesAsync().ConfigureAwait(false);
-        _users = users.Select(x => new UserDetails(x.Username, x.FullName)).ToArray();
+        var users = await UserRepository.GetAllUsersAsync().ConfigureAwait(false);
+        _users = users.Select(x => new CurrentUser(x.Username, x.FullName)).ToArray();
         AppState.CurrentUser = _users.FirstOrDefault();
     }
 }

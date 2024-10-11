@@ -11,12 +11,12 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
     public IReadOnlyList<UserProfileLinkViewModel> Followers { get; private set; } = [];
     public RelationshipStatusViewModel? RelationshipStatus { get; private set; }
 
-    public async Task InitializeAsync(string profileUser, UserDetails currentUser)
+    public async Task InitializeAsync(string profileUser, CurrentUser currentUser)
     {
         if (_profileUser == profileUser) return;
         IsBusy = true;
         _profileUser = profileUser;
-        var profile = await profileRepository.GetProfileAsync(profileUser, currentUser.username).ConfigureAwait(false);
+        var profile = await profileRepository.GetProfileAsync(profileUser, currentUser).ConfigureAwait(false);
         RelationshipStatus = new RelationshipStatusViewModel(profileService, profile, currentUser);
         FullName = profile.User.FullName;
         LatestPosts = profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();

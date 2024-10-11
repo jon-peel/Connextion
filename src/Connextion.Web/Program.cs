@@ -13,8 +13,6 @@ builder.Services
     .AddServices()
     .AddGraphDbRepositories()
     .AddViewModels()
-    .AddTransient<QuickPostViewModelFactory>(sx =>
-        user => new QuickPostViewModel(sx.GetRequiredService<IPostRepository>(), user))
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 

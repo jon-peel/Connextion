@@ -1,11 +1,15 @@
 namespace Connextion;
 
-public class Profile(User user, IEnumerable<Post> latestPosts, IEnumerable<User> following, IEnumerable<User> followers)
+public class Profile(
+    User user, 
+    IEnumerable<Post> latestPosts, 
+    IEnumerable<MiniProfile> following, 
+    IEnumerable<MiniProfile> followers)
 {
     public User User { get; } = user;
     public IReadOnlyList<Post> LatestPosts { get; } = latestPosts.ToArray();
-    public IReadOnlyList<User> Following { get; } = following.ToArray();
-    public IReadOnlyList<User> Followers { get; } = followers.ToArray();
+    public IReadOnlyList<MiniProfile> Following { get; } = following.ToArray();
+    public IReadOnlyList<MiniProfile> Followers { get; } = followers.ToArray();
 
     public bool CanFollow(string toFollow)
     {
@@ -15,17 +19,17 @@ public class Profile(User user, IEnumerable<Post> latestPosts, IEnumerable<User>
 
 public interface IProfileRepository
 {
-    Task<Profile> GetProfileAsync(string username, string currentUser);
+    Task<Profile> GetProfileAsync(string user, CurrentUser currentUser);
     Task FollowAsync(string currentUser, string toFollow);
 }
 
 public class ProfileService(IProfileRepository profileRepository)
 {
-    public async Task<bool> FollowAsync(string currentUser, string toFollow)
+    public async Task<bool> FollowAsync(CurrentUser currentUser, string toFollow)
     {
-        var profile = await profileRepository.GetProfileAsync(currentUser, currentUser).ConfigureAwait(false);
+        var profile = await profileRepository.GetProfileAsync(currentUser.Username, currentUser).ConfigureAwait(false);
         var result = profile.CanFollow(toFollow);
-        if (result) await profileRepository.FollowAsync(currentUser, toFollow).ConfigureAwait(false);
+        if (result) await profileRepository.FollowAsync(currentUser.Username, toFollow).ConfigureAwait(false);
         return result;
     }
 }

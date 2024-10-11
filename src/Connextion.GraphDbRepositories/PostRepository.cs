@@ -5,41 +5,42 @@ namespace Connextion.GraphDbRepositories;
 
 public static class Mapping
 {
-    public static User User(IReadOnlyDictionary<string, object> userData)
+    public static MiniProfile MiniProfile(IReadOnlyDictionary<string, object> userData)
     {
         var username = userData["username"].As<string>();
         var fullName = userData["fullName"].As<string>();
-        var degrees = userData.TryGetValue("degrees", out var degreesData) ? degreesData.As<int>() : 0;
-        return new User(username, fullName, degrees);
+        var degrees = userData["degrees"].As<byte>();
+        return new (username, fullName, degrees);
     }
 
     public static Post Post(IReadOnlyDictionary<string, object> postData)
     {
         var id = Guid.Parse(postData["id"].As<string>());
-        var user = User(postData["postedBy"].As<IReadOnlyDictionary<string, object>>());
+        var user = MiniProfile(postData["postedBy"].As<IReadOnlyDictionary<string, object>>());
         var postedAt = postData["postedAt"].As<DateTime>();
-        var status = postData["status"].As<string>(); 
-        return new Post(id, user, postedAt, status);
+        var status = postData["status"].As<string>();
+        return new (id, user, postedAt, status);
     }
 
     public static Profile Profile(IReadOnlyDictionary<string, object> data)
     {
-        var user = User(data["user"].As<IReadOnlyDictionary<string, object>>());
+        var user = MiniProfile(data["user"].As<IReadOnlyDictionary<string, object>>());
         var posts = data["posts"]
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
             .Select(Post)
             .ToArray();
         var following = data["following"]
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
-            .Select(User)
+            .Select(MiniProfile)
             .ToArray();
         var followers = data["followers"]
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
-            .Select(User)
+            .Select(MiniProfile)
             .ToArray();
         return new Profile(user, posts, following, followers);
     }
 }
+
 public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IPostRepository
 {
     public async Task SubmitStatusAsync(CreatePostCmd status)
@@ -65,24 +66,30 @@ public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IP
         Console.WriteLine(result.ToString());
     }
 
-    public async Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(string username)
+    public async Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(CurrentUser user)
     {
         var (result, _) = await driver
             .ExecutableQuery(
                 """
-                MATCH (p:Post)-[:POSTED_BY]->(u:User)
-                RETURN 
-                    p.id AS id,
-                    { username: u.username, fullName: u.fullName } AS postedBy,
-                    p.postedAt AS postedAt,
-                    p.status AS status
-                ORDER BY p.postedAt DESC
+                MATCH (currentUser:User { username: $currentUser })
+                MATCH (postUser:User)
+                WITH currentUser,
+                     postUser, 
+                     CASE WHEN currentUser = postUser THEN 0
+                     ELSE length(shortestPath((postUser)-[*]-(currentUser)))
+                     END AS degrees
+                WHERE degrees <= 2
+                MATCH (post:Post)-[:POSTED_BY]->(postUser)
+                ORDER by post.postedAt DESC
+                RETURN post.id AS id,
+                       { username: postUser.username, fullName: postUser.fullName, degrees: degrees } AS postedBy,
+                       post.postedAt AS postedAt,
+                       post.status AS status
                 """)
+            .WithParameters(new { currentUser = user.Username })
             .WithMap(Mapping.Post)
             .ExecuteAsync()
             .ConfigureAwait(false);
         return result;
     }
-
- 
 }

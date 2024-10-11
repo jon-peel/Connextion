@@ -5,7 +5,7 @@ namespace Connextion.GraphDbRepositories;
 
 public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver) : IProfileRepository
 {
-    public async Task<Profile> GetProfileAsync(string username, string currentUser)
+    public async Task<Profile> GetProfileAsync(string user, CurrentUser currentUser)
     {
         var (results, _) = await driver
             .ExecutableQuery("""
@@ -45,12 +45,13 @@ public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver
                                  }
                                } as followers
                              """)
-            .WithParameters(new { username, currentUser, nPosts = 10 })
+            .WithParameters(new { user, currentUser, nPosts = 10 })
             .WithMap(Mapping.Profile)
             .ExecuteAsync()
             .ConfigureAwait(false);
         return results.Single();
     }
+
 
     public async Task FollowAsync(string currentUser, string toFollow)
     {

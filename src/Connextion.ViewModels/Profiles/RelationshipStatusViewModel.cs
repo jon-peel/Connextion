@@ -1,15 +1,15 @@
 namespace Connextion.ViewModels.Profiles;
 
-public class RelationshipStatusViewModel(ProfileService profileService, Profile profile, UserDetails currentUser)
+public class RelationshipStatusViewModel(ProfileService profileService, Profile profile, CurrentUser currentUser)
 {
     public bool IsBusy { get; private set; } = false;
     public string Description { get; private set; } = CreateDescription(profile, currentUser);
-    public bool CanFollow { get; private set; } = profile.Followers.All(x => x.Username != currentUser.username);
+    public bool CanFollow { get; private set; } = profile.Followers.All(x => x.Username != currentUser.Username);
     
-    static string CreateDescription(Profile profile, UserDetails currentUser)
+    static string CreateDescription(Profile profile, CurrentUser currentUser)
     {
-        var follows = profile.Followers.Any(x => x.Username == currentUser.username);
-        var followed = profile.Following.All(x => x.Username == currentUser.username);
+        var follows = profile.Followers.Any(x => x.Username == currentUser.Username);
+        var followed = profile.Following.All(x => x.Username == currentUser.Username);
 
         return (follows, follwed: followed) switch
         {
@@ -24,7 +24,7 @@ public class RelationshipStatusViewModel(ProfileService profileService, Profile 
     {
         IsBusy = true;
         CanFollow = false;
-        await profileService.FollowAsync(currentUser.username, profile.User.Username).ConfigureAwait(false);
+        await profileService.FollowAsync(currentUser, profile.User.Username).ConfigureAwait(false);
         Description = "Followed";
         IsBusy = false;
     }
