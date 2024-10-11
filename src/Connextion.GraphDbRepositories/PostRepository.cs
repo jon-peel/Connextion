@@ -68,7 +68,7 @@ public class PostRepositoryOld(ILogger<PostRepositoryOld> logger, IDriver driver
         Console.WriteLine(result.ToString());
     }
 
-    public async Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(CurrentUser user)
+    public async Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(User user)
     {
         var (result, _) = await driver
             .ExecutableQuery(

@@ -4,7 +4,7 @@ namespace Connextion.ViewModels;
 
 public class QuickPostViewModel(IPostRepositoryOld old)
 {
-    CurrentUser? _currentUser;
+    User? _currentUser;
     public string StatusText { get; set; } = "";
     
     public async Task SubmitAsync()
@@ -17,8 +17,8 @@ public class QuickPostViewModel(IPostRepositoryOld old)
         }
     }
 
-    public void Initialize(CurrentUser currentUser)
+    public void Initialize(User user)
     {
-        _currentUser = currentUser;
+        _currentUser = user;
     }
 }

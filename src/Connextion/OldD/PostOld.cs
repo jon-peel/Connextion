@@ -13,5 +13,5 @@ public record CreatePostCmd(string Username, string Status, DateTime PostedAt);
 public interface IPostRepositoryOld
 {
     Task SubmitStatusAsync(CreatePostCmd status);
-    Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(CurrentUser user);
+    Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(User user);
 }

@@ -7,8 +7,6 @@ public abstract class User(string username, string fullName)
     public string FullName { get; } = fullName;
 }
 
-public class CurrentUser(string username, string fullName) : User(username, fullName) {}
-
 public class MiniProfile(string username, string fullName, byte degrees) : User(username, fullName)
 {
     public byte Degrees { get; } = degrees;

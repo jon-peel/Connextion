@@ -2,16 +2,16 @@ using Connextion.OldD;
 
 namespace Connextion.ViewModels.Profiles;
 
-public class RelationshipStatusViewModel(ProfileService profileService, OldD.Profile profile, CurrentUser currentUser)
+public class RelationshipStatusViewModel(ProfileService profileService, OldD.Profile profile, User user)
 {
     public bool IsBusy { get; private set; } = false;
-    public string Description { get; private set; } = CreateDescription(profile, currentUser);
-    public bool CanFollow { get; private set; } = profile.Followers.All(x => x.Username != currentUser.Username);
+    public string Description { get; private set; } = CreateDescription(profile, user);
+    public bool CanFollow { get; private set; } = profile.Followers.All(x => x.Username != user.Username);
     
-    static string CreateDescription(OldD.Profile profile, CurrentUser currentUser)
+    static string CreateDescription(OldD.Profile profile, User user)
     {
-        var follows = profile.Followers.Any(x => x.Username == currentUser.Username);
-        var followed = profile.Following.All(x => x.Username == currentUser.Username);
+        var follows = profile.Followers.Any(x => x.Username == user.Username);
+        var followed = profile.Following.All(x => x.Username == user.Username);
 
         return (follows, follwed: followed) switch
         {
@@ -26,7 +26,7 @@ public class RelationshipStatusViewModel(ProfileService profileService, OldD.Pro
     {
         IsBusy = true;
         CanFollow = false;
-        await profileService.FollowAsync(currentUser, profile.User.Username).ConfigureAwait(false);
+        await profileService.FollowAsync(user, profile.User.Username).ConfigureAwait(false);
         Description = "Followed";
         IsBusy = false;
     }

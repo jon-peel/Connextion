@@ -5,7 +5,8 @@
 </CascadingValue>
 
 @code {
-    private CurrentUser? _currentUser;
+    private User? _currentUser;
+    private Connextion.Profile? _userProfile;
     readonly List<EventCallback<StatePropertyChangedArgs>> _callbacks = []; 
     
     [Parameter] public required RenderFragment ChildContent { get; init; }
@@ -24,8 +25,19 @@
             }
             catch (Exception) { }
     }
+
+    public Connextion.Profile? UserProfile
+    {
+        get => _userProfile;
+        set
+        {
+            _userProfile = value;
+            InvokeAsync(StateHasChanged);
+            NotifyPropertyChanged(new("UserProfile", value));
+        }
+    }
     
-    public CurrentUser? CurrentUser
+    public User? CurrentUser
     {
         get => _currentUser;
         set

@@ -19,17 +19,17 @@ public class Profile(
 
 public interface IProfileRepositoryOld
 {
-    Task<Profile> GetProfileAsync(string user, CurrentUser currentUser);
+    Task<Profile> GetProfileAsync(string user, User currentUuser);
     Task FollowAsync(string currentUser, string toFollow);
 }
 
 public class ProfileService(IProfileRepositoryOld profileRepositoryOld)
 {
-    public async Task<bool> FollowAsync(CurrentUser currentUser, string toFollow)
+    public async Task<bool> FollowAsync(User user, string toFollow)
     {
-        var profile = await profileRepositoryOld.GetProfileAsync(currentUser.Username, currentUser).ConfigureAwait(false);
+        var profile = await profileRepositoryOld.GetProfileAsync(user.Username, user).ConfigureAwait(false);
         var result = profile.CanFollow(toFollow);
-        if (result) await profileRepositoryOld.FollowAsync(currentUser.Username, toFollow).ConfigureAwait(false);
+        if (result) await profileRepositoryOld.FollowAsync(user.Username, toFollow).ConfigureAwait(false);
         return result;
     }
 }

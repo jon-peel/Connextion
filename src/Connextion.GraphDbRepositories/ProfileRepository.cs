@@ -3,38 +3,27 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-class ProfileMapping(ProfileRepository profileRepository)
-{
-    public Profile Map(IRecord record)
-    {
-        var id = new ProfileId(record["id"].As<string>());
-        var displayName = new DisplayName(record["displayName"].As<string>());
-        var posts = profileRepository.GetPostsAsync(id.Value);
-        var following = profileRepository.GetFollowingAsync(id.Value);
-        var followers = profileRepository.GetFollowersAsync(id.Value);
-        return new Profile(id, displayName, posts, following, followers);
-    }
-} 
-
 public class ProfileRepository(IDriver driver) : IProfileRepository
 {
     public async Task<Profile> GetProfileAsync(string id)
     {
+        const string query =
+            """
+            MATCH (profile:Profile { id: $id })
+            RETURN profile.id AS id,
+                   profile.displayName as displayName
+            """;
         var (profiles, _) = await driver
-            .ExecutableQuery("""
-                             MATCH (profile:Profile { id: $id })
-                             RETURN profile.id AS id,
-                                    profile.displayName as displayName
-                             """)
+            .ExecutableQuery(query)
             .WithParameters(new { id })
-            .WithMap(new ProfileMapping(this).Map)
+            .WithMap(MapProfile)
             .ExecuteAsync()
             .ConfigureAwait(false);
         var profile = profiles.Single();
         return profile;
     }
 
-    public async IAsyncEnumerable<PostOld> GetPostsAsync(string id)
+    async IAsyncEnumerable<Post> GetPostsAsync(string id)
     {
         const string query =
             """
@@ -49,12 +38,12 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
         while (await reader.FetchAsync())
         {
-            var post = Mapping.Post(reader.Current);
+            var post = MapPost(reader.Current);
             yield return post;
         }
     }
-    
-    public async IAsyncEnumerable<MiniProfile> GetFollowingAsync(string id)
+
+    async IAsyncEnumerable<MiniProfile> GetFollowingAsync(string id)
     {
         const string query =
             """
@@ -68,10 +57,10 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         {
             var p = Mapping.MiniProfile(reader.Current);
             yield return p;
-        }       
+        }
     }
-    
-    public async IAsyncEnumerable<MiniProfile> GetFollowersAsync(string id)
+
+    async IAsyncEnumerable<MiniProfile> GetFollowersAsync(string id)
     {
         const string query =
             """
@@ -85,6 +74,24 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         {
             var p = Mapping.MiniProfile(reader.Current);
             yield return p;
-        }       
+        }
+    }
+
+    Profile MapProfile(IRecord record)
+    {
+        var id = new ProfileId(record["id"].As<string>());
+        var displayName = new DisplayName(record["displayName"].As<string>());
+        var posts = GetPostsAsync(id.Value);
+        var following = GetFollowingAsync(id.Value);
+        var followers = GetFollowersAsync(id.Value);
+        return new Profile(id, displayName, posts, following, followers);
+    }
+
+    Post MapPost(IRecord record)
+    {
+        var id = new PostId(record["id"].As<string>());
+        var postedAt = record["postedAt"].As<DateTime>();
+        var body = new PostBody(record["status"].As<string>());
+        return new(id, postedAt, body);
     }
 }
