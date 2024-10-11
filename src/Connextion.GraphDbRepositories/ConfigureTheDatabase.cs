@@ -1,3 +1,4 @@
+using Connextion.OldD;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
@@ -5,8 +6,8 @@ namespace Connextion.GraphDbRepositories;
 internal class ConfigureTheDatabase(
     IDriver driver,
     IUserRepository userRepository,
-    IProfileRepository profileRepository,
-    IPostRepository postRepository)
+    IProfileRepositoryOld profileRepositoryOld,
+    IPostRepositoryOld old)
 {
     public async Task RunAsync()
     {
@@ -54,7 +55,7 @@ internal class ConfigureTheDatabase(
                     Status: $"Status {i} from {user.DisplayName}",
                     PostedAt: CreateRandomDate()
                 );
-                await postRepository.SubmitStatusAsync(postCmd).ConfigureAwait(false);
+                await old.SubmitStatusAsync(postCmd).ConfigureAwait(false);
             }
         }
 
@@ -82,7 +83,7 @@ internal class ConfigureTheDatabase(
             foreach (var userToFollow in usersToFollow)
             {
                 // Assuming you have a FollowAsync method in your UserRepository
-                await profileRepository.FollowAsync(user.Username, userToFollow);
+                await profileRepositoryOld.FollowAsync(user.Username, userToFollow);
             }
         }
     }

@@ -1,6 +1,6 @@
-namespace Connextion;
+namespace Connextion.OldD;
 
-public class Post(Guid id, MiniProfile postedBy, DateTime postedAt, string status)
+public class PostOld(Guid id, MiniProfile postedBy, DateTime postedAt, string status)
 {
     public Guid Id { get; } = id;
     public DateTime PostedAt { get; } = postedAt;
@@ -10,8 +10,8 @@ public class Post(Guid id, MiniProfile postedBy, DateTime postedAt, string statu
 
 public record CreatePostCmd(string Username, string Status, DateTime PostedAt);
 
-public interface IPostRepository
+public interface IPostRepositoryOld
 {
     Task SubmitStatusAsync(CreatePostCmd status);
-    Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(CurrentUser user);
+    Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(CurrentUser user);
 }

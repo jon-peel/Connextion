@@ -1,6 +1,8 @@
+using Connextion.OldD;
+
 namespace Connextion.ViewModels;
 
-public class QuickPostViewModel(IPostRepository postRepository)
+public class QuickPostViewModel(IPostRepositoryOld old)
 {
     CurrentUser? _currentUser;
     public string StatusText { get; set; } = "";
@@ -10,7 +12,7 @@ public class QuickPostViewModel(IPostRepository postRepository)
         if (_currentUser is { Username: { } username })
         {
             var status = new CreatePostCmd(username, StatusText, DateTime.Now);
-            await postRepository.SubmitStatusAsync(status).ConfigureAwait(false);
+            await old.SubmitStatusAsync(status).ConfigureAwait(false);
             StatusText = "";
         }
     }

@@ -1,70 +1,90 @@
-using Microsoft.Extensions.Logging;
+using Connextion.OldD;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class ProfileRepository(ILogger<ProfileRepository> logger, IDriver driver) : IProfileRepository
+class ProfileMapping(ProfileRepository profileRepository)
 {
-    public async Task<Profile> GetProfileAsync(string user, CurrentUser currentUser)
+    public Profile Map(IRecord record)
     {
-        var (results, _) = await driver
+        var id = new ProfileId(record["id"].As<string>());
+        var displayName = new DisplayName(record["displayName"].As<string>());
+        var posts = profileRepository.GetPostsAsync(id.Value);
+        var following = profileRepository.GetFollowingAsync(id.Value);
+        var followers = profileRepository.GetFollowersAsync(id.Value);
+        return new Profile(id, displayName, posts, following, followers);
+    }
+} 
+
+public class ProfileRepository(IDriver driver) : IProfileRepository
+{
+    public async Task<Profile> GetProfileAsync(string id)
+    {
+        var (profiles, _) = await driver
             .ExecutableQuery("""
-                             MATCH (u:User { username: $username })
-                             MATCH (me:User { username: $currentUser })
-                             RETURN 
-                               { username: u.username, fullName: u.fullName } as user,
-                               COLLECT {
-                                   MATCH (p:Post)-[:POSTED_BY]->(u)
-                                   RETURN {
-                                      id: p.id,
-                                      postedBy: { username: u.username, fullName: u.fullName },
-                                      postedAt: p.postedAt, 
-                                      status: p.status 
-                                   }
-                                   ORDER BY p.postedAt DESC
-                                   LIMIT $nPosts
-                               } AS posts,
-                               COLLECT {
-                                 MATCH (u)-[:FOLLOWS]->(f:User)
-                                 RETURN { 
-                                   username: f.username, 
-                                   fullName: f.fullName,
-                                   degrees: CASE WHEN me = f THEN 0
-                                            ELSE length(shortestPath( (f)-[*]-(me) ))
-                                            END
-                                 }
-                               } as following,
-                               COLLECT {
-                                 MATCH (u)<-[:FOLLOWS]-(f:User)
-                                 RETURN { 
-                                   username: f.username, 
-                                   fullName: f.fullName,
-                                   degrees: CASE WHEN me = f THEN 0
-                                            ELSE length(shortestPath( (f)-[*]-(me) ))
-                                            END
-                                 }
-                               } as followers
+                             MATCH (profile:Profile { id: $id })
+                             RETURN profile.id AS id,
+                                    profile.displayName as displayName
                              """)
-            .WithParameters(new { user, currentUser, nPosts = 10 })
-            .WithMap(Mapping.Profile)
+            .WithParameters(new { id })
+            .WithMap(new ProfileMapping(this).Map)
             .ExecuteAsync()
             .ConfigureAwait(false);
-        return results.Single();
+        var profile = profiles.Single();
+        return profile;
     }
 
-
-    public async Task FollowAsync(string currentUser, string toFollow)
+    public async IAsyncEnumerable<PostOld> GetPostsAsync(string id)
     {
-        logger.LogInformation("{FollowingUser} is following {FollowedUser}", currentUser, toFollow);
-        var (_, results) = await driver
-            .ExecutableQuery("""
-                             MATCH (currentUser:User {username: $currentUser}),
-                                   (toFollow:User {username: $toFollow})
-                             CREATE (currentUser)-[:FOLLOWS]->(toFollow);
-                             """)
-            .WithParameters(new { currentUser, toFollow })
-            .ExecuteAsync()
-            .ConfigureAwait(false);
-        Console.WriteLine(results);
-    }  
+        const string query =
+            """
+            MATCH (profile:Profile { id: $id })
+            MATCH (profile)<-[:POSTED_BY]-(post:Post)
+            ORDER BY post.postedAt DESC 
+            RETURN post.id AS id,
+                   post.postedAt AS postedAt,
+                   post.status AS status
+            """;
+        var session = driver.AsyncSession();
+        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
+        while (await reader.FetchAsync())
+        {
+            var post = Mapping.Post(reader.Current);
+            yield return post;
+        }
+    }
+    
+    public async IAsyncEnumerable<MiniProfile> GetFollowingAsync(string id)
+    {
+        const string query =
+            """
+            MATCH (p:Profile { id: $id })-[:FOLLOWS]->(Profile)
+            RETURN p.id as id,
+                   p.displayName as displayName
+            """;
+        var session = driver.AsyncSession();
+        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
+        while (await reader.FetchAsync())
+        {
+            var p = Mapping.MiniProfile(reader.Current);
+            yield return p;
+        }       
+    }
+    
+    public async IAsyncEnumerable<MiniProfile> GetFollowersAsync(string id)
+    {
+        const string query =
+            """
+            MATCH (p:Profile { id: $id })<-[:FOLLOWS]-(Profile)
+            RETURN p.id as id,
+                   p.displayName as displayName
+            """;
+        var session = driver.AsyncSession();
+        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
+        while (await reader.FetchAsync())
+        {
+            var p = Mapping.MiniProfile(reader.Current);
+            yield return p;
+        }       
+    }
 }

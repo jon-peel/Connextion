@@ -1,3 +1,4 @@
+using Connextion.OldD;
 using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
@@ -13,7 +14,7 @@ public static class Mapping
         return new (username, fullName, degrees);
     }
 
-    public static Post Post(IReadOnlyDictionary<string, object> postData)
+    public static PostOld Post(IReadOnlyDictionary<string, object> postData)
     {
         var id = Guid.Parse(postData["id"].As<string>());
         var user = MiniProfile(postData["postedBy"].As<IReadOnlyDictionary<string, object>>());
@@ -22,7 +23,7 @@ public static class Mapping
         return new (id, user, postedAt, status);
     }
 
-    public static Profile Profile(IReadOnlyDictionary<string, object> data)
+    public static OldD.Profile Profile(IReadOnlyDictionary<string, object> data)
     {
         var user = MiniProfile(data["user"].As<IReadOnlyDictionary<string, object>>());
         var posts = data["posts"]
@@ -37,11 +38,12 @@ public static class Mapping
             .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
             .Select(MiniProfile)
             .ToArray();
-        return new Profile(user, posts, following, followers);
+        return new OldD.Profile(user, posts, following, followers);
     }
 }
 
-public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IPostRepository
+public class PostRepositoryOld(ILogger<PostRepositoryOld> logger, IDriver driver) : IPostRepositoryOld
+
 {
     public async Task SubmitStatusAsync(CreatePostCmd status)
     {
@@ -66,7 +68,7 @@ public class PostRepository(ILogger<PostRepository> logger, IDriver driver) : IP
         Console.WriteLine(result.ToString());
     }
 
-    public async Task<IReadOnlyList<Post>> GetTimelineStatusesAsync(CurrentUser user)
+    public async Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(CurrentUser user)
     {
         var (result, _) = await driver
             .ExecutableQuery(
