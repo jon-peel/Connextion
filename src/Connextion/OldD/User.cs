@@ -1,13 +1,13 @@
 namespace Connextion.OldD;
 
 
-public abstract class User(string username, string fullName)
+public abstract class User(string username, string displayName)
 {
     public string Username { get; } = username;
-    public string FullName { get; } = fullName;
+    public string DisplayName { get; } = displayName;
 }
 
-public class MiniProfile(string username, string fullName, byte degrees) : User(username, fullName)
+public class MiniProfile(string username, string displayName, byte degrees) : User(username, displayName)
 {
     public byte Degrees { get; } = degrees;
 }

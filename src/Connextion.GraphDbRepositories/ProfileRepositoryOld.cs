@@ -13,12 +13,12 @@ public class ProfileRepositoryOld(ILogger<ProfileRepositoryOld> logger, IDriver 
                              MATCH (u:User { username: $username })
                              MATCH (me:User { username: $currentUser })
                              RETURN 
-                               { username: u.username, fullName: u.fullName } as user,
+                               { username: u.username, displayName: u.displayName } as user,
                                COLLECT {
                                    MATCH (p:Post)-[:POSTED_BY]->(u)
                                    RETURN {
                                       id: p.id,
-                                      postedBy: { username: u.username, fullName: u.fullName },
+                                      postedBy: { username: u.username, displayName: u.displayName },
                                       postedAt: p.postedAt, 
                                       status: p.status 
                                    }
@@ -29,7 +29,7 @@ public class ProfileRepositoryOld(ILogger<ProfileRepositoryOld> logger, IDriver 
                                  MATCH (u)-[:FOLLOWS]->(f:User)
                                  RETURN { 
                                    username: f.username, 
-                                   fullName: f.fullName,
+                                   displayName: f.displayName,
                                    degrees: CASE WHEN me = f THEN 0
                                             ELSE length(shortestPath( (f)-[*]-(me) ))
                                             END
@@ -39,7 +39,7 @@ public class ProfileRepositoryOld(ILogger<ProfileRepositoryOld> logger, IDriver 
                                  MATCH (u)<-[:FOLLOWS]-(f:User)
                                  RETURN { 
                                    username: f.username, 
-                                   fullName: f.fullName,
+                                   displayName: f.displayName,
                                    degrees: CASE WHEN me = f THEN 0
                                             ELSE length(shortestPath( (f)-[*]-(me) ))
                                             END

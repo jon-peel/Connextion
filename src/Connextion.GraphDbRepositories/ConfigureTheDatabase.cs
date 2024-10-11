@@ -65,7 +65,9 @@ internal class ConfigureTheDatabase(
         {
             var month = random.Next(1, 9);
             var day = random.Next(1, 28);
-            return new(2024, month, day);
+            var hour = random.Next(0, 23);
+            var minute = random.Next(0, 59);
+            return new(2024, month, day, hour, minute, 05);
         }
     }
 

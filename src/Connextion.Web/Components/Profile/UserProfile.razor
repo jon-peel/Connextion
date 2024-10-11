@@ -7,7 +7,7 @@
     @if(ViewModel.IsBusy) { <BusyIndicator /> }
     @if (!ViewModel.IsBusy)
     {
-        <h2>@ViewModel.FullName</h2>
+        <h2>@ViewModel.DisplayName</h2>
         @if (ViewModel.RelationshipStatus is { } rs)
         {
             <RelationshipStatus ViewModel="rs"/>

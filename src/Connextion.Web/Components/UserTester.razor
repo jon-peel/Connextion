@@ -9,7 +9,7 @@
         ValueChanged="(string value) => CurrentUserValueChanged(value)">
         @foreach (var user in _users)
         {
-            <option value="@user.Username">@user.FullName</option>
+            <option value="@user.Username">@user.DisplayName</option>
         }
     </InputSelect>
     <hr/>
@@ -28,6 +28,7 @@
     {
         AppState.CurrentUser = null;
         AppState.UserProfile = null;
+        await Task.Delay(100).ConfigureAwait(false);
         AppState.CurrentUser = _users.FirstOrDefault(x => x.Username == value);
         await UpdateProfileAsync().ConfigureAwait(false);
     }

@@ -16,8 +16,8 @@ public class RelationshipStatusViewModel(ProfileService profileService, OldD.Pro
         return (follows, follwed: followed) switch
         {
             (true, true) => "Mutual",
-            (true, _) => $"You follow {profile.User.FullName}",
-            (_, true) => $"{profile.User.FullName} follows you",
+            (true, _) => $"You follow {profile.User.DisplayName}",
+            (_, true) => $"{profile.User.DisplayName} follows you",
             _ => "No following",
         };
     }

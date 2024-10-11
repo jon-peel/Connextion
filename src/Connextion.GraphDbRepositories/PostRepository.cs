@@ -9,9 +9,9 @@ public static class Mapping
     public static MiniProfile MiniProfile(IReadOnlyDictionary<string, object> userData)
     {
         var username = userData["username"].As<string>();
-        var fullName = userData["fullName"].As<string>();
+        var displayName = userData["displayName"].As<string>();
         var degrees = userData["degrees"].As<byte>();
-        return new (username, fullName, degrees);
+        return new (username, displayName, degrees);
     }
 
     public static PostOld Post(IReadOnlyDictionary<string, object> postData)
@@ -84,7 +84,7 @@ public class PostRepositoryOld(ILogger<PostRepositoryOld> logger, IDriver driver
                 MATCH (post:Post)-[:POSTED_BY]->(postUser)
                 ORDER by post.postedAt DESC
                 RETURN post.id AS id,
-                       { username: postUser.username, fullName: postUser.fullName, degrees: degrees } AS postedBy,
+                       { username: postUser.username, displayName: postUser.displayName, degrees: degrees } AS postedBy,
                        post.postedAt AS postedAt,
                        post.status AS status
                 """)

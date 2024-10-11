@@ -9,7 +9,7 @@ public class UserRepository(ILogger<UserRepository> logger, IDriver driver) : IU
     public async Task<User[]> GetAllUsersAsync()
     {
         var (queryResults, _) = await driver
-            .ExecutableQuery("MATCH (user:User) RETURN user.username AS username, user.fullName AS fullName, 0 AS degrees")
+            .ExecutableQuery("MATCH (user:User) RETURN user.username AS username, user.displayName AS displayName, 0 AS degrees")
             .WithMap(Mapping.MiniProfile)
             .ExecuteAsync();
         return queryResults.ToArray();
