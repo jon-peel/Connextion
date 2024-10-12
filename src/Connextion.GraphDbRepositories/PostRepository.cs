@@ -40,7 +40,7 @@ public class PostRepository(IDriver driver) : RepositoryBase(driver), IPostRepos
                     profileId = cmd.CreatedBy.Value,
                     postId = cmd.Id.Value.ToString(),
                     body = cmd.Body.Value,
-                    postedAt = cmd.PostedAt
+                    postedAt = cmd.PostedAt.ToLocalTime()
                 })
                 .ExecuteAsync().ConfigureAwait(false);
             return Result.Ok();
@@ -78,8 +78,16 @@ public class PostRepository(IDriver driver) : RepositoryBase(driver), IPostRepos
         var id = Guid.Parse(arg["id"].As<string>());
         var userRecord = arg["postedBy"].As<IReadOnlyDictionary<string, object>>();
         var user = new User(userRecord["username"].As<string>(), userRecord["displayName"].As<string>());
-        var postedAt = arg["postedAt"].As<DateTime>();
-        var body = arg["body"].As<string>();
-        return new (id, user, postedAt, body);
+        try
+        {
+            var postedAt = arg["postedAt"].As<DateTime>();
+            var body = arg["body"].As<string>();
+            return new (id, user, postedAt, body);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
