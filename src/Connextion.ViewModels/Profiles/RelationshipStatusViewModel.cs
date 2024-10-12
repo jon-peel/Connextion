@@ -2,7 +2,7 @@ using Connextion.OldD;
 
 namespace Connextion.ViewModels.Profiles;
 
-public class RelationshipStatusViewModel(ProfileService profileService, OldD.Profile profile, User user)
+public class RelationshipBodyViewModel(ProfileService profileService, OldD.Profile profile, User user)
 {
     public bool IsBusy { get; private set; } = false;
     public string Description { get; private set; } = CreateDescription(profile, user);

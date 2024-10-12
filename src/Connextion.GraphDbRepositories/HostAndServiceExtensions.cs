@@ -14,6 +14,7 @@ public static class HostAndServiceExtensions
             .AddScoped<IProfileRepository, ProfileRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPostRepositoryOld, PostRepositoryOld>()
+            .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IProfileRepositoryOld, ProfileRepositoryOld>()
             .AddScoped<ConfigureTheDatabase>();
 

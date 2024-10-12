@@ -1,0 +1,16 @@
+@if (ViewModel.IsVisible)
+{
+    <p rel="alert">
+        @ViewModel.Message
+    </p>
+}
+
+@code
+{
+    [Parameter] public required ResultMessageViewModel ViewModel { get; init; }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += (_, _) => InvokeAsync(StateHasChanged);
+    }
+}

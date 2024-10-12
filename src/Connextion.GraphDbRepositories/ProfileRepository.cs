@@ -32,7 +32,7 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
             ORDER BY post.postedAt DESC 
             RETURN post.id AS id,
                    post.postedAt AS postedAt,
-                   post.status AS status
+                   post.body AS body
             """;
         var session = driver.AsyncSession();
         var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
@@ -91,7 +91,7 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
     {
         var id = new PostId(record["id"].As<string>());
         var postedAt = record["postedAt"].As<DateTime>();
-        var body = new PostBody(record["status"].As<string>());
+        var body = new PostBody(record["body"].As<string>());
         return new(id, postedAt, body);
     }
 }

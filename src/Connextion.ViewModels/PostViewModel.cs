@@ -4,7 +4,7 @@ namespace Connextion.ViewModels;
 
 public class PostViewModel(PostOld postOld)
 {
-    public string Status { get; } = postOld.Status;
+    public string Body { get; } = postOld.Body;
     public string PostedBy { get; } = postOld.PostedBy.DisplayName;
 
     public string Time { get; } = CreateTime(postOld);

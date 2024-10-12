@@ -1,97 +1,34 @@
-using Connextion.OldD;
-using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public static class Mapping
+public class PostRepository(IDriver driver) : IPostRepository
 {
-    public static MiniProfile MiniProfile(IReadOnlyDictionary<string, object> userData)
+    public async Task<Result> CreatePostAsync(PostCreated cmd)
     {
-        var username = userData["username"].As<string>();
-        var displayName = userData["displayName"].As<string>();
-        var degrees = userData["degrees"].As<byte>();
-        return new (username, displayName, degrees);
-    }
-
-    public static PostOld Post(IReadOnlyDictionary<string, object> postData)
-    {
-        var id = Guid.Parse(postData["id"].As<string>());
-        var user = MiniProfile(postData["postedBy"].As<IReadOnlyDictionary<string, object>>());
-        var postedAt = postData["postedAt"].As<DateTime>();
-        var status = postData["status"].As<string>();
-        return new (id, user, postedAt, status);
-    }
-
-    public static OldD.Profile Profile(IReadOnlyDictionary<string, object> data)
-    {
-        var user = MiniProfile(data["user"].As<IReadOnlyDictionary<string, object>>());
-        var posts = data["posts"]
-            .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
-            .Select(Post)
-            .ToArray();
-        var following = data["following"]
-            .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
-            .Select(MiniProfile)
-            .ToArray();
-        var followers = data["followers"]
-            .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
-            .Select(MiniProfile)
-            .ToArray();
-        return new OldD.Profile(user, posts, following, followers);
-    }
-}
-
-public class PostRepositoryOld(ILogger<PostRepositoryOld> logger, IDriver driver) : IPostRepositoryOld
-
-{
-    public async Task SubmitStatusAsync(CreatePostCmd status)
-    {
-        logger.LogInformation("{User} wrote {Status}", status.Username, status.Status);
-        var parameters = new
+        const string query =
+            """
+            MATCH (profile:Profile { id: $profileId })
+            CREATE (post:Post { id: $postId, body: $body, postedAt: $postedAt })
+            CREATE (post)-[:POSTED_BY]->(profile)
+            """;
+        try
         {
-            username = status.Username,
-            id = Guid.NewGuid().ToString(),
-            status = status.Status,
-            postedAt = status.PostedAt
-        };
-        var (_, result) = await driver
-            .ExecutableQuery(
-                """
-                MATCH (u:User {username:$username})
-                CREATE (p:Post {id:$id, status:$status, postedAt:$postedAt})
-                CREATE (p)-[:POSTED_BY]->(u);
-                """)
-            .WithParameters(parameters)
-            .ExecuteAsync()
-            .ConfigureAwait(false);
-        Console.WriteLine(result.ToString());
-    }
-
-    public async Task<IReadOnlyList<PostOld>> GetTimelineStatusesAsync(User user)
-    {
-        var (result, _) = await driver
-            .ExecutableQuery(
-                """
-                MATCH (currentUser:User { username: $currentUser })
-                MATCH (postUser:User)
-                WITH currentUser,
-                     postUser, 
-                     CASE WHEN currentUser = postUser THEN 0
-                     ELSE length(shortestPath((postUser)-[*]-(currentUser)))
-                     END AS degrees
-                WHERE degrees <= 2
-                MATCH (post:Post)-[:POSTED_BY]->(postUser)
-                ORDER by post.postedAt DESC
-                RETURN post.id AS id,
-                       { username: postUser.username, displayName: postUser.displayName, degrees: degrees } AS postedBy,
-                       post.postedAt AS postedAt,
-                       post.status AS status
-                """)
-            .WithParameters(new { currentUser = user.Username })
-            .WithMap(Mapping.Post)
-            .ExecuteAsync()
-            .ConfigureAwait(false);
-        return result;
+            await driver
+                .ExecutableQuery(query)
+                .WithParameters(new
+                {
+                    profileId = cmd.CreatedBy.Value,
+                    postId = cmd.Id.Value.ToString(),
+                    body = cmd.Body.Value,
+                    postedAt = cmd.PostedAt
+                })
+                .ExecuteAsync().ConfigureAwait(false);
+            return Result.Ok();
+        }
+        catch (Exception e)
+        {
+            return Result.Error(e.Message);
+        }
     }
 }

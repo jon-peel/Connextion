@@ -43,7 +43,7 @@
     async Task UpdateProfileAsync()
     {
         if (CurrentUserName is null) return;
-        var profile = await ProfileRepository.GetProfileAsync(CurrentUserName).ConfigureAwait(false);
+        var profile = await ProfileRepository .GetProfileAsync(CurrentUserName).ConfigureAwait(false);
         AppState.UserProfile = profile;
     }
 

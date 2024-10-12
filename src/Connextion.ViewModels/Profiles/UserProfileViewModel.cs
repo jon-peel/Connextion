@@ -11,7 +11,7 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
     public IReadOnlyList<PostViewModel> LatestPosts { get; private set; } = [];
     public IReadOnlyList<UserProfileLinkViewModel> Following { get; private set; } = [];
     public IReadOnlyList<UserProfileLinkViewModel> Followers { get; private set; } = [];
-    public RelationshipStatusViewModel? RelationshipStatus { get; private set; }
+    public RelationshipBodyViewModel? RelationshipStatus { get; private set; }
 
     public async Task InitializeAsync(string profileUser, User user)
     {
@@ -19,7 +19,7 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
         IsBusy = true;
         _profileUser = profileUser;
         var profile = await profileRepositoryOld.GetProfileAsync(profileUser, user).ConfigureAwait(false);
-        RelationshipStatus = new RelationshipStatusViewModel(profileService, profile, user);
+        RelationshipStatus = new RelationshipBodyViewModel(profileService, profile, user);
         DisplayName = profile.User.DisplayName;
         LatestPosts = profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();
         Following = profile.Following.Select(u => new UserProfileLinkViewModel(u)).ToArray();

@@ -1,10 +1,12 @@
+using Connextion.OldD;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Connextion.OldD;
+namespace Connextion;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
-            .AddTransient<ProfileService>();
+            .AddTransient<ProfileService>()
+            .AddTransient<PostService>();
 }

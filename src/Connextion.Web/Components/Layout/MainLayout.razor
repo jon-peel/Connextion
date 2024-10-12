@@ -24,12 +24,17 @@
     protected override void OnInitialized()
     {
         _visible = AppState.CurrentUser is not null;
-        AppState.RegisterCallback(new(this, HandleAppSateChanged));
+        AppState.RegisterCallback(new(this, HandleAppSateChangedAsync));
     }
 
-    void HandleAppSateChanged()
+    async Task HandleAppSateChangedAsync()
     {
-        _visible = AppState.CurrentUser is not null;
-        InvokeAsync(StateHasChanged);
+        _visible = false;
+        if (AppState.CurrentUser is not null)
+        {
+            await Task.Delay(500).ConfigureAwait(false);
+            _visible = true;    
+        }
+        _ = InvokeAsync(StateHasChanged);
     }
 }

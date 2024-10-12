@@ -1,0 +1,41 @@
+@inject CreatePostViewModel ViewModel;
+
+@if (ViewModel.IsBusy)
+{
+    <BusyIndicator/>
+}
+
+@if (!ViewModel.IsBusy)
+{
+    <form @onsubmit="SubmitAsync">
+        <fieldset>
+            <label>
+                Post a status
+                <InputTextArea @bind-Value="ViewModel.Body"/>
+            </label>
+        </fieldset>
+        <button disabled="@(!ViewModel.CanPost)" type="submit">Post</button>
+    </form>
+}
+
+@if (ViewModel.ResultMessage is { } resultMessage)
+{
+    <ResultMessage ViewModel="resultMessage"/>
+}
+
+@code{
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override void OnInitialized()
+    {
+        if (AppState.UserProfile is { } user)
+            ViewModel.Initialize(user);
+    }
+
+    async Task SubmitAsync()
+    {
+        await ViewModel.SubmitAsync().ConfigureAwait(false);
+        // _ = InvokeAsync(StateHasChanged);
+    }
+
+}

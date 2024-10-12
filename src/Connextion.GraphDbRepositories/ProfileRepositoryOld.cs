@@ -20,7 +20,7 @@ public class ProfileRepositoryOld(ILogger<ProfileRepositoryOld> logger, IDriver 
                                       id: p.id,
                                       postedBy: { username: u.username, displayName: u.displayName },
                                       postedAt: p.postedAt, 
-                                      status: p.status 
+                                      body: p.body 
                                    }
                                    ORDER BY p.postedAt DESC
                                    LIMIT $nPosts

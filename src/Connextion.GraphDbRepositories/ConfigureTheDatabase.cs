@@ -52,10 +52,10 @@ internal class ConfigureTheDatabase(
             {
                 var postCmd = new CreatePostCmd(
                     Username: user.Username,
-                    Status: $"Status {i} from {user.DisplayName}",
+                    Body: $"Body {i} from {user.DisplayName}",
                     PostedAt: CreateRandomDate()
                 );
-                await old.SubmitStatusAsync(postCmd).ConfigureAwait(false);
+                await old.SubmitBodyAsync(postCmd).ConfigureAwait(false);
             }
         }
 
