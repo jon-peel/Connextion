@@ -13,7 +13,6 @@ public static class HostAndServiceExtensions
                 GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
             .AddScoped<IProfileRepository, ProfileRepository>()
             .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IPostRepositoryOld, PostRepositoryOld>()
             .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IProfileRepositoryOld, ProfileRepositoryOld>()
             .AddScoped<ConfigureTheDatabase>();

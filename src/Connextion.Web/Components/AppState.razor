@@ -5,7 +5,6 @@
 </CascadingValue>
 
 @code {
-    private User? _currentUser;
     private Connextion.Profile? _userProfile;
     readonly List<EventCallback<StatePropertyChangedArgs>> _callbacks = []; 
     
@@ -37,17 +36,6 @@
         }
     }
     
-    public User? CurrentUser
-    {
-        get => _currentUser;
-        set
-        {
-            _currentUser = value;
-            InvokeAsync(StateHasChanged);
-            NotifyPropertyChanged(new("CurrentUser", value));
-        }
-    }
-
     public record StatePropertyChangedArgs(string PropertyName, object? NewVale);
 
 }

@@ -10,7 +10,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (AppState.CurrentUser is {} user) 
+        if (AppState.UserProfile is {} user) 
             await ViewModel.InitializeAsync(user).ConfigureAwait(false);
     }
 

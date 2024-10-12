@@ -18,33 +18,27 @@
 @code {
     User[] _users = [];
 
-    string? CurrentUserName => AppState.CurrentUser?.Username;
+    string? CurrentUserName => AppState.UserProfile?.Id.Value;
 
     [CascadingParameter] public required AppState AppState { get; init; }
 
     User? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.Username));
 
-    async Task CurrentUserValueChanged(string value)
-    {
-        AppState.CurrentUser = null;
-        AppState.UserProfile = null;
-        await Task.Delay(100).ConfigureAwait(false);
-        AppState.CurrentUser = _users.FirstOrDefault(x => x.Username == value);
-        await UpdateProfileAsync().ConfigureAwait(false);
-    }
-
     protected override async Task OnInitializedAsync()
     {
         _users = await UserRepository.GetAllUsersAsync().ConfigureAwait(false);
-        AppState.CurrentUser = _users.FirstOrDefault();
-        await UpdateProfileAsync().ConfigureAwait(false);
+        await UpdateProfileAsync(_users.First().Username).ConfigureAwait(false);
     }
-
-    async Task UpdateProfileAsync()
+    
+    async Task CurrentUserValueChanged(string value)
     {
-        if (CurrentUserName is null) return;
-        var profile = await ProfileRepository .GetProfileAsync(CurrentUserName).ConfigureAwait(false);
-        AppState.UserProfile = profile;
+        AppState.UserProfile = null;
+        // await Task.Delay(100).ConfigureAwait(false);
+        await UpdateProfileAsync(value).ConfigureAwait(false);
     }
 
+    async Task UpdateProfileAsync(string id)
+    {
+        AppState.UserProfile = await ProfileRepository.GetProfileAsync(id).ConfigureAwait(false);
+    }
 }

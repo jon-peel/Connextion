@@ -6,8 +6,9 @@ namespace Connextion.GraphDbRepositories;
 internal class ConfigureTheDatabase(
     IDriver driver,
     IUserRepository userRepository,
-    IProfileRepositoryOld profileRepositoryOld,
-    IPostRepositoryOld old)
+    IProfileRepositoryOld profileRepositoryOld
+    // IPostRepository postRepository
+    )
 {
     public async Task RunAsync()
     {
@@ -44,31 +45,33 @@ internal class ConfigureTheDatabase(
 
     async Task CreatePostsAsync(IReadOnlyList<CreateUserCmd> users)
     {
-        var random = new Random();
-        foreach (var user in users)
-        {
-            var numPosts = random.Next(1, 23);
-            for (var i = 0; i < numPosts; i++)
-            {
-                var postCmd = new CreatePostCmd(
-                    Username: user.Username,
-                    Body: $"Body {i} from {user.DisplayName}",
-                    PostedAt: CreateRandomDate()
-                );
-                await old.SubmitBodyAsync(postCmd).ConfigureAwait(false);
-            }
-        }
+        await Task.CompletedTask;
+        // TODO: Implement
+        // var random = new Random();
+        // foreach (var user in users)
+        // {
+        //     var numPosts = random.Next(1, 23);
+        //     for (var i = 0; i < numPosts; i++)
+        //     {
+        //         var postCmd = new CreatePostCmd(
+        //             Username: user.Username,
+        //             Body: $"Body {i} from {user.DisplayName}",
+        //             PostedAt: CreateRandomDate()
+        //         );
+        //         await old.SubmitBodyAsync(postCmd).ConfigureAwait(false);
+        //     }
+        // }
 
         return;
 
-        DateTime CreateRandomDate()
-        {
-            var month = random.Next(1, 9);
-            var day = random.Next(1, 28);
-            var hour = random.Next(0, 23);
-            var minute = random.Next(0, 59);
-            return new(2024, month, day, hour, minute, 05);
-        }
+        // DateTime CreateRandomDate()
+        // {
+        //     var month = random.Next(1, 9);
+        //     var day = random.Next(1, 28);
+        //     var hour = random.Next(0, 23);
+        //     var minute = random.Next(0, 59);
+        //     return new(2024, month, day, hour, minute, 05);
+        // }
     }
 
     async Task FollowUsersAsync(IReadOnlyList<CreateUserCmd> users)

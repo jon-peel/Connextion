@@ -1,7 +1,7 @@
 namespace Connextion.OldD;
 
 
-public abstract class User(string username, string displayName)
+public class User(string username, string displayName)
 {
     public string Username { get; } = username;
     public string DisplayName { get; } = displayName;

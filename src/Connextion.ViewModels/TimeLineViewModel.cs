@@ -1,21 +1,22 @@
-using Connextion.OldD;
-
 namespace Connextion.ViewModels;
 
-public class TimeLineViewModel(IPostRepositoryOld old)
+public class TimeLineViewModel(IPostRepository postRepository)
 {
+    IAsyncEnumerable<PostViewModel>? _allPosts;
+
     public IReadOnlyList<PostViewModel> Posts { get; private set; } = [];
 
-    public async Task InitializeAsync(User user)
+    public async Task InitializeAsync(Profile currentUser)
     {
-        Posts = await GetPostsAsync(user).ConfigureAwait(false);
+        await InitializePostsAsync(currentUser).ConfigureAwait(false);
     }
 
-    async Task<IReadOnlyList<PostViewModel>> GetPostsAsync(User user)
+    async Task InitializePostsAsync(Profile currentUser)
     {
-        // if (user is null) return Array.Empty<PostViewModel>();
-        var postResults = await old.GetTimelineBodyesAsync(user).ConfigureAwait(false);
-        var posts = postResults.Select(post => new PostViewModel(post)).ToArray();
-        return posts;
+        _allPosts = 
+            postRepository
+                .GetTimeLineAsync(currentUser.Id)
+                .Select(post => new PostViewModel(post));
+        Posts = await _allPosts.Take(50).ToArrayAsync().ConfigureAwait(false);
     }
 }

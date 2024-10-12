@@ -21,7 +21,7 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
         var profile = await profileRepositoryOld.GetProfileAsync(profileUser, user).ConfigureAwait(false);
         RelationshipStatus = new RelationshipBodyViewModel(profileService, profile, user);
         DisplayName = profile.User.DisplayName;
-        LatestPosts = profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();
+        // LatestPosts = null!; // profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();
         Following = profile.Following.Select(u => new UserProfileLinkViewModel(u)).ToArray();
         Followers = profile.Followers.Select(u => new UserProfileLinkViewModel(u)).ToArray();
         IsBusy = false;

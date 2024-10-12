@@ -10,8 +10,3 @@ public class PostOld(Guid id, MiniProfile postedBy, DateTime postedAt, string bo
 
 public record CreatePostCmd(string Username, string Body, DateTime PostedAt);
 
-public interface IPostRepositoryOld
-{
-    Task SubmitBodyAsync(CreatePostCmd body);
-    Task<IReadOnlyList<PostOld>> GetTimelineBodyesAsync(User user);
-}

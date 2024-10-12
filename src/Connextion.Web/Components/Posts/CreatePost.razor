@@ -7,7 +7,7 @@
 
 @if (!ViewModel.IsBusy)
 {
-    <form @onsubmit="SubmitAsync">
+    <form @onsubmit="ViewModel.SubmitAsync">
         <fieldset>
             <label>
                 Post a status
@@ -31,11 +31,4 @@
         if (AppState.UserProfile is { } user)
             ViewModel.Initialize(user);
     }
-
-    async Task SubmitAsync()
-    {
-        await ViewModel.SubmitAsync().ConfigureAwait(false);
-        // _ = InvokeAsync(StateHasChanged);
-    }
-
 }
