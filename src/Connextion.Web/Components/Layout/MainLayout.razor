@@ -23,14 +23,14 @@
 
     protected override void OnInitialized()
     {
-        _visible = AppState.UserProfile  is not null;
+        _visible = AppState.CurrentUser  is not null;
         AppState.RegisterCallback(new(this, HandleAppSateChangedAsync));
     }
 
     async Task HandleAppSateChangedAsync()
     {
         _visible = false;
-        if (AppState.UserProfile is not null)
+        if (AppState.CurrentUser is not null)
         {
             await Task.Delay(500).ConfigureAwait(false);
             _visible = true;    

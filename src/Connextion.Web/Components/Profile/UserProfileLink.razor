@@ -4,5 +4,11 @@
 </NavLink>
 
 @code {
-    [Parameter] public required UserProfileLinkViewModel ViewModel { get; init; }
+    [Parameter] public required ProfileLinkViewModel ViewModel { get; init; }
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override Task OnInitializedAsync() => 
+        AppState.CurrentUser is {} user 
+            ? ViewModel.InitializeAsync(user) 
+            : Task.CompletedTask;
 }

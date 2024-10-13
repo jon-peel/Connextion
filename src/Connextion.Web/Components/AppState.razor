@@ -1,11 +1,9 @@
-@using System.ComponentModel
-@using Connextion.OldD
 <CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 
 @code {
-    private Connextion.Profile? _userProfile;
+    private User? _currentUser;
     readonly List<EventCallback<StatePropertyChangedArgs>> _callbacks = []; 
     
     [Parameter] public required RenderFragment ChildContent { get; init; }
@@ -25,12 +23,12 @@
             catch (Exception) { }
     }
 
-    public Connextion.Profile? UserProfile
+    public User? CurrentUser
     {
-        get => _userProfile;
+        get => _currentUser;
         set
         {
-            _userProfile = value;
+            _currentUser = value;
             InvokeAsync(StateHasChanged);
             NotifyPropertyChanged(new("UserProfile", value));
         }

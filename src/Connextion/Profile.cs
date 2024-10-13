@@ -41,24 +41,20 @@ public interface IProfileRepository
     Task<Result> FollowAsync(FollowCmd cmd);
 }
 
-public class Profile
+public class Profile : ProfileSummary
 {
     public Profile(ProfileId id,
         DisplayName displayName,
         IAsyncEnumerable<Post> posts,
         IAsyncEnumerable<ProfileSummary> following,
         IAsyncEnumerable<ProfileSummary> followers)
+    : base(id, displayName, _ => Task.FromResult<byte>(0))
     {
-        Id = id;
-        DisplayName = displayName;
         Posts = posts;
         Following = following;
         Followers = followers;
-    }
-
-    public ProfileId Id { get; }
-    public DisplayName DisplayName { get; }
+    } 
     public IAsyncEnumerable<Post> Posts { get; }
-    protected IAsyncEnumerable<ProfileSummary> Following { get; }
-    protected IAsyncEnumerable<ProfileSummary> Followers { get; }
+    public IAsyncEnumerable<ProfileSummary> Following { get; }
+    public IAsyncEnumerable<ProfileSummary> Followers { get; }
 }

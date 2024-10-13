@@ -2,10 +2,13 @@ namespace Connextion.ViewModels;
 
 public class PostViewModel(TimeLinePostDto post)
 {
+    public PostViewModel(Post post, User currentUser) 
+        : this(new(post.Id.Value, currentUser, post.PostedAt, post.Body.Value)) {}
+    
     public string Body { get; } = post.Body;
-    public string PostedBy { get; } = post.PostedBy.DisplayName;
+    public string PostedBy { get; } = post.PostedBy.DisplayName.Value;
     public string Time { get; } = CreateTime(post);
-    public string AuthorProfileUrl { get; } =  $"/profile/{post.PostedBy.Username}";
+    public string AuthorProfileUrl { get; } =  $"/profile/{post.PostedBy.Id.Value}";
     
     static string CreateTime(TimeLinePostDto post) => post.PostedAt switch
     {

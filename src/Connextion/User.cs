@@ -6,11 +6,12 @@ public interface IUserRepository
 {
     IAsyncEnumerable<ProfileSummary> GetAllUsersAsync();
     Task<Result> CreateUserAsync(CreateUserCmd cmd);
+    Task<User> GetUserAsync(string id);
 }
 
 public class User : Profile
 {
-    internal User(ProfileId username, 
+    public User(ProfileId username, 
         DisplayName displayName, 
         IAsyncEnumerable<Post> posts, 
         IAsyncEnumerable<ProfileSummary> following, 
@@ -35,7 +36,7 @@ public class User : Profile
         return canFollow.Map(() => new FollowCmd(Id.Value, toFollow.Id.Value));
     }
 
-    async Task<Result> CanFollowAsync(Profile toFollow)
+    public async Task<Result> CanFollowAsync(Profile toFollow)
     {
         if (toFollow.Id.Value == Id.Value) return Result.Error("can't follow yourself");
         var alreadyFollows = await Following.AnyAsync(x => x.Id == toFollow.Id);

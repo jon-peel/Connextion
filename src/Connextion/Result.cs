@@ -83,3 +83,24 @@ public class Result<T> {
         return _success ? _value! : transformError(_errorValue!);
     }
 }
+
+public static class ResultExtensions
+{
+    public static async Task<Result<TOut>> MapAsync<TOut>(this Task<Result> resultTask, Func<TOut> transform)
+    {
+        var result = await resultTask.ConfigureAwait(false);
+        return result.Map(transform);
+    }
+    
+    public static async Task<Result<TOut>> MapAsync<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, TOut> transform)
+    {
+        var result = await resultTask.ConfigureAwait(false);
+        return result.Map(transform);
+    }
+    
+    public static async Task<T> DefaultAsync<T>(this Task<Result<T>> resultTask, Func<string, T> transformError)
+    {
+        var result = await resultTask.ConfigureAwait(false);
+        return result.Default(transformError);
+    }
+}

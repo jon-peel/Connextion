@@ -1,19 +1,19 @@
-using Connextion.OldD;
+
 
 namespace Connextion.ViewModels.Profiles;
 
-public class UserProfileViewModel(ProfileService profileService, IProfileRepository profileRepository)
+public class ProfileViewModel(ProfileService profileService, IProfileRepository profileRepository)
 {
     string _profileUser = "";
 
     public bool IsBusy { get; private set; } = true;
     public string DisplayName { get; private set; } = "";
     public IReadOnlyList<PostViewModel> LatestPosts { get; private set; } = [];
-    public IReadOnlyList<UserProfileLinkViewModel> Following { get; private set; } = [];
-    public IReadOnlyList<UserProfileLinkViewModel> Followers { get; private set; } = [];
+    public IReadOnlyList<ProfileLinkViewModel> Following { get; private set; } = [];
+    public IReadOnlyList<ProfileLinkViewModel> Followers { get; private set; } = [];
     public RelationshipStatusViewModel? RelationshipStatus { get; private set; }
 
-    public async Task InitializeAsync(string profileUser, Profile currentUser)
+    public async Task InitializeAsync(string profileUser, User currentUser)
     {
         if (_profileUser == profileUser) return;
         IsBusy = true;
@@ -24,10 +24,10 @@ public class UserProfileViewModel(ProfileService profileService, IProfileReposit
         RelationshipStatus = new RelationshipStatusViewModel(profileService, currentUser, profile);
         DisplayName = profile.DisplayName.Value;
         
-        //TODO Fill this out
-        // LatestPosts = null!; // profile.LatestPosts.Select(post => new PostViewModel(post)).ToArray();
-        //Following = profile.Following.Select(u => new UserProfileLinkViewModel(u)).ToArray();
-        //Followers = profile.Followers.Select(u => new UserProfileLinkViewModel(u)).ToArray();
+        LatestPosts = await profile.Posts.Take(10).Select(post => new PostViewModel(post, currentUser)).ToArrayAsync().ConfigureAwait(false);
+        Following = await profile.Following.Select(u => new ProfileLinkViewModel(u)).ToArrayAsync().ConfigureAwait(false);
+        Followers = await profile.Followers.Select(u => new ProfileLinkViewModel(u)).ToArrayAsync().ConfigureAwait(false);
+        
         IsBusy = false;
     }
 }

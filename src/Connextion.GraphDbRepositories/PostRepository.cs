@@ -2,7 +2,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class PostRepository(IDriver driver, ProfileRepository profileRepository) : RepositoryBase(driver), IPostRepository
+public class PostRepository(IDriver driver, UserRepository userRepository) : RepositoryBase(driver), IPostRepository
 {
     // readonly IDriver _driver = driver;
 
@@ -42,7 +42,7 @@ public class PostRepository(IDriver driver, ProfileRepository profileRepository)
     TimeLinePostDto MapTimeLinePost(IRecord arg)
     {
         var id = Guid.Parse(arg["id"].As<string>());
-        var postedBy = profileRepository.MapProfileSummary(arg["postedBy"].As<IReadOnlyDictionary<string, object>>());
+        var postedBy = userRepository.MapProfileSummary(arg["postedBy"].As<IReadOnlyDictionary<string, object>>());
         var postedAt = arg["postedAt"].As<DateTime>();
         var body = arg["body"].As<string>();
         return new(id, postedBy, postedAt, body);

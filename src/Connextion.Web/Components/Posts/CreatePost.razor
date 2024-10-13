@@ -28,7 +28,7 @@
 
     protected override void OnInitialized()
     {
-        if (AppState.UserProfile is { } user)
+        if (AppState.CurrentUser is { } user)
             ViewModel.Initialize(user);
     }
 }

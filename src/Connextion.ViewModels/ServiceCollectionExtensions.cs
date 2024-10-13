@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddTransient<TimeLineViewModel>()
-            .AddTransient<UserProfileViewModel>()
+            .AddTransient<ProfileViewModel>()
             .AddTransient<CreatePostViewModel>();
     }
 }

@@ -1,8 +1,6 @@
-using Connextion.OldD;
-
 namespace Connextion.ViewModels.Profiles;
 
-public class RelationshipStatusViewModel(ProfileService profileService, Profile currentUser, Profile profile)
+public class RelationshipStatusViewModel(ProfileService profileService, User currentUser, Profile profile)
 {
     public bool IsBusy { get; private set; } = false;
     public string Description { get; private set; } = CreateDescription(currentUser, profile);
@@ -11,7 +9,10 @@ public class RelationshipStatusViewModel(ProfileService profileService, Profile 
 
     public async Task InitializeAsync()
     {
-        CanFollow = await currentUser.CanFollowAsync(profile).ConfigureAwait(false);
+        CanFollow = await currentUser
+            .CanFollowAsync(profile)
+            .MapAsync(() => true)
+            .DefaultAsync(_ => false).ConfigureAwait(false);
     }
     
     

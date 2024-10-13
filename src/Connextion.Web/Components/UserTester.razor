@@ -1,6 +1,4 @@
-@using Connextion.OldD
 @inject IUserRepository UserRepository;
-@inject IProfileRepository ProfileRepository;
 
 @if (_users.Any())
 {
@@ -9,36 +7,36 @@
         ValueChanged="(string value) => CurrentUserValueChanged(value)">
         @foreach (var user in _users)
         {
-            <option value="@user.Username">@user.DisplayName</option>
+            <option value="@user.Id.Value">@user.DisplayName.Value</option>
         }
     </InputSelect>
     <hr/>
 }
 
 @code {
-    User[] _users = [];
+    ProfileSummary[] _users = [];
 
-    string? CurrentUserName => AppState.UserProfile?.Id.Value;
+    string? CurrentUserName => AppState.CurrentUser?.Id.Value;
 
     [CascadingParameter] public required AppState AppState { get; init; }
 
-    User? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.Username));
+    ProfileSummary? Get(string username) => _users.FirstOrDefault(x => username.Equals(x.Id.Value));
 
     protected override async Task OnInitializedAsync()
     {
-        _users = await UserRepository.GetAllUsersAsync().ConfigureAwait(false);
-        await UpdateProfileAsync(_users.First().Username).ConfigureAwait(false);
+        _users  = await UserRepository.GetAllUsersAsync().ToArrayAsync().ConfigureAwait(false);
+        await UpdateProfileAsync(_users.First().Id.Value).ConfigureAwait(false);
     }
     
     async Task CurrentUserValueChanged(string value)
     {
-        AppState.UserProfile = null;
+        AppState.CurrentUser = null;
         // await Task.Delay(100).ConfigureAwait(false);
         await UpdateProfileAsync(value).ConfigureAwait(false);
     }
 
     async Task UpdateProfileAsync(string id)
     {
-        AppState.UserProfile = await ProfileRepository.GetProfileAsync(id).ConfigureAwait(false);
+        AppState.CurrentUser = await UserRepository.GetUserAsync(id).ConfigureAwait(false);
     }
 }

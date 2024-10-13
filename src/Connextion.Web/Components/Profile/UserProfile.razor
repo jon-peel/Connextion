@@ -1,6 +1,6 @@
 @page "/Profile/{username}"
 @using Post = Connextion.Web.Components.Posts.Post
-@inject UserProfileViewModel ViewModel;
+@inject ProfileViewModel ViewModel;
 
 <main>
     @if (ViewModel.IsBusy)
@@ -53,7 +53,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (AppState.UserProfile is { } profile)
+        if (AppState.CurrentUser is { } profile)
             await ViewModel.InitializeAsync(Username, profile).ConfigureAwait(false);
     }
 
