@@ -1,5 +1,3 @@
-using Connextion.OldD;
-
 namespace Connextion;
 
 public record TimeLinePostDto(Guid Id, User PostedBy, DateTime PostedAt, string Body);
@@ -12,7 +10,7 @@ public interface IPostRepository
 
 public class PostService(IPostRepository postRepository)
 {
-    public Task<Result> PostAsync(Profile currentUser, string body)
+    public Task<Result> PostAsync(User currentUser, string body)
     {
         var created = currentUser.CreatePost(body);
         return created.BindAsync(postRepository.CreatePostAsync);

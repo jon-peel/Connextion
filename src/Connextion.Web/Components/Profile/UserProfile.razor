@@ -1,10 +1,12 @@
 @page "/Profile/{username}"
-@using Connextion.OldD
 @using Post = Connextion.Web.Components.Posts.Post
 @inject UserProfileViewModel ViewModel;
 
 <main>
-    @if(ViewModel.IsBusy) { <BusyIndicator /> }
+    @if (ViewModel.IsBusy)
+    {
+        <BusyIndicator/>
+    }
     @if (!ViewModel.IsBusy)
     {
         <h2>@ViewModel.DisplayName</h2>
@@ -47,7 +49,12 @@
 
 @code {
     [Parameter] public required string Username { get; init; }
-    [CascadingParameter(Name = "CurrentUser")] public required User User { get; init; }
+    [CascadingParameter] public required AppState AppState { get; init; }
 
-    protected override Task OnParametersSetAsync() => ViewModel.InitializeAsync(Username, User);
+    protected override async Task OnParametersSetAsync()
+    {
+        if (AppState.UserProfile is { } profile)
+            await ViewModel.InitializeAsync(Username, profile).ConfigureAwait(false);
+    }
+
 }

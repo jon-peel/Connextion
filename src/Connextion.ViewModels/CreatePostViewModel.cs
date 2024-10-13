@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Connextion.OldD;
 
 namespace Connextion.ViewModels;
 
@@ -37,7 +36,7 @@ public class ResultMessageViewModel : INotifyPropertyChanged
 
     void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new (propertyName));
     }
 
     void SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

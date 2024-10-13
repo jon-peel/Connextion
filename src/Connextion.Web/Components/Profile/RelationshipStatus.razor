@@ -16,5 +16,7 @@
 
 
 @code {
-    [Parameter] public required RelationshipBodyViewModel ViewModel { get; init; }
+    [Parameter] public required RelationshipStatusViewModel ViewModel { get; init; }
+
+    protected override Task OnInitializedAsync() => ViewModel.InitializeAsync();
 }

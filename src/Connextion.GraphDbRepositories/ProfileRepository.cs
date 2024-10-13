@@ -23,6 +23,29 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         return profile;
     }
 
+    public async  Task<Result> FollowAsync(Followed cmd)
+    {
+        const string query =
+            """
+            MATCH (currentUser:User {username: $currentUser})
+            MATCH (toFollow:User {username: $toFollow})
+            CREATE (currentUser)-[:FOLLOWS]->(toFollow)
+            """;
+        try
+        {
+            _ = await driver
+                .ExecutableQuery(query)
+                .WithParameters(new { currentUser = cmd.CurrentUser, toFollow = cmd.IsFollowing })
+                .ExecuteAsync()
+                .ConfigureAwait(false);
+            return Result.Ok();
+        }
+        catch (Exception e)
+        {
+            return Result.Error(e.Message);
+        }
+    }
+
     async IAsyncEnumerable<Post> GetPostsAsync(string id)
     {
         const string query =
@@ -43,7 +66,7 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         }
     }
 
-    async IAsyncEnumerable<MiniProfile> GetFollowingAsync(string id)
+    async IAsyncEnumerable<ProfileSummary> GetFollowingAsync(string id)
     {
         const string query =
             """
@@ -60,7 +83,7 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         }
     }
 
-    async IAsyncEnumerable<MiniProfile> GetFollowersAsync(string id)
+    async IAsyncEnumerable<ProfileSummary> GetFollowersAsync(string id)
     {
         const string query =
             """

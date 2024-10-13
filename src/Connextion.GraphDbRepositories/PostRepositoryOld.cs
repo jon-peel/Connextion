@@ -6,7 +6,7 @@ namespace Connextion.GraphDbRepositories;
 
 public static class Mapping
 {
-    public static MiniProfile MiniProfile(IReadOnlyDictionary<string, object> userData)
+    public static ProfileSummary MiniProfile(IReadOnlyDictionary<string, object> userData)
     {
         var username = userData["username"].As<string>();
         var displayName = userData["displayName"].As<string>();
