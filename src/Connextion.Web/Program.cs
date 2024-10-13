@@ -2,7 +2,6 @@ using Connextion;
 using Connextion.GraphDbRepositories;
 using Connextion.Web.Components;
 using Connextion.ViewModels;
-using Connextion.Web.Components.Posts;
 
 var builder = WebApplication
     .CreateBuilder(args);

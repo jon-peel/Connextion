@@ -2,7 +2,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class PostRepository(IDriver driver, UserRepository userRepository) : RepositoryBase(driver), IPostRepository
+class PostRepository(IDriver driver, UserRepository userRepository) : RepositoryBase(driver), IPostRepository
 {
     // readonly IDriver _driver = driver;
 
@@ -28,8 +28,8 @@ public class PostRepository(IDriver driver, UserRepository userRepository) : Rep
     {
         const string query =
             """
-            MATCH (currentUser: Profile { id: $id })
-            MATCH (currentUser)-[:FOLLOWS]->(postedBy:Profile)<-[:POSTED_BY]-(post:Post)
+            MATCH (post:Post)-[:POSTED_BY]->(postedBy:Profile)<-[:FOLLOWS]-(currentUser:User)
+            WHERE currentUser.id = $id
             ORDER by post.postedAt DESC
             RETURN post.id AS id,
                    { id: postedBy.id, displayName: postedBy.displayName } AS postedBy,

@@ -2,7 +2,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
+class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
 {
     public IAsyncEnumerable<ProfileSummary> GetAllUsersAsync()
     {
@@ -58,7 +58,7 @@ public class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepos
         const string query =
             """
             MATCH (from: Profile { id: $id })
-            MATCH (to: Profile { id: $id })
+            MATCH (to: Profile { id: $to })
             RETURN length(shortestPath((from)-[*]-(to))) AS degrees
             """;
         var results = await ExecuteQueryAsync(query, new { id, to }, x => x["degrees"].As<byte>())
@@ -92,7 +92,7 @@ public class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepos
     {
         const string query =
             """
-            MATCH (p:Profile { id: $id })-[:FOLLOWS]->(Profile)
+            MATCH (Profile { id: $id })-[:FOLLOWS]->(p:Profile)
             RETURN p.id as id,
                    p.displayName as displayName
             """;
@@ -103,7 +103,7 @@ public class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepos
     {
         const string query =
             """
-            MATCH (p:Profile { id: $id })<-[:FOLLOWS]-(Profile)
+            MATCH (Profile { id: $id })<-[:FOLLOWS]-(p:Profile)
             RETURN p.id as id,
                    p.displayName as displayName
             """;

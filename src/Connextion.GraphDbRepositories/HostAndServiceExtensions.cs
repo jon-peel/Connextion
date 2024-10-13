@@ -11,6 +11,7 @@ public static class HostAndServiceExtensions
             .AddSingleton<IDriver>(_ =>
                 GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
             .AddScoped<IProfileRepository, ProfileRepository>()
+            .AddScoped<UserRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<ConfigureTheDatabase>();

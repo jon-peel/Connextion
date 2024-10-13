@@ -2,7 +2,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class ProfileRepository(IDriver driver, IUserRepository userRepository) : RepositoryBase(driver), IProfileRepository
+class ProfileRepository(IDriver driver, IUserRepository userRepository) : RepositoryBase(driver), IProfileRepository
 {
     public async Task<Profile> GetProfileAsync(string id)
     {
@@ -21,14 +21,4 @@ public class ProfileRepository(IDriver driver, IUserRepository userRepository) :
         var parameters = new { currentUser = cmd.CurrentUser, toFollow = cmd.IsFollowing };
         return ExecuteWriteAsync(query, parameters);
     }
-
-  
-
-   
-
-  
-
-
-
-
 }

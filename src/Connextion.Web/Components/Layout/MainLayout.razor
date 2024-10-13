@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
 <UserTester/>
-@if (_visible)
+@if (_visible && AppState.CurrentUser is not null)
 {
     <h1>conNEXTion</h1>
     <nav>
         <NavLink href="/">Home</NavLink>
-        @* <NavLink href=@($"/profile/{User.username}")>Profile</NavLink> *@
+        <NavLink href=@($"/profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink> 
     </nav>
     @Body
 }

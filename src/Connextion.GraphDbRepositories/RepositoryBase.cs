@@ -2,7 +2,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public abstract class RepositoryBase(IDriver driver)
+abstract class RepositoryBase(IDriver driver)
 {
     protected async Task<IReadOnlyList<TOut>> ExecuteQueryAsync<TOut>(string query, object parameters, Func<IRecord, TOut> map)
     {

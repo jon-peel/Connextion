@@ -13,13 +13,4 @@
         if (AppState.CurrentUser is {} user) 
             await ViewModel.InitializeAsync(user).ConfigureAwait(false);
     }
-
-    // public override async Task SetParametersAsync(ParameterView parameters)
-    // {
-    //     if (User is null) return;
-    //     await ViewModel.InitializeAsync(User).ConfigureAwait(false);
-    // }
-    
-    
-
 }
