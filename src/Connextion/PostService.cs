@@ -1,6 +1,6 @@
 namespace Connextion;
 
-public record TimeLinePostDto(Guid Id, User PostedBy, DateTime PostedAt, string Body);
+public record TimeLinePostDto(Guid Id, ProfileSummary PostedBy, DateTime PostedAt, string Body);
 
 public interface IPostRepository
 {

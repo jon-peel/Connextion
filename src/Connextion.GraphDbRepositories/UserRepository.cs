@@ -1,26 +1,25 @@
-using Connextion.OldD;
-using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class UserRepository(ILogger<UserRepository> logger, IDriver driver) : IUserRepository
+public class UserRepository(IDriver driver, ProfileRepository profileRepository) : RepositoryBase(driver), IUserRepository
 {
-    public async Task<User[]> GetAllUsersAsync()
+    public IAsyncEnumerable<ProfileSummary> GetAllUsersAsync()
     {
-        var (queryResults, _) = await driver
-            .ExecutableQuery("MATCH (user:User) RETURN user.username AS username, user.displayName AS displayName, 0 AS degrees")
-            .WithMap(Mapping.MiniProfile)
-            .ExecuteAsync();
-        return queryResults.ToArray();
+        const string query = 
+            """
+            MATCH (user:User:Profile) 
+            RETURN user.id AS id, 
+                   user.displayName AS displayName
+            """;
+        return ExecuteReaderQueryAsync(query, new { }, profileRepository.MapProfileSummary);
     }
 
-    public Task CreateUserAsync(CreateUserCmd cmd)
+    public Task<Result> CreateUserAsync(CreateUserCmd cmd)
     {
-        logger.LogInformation("Creating user profile {FullDisplayName} with username {Username}", cmd.DisplayName, cmd.Username);
-        return driver
-            .ExecutableQuery(@"CREATE (u:User:Profile { id: $username, username: $username, displayName: $displayName })")
-            .WithParameters(new { username = cmd.Username, displayName = cmd.DisplayName })
-            .ExecuteAsync();
+        const string query =
+            "CREATE (u:User:Profile { id: $username, username: $username, displayName: $displayName })";
+        var parameters = new { username = cmd.Username, displayName = cmd.DisplayName };
+        return ExecuteWriteAsync(query, parameters);
     }
 }

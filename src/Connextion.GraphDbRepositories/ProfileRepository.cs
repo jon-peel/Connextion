@@ -1,9 +1,8 @@
-using Connextion.OldD;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class ProfileRepository(IDriver driver) : IProfileRepository
+public class ProfileRepository(IDriver driver) : RepositoryBase(driver), IProfileRepository
 {
     public async Task<Profile> GetProfileAsync(string id)
     {
@@ -13,17 +12,11 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
             RETURN profile.id AS id,
                    profile.displayName as displayName
             """;
-        var (profiles, _) = await driver
-            .ExecutableQuery(query)
-            .WithParameters(new { id })
-            .WithMap(MapProfile)
-            .ExecuteAsync()
-            .ConfigureAwait(false);
-        var profile = profiles.Single();
-        return profile;
+        var profiles = await ExecuteQueryAsync(query, new { id }, MapProfile).ConfigureAwait(false);
+        return profiles.Single();
     }
 
-    public async  Task<Result> FollowAsync(Followed cmd)
+    public Task<Result> FollowAsync(FollowCmd cmd)
     {
         const string query =
             """
@@ -31,22 +24,11 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
             MATCH (toFollow:User {username: $toFollow})
             CREATE (currentUser)-[:FOLLOWS]->(toFollow)
             """;
-        try
-        {
-            _ = await driver
-                .ExecutableQuery(query)
-                .WithParameters(new { currentUser = cmd.CurrentUser, toFollow = cmd.IsFollowing })
-                .ExecuteAsync()
-                .ConfigureAwait(false);
-            return Result.Ok();
-        }
-        catch (Exception e)
-        {
-            return Result.Error(e.Message);
-        }
+        var parameters = new { currentUser = cmd.CurrentUser, toFollow = cmd.IsFollowing };
+        return ExecuteWriteAsync(query, parameters);
     }
 
-    async IAsyncEnumerable<Post> GetPostsAsync(string id)
+    IAsyncEnumerable<Post> GetPostsAsync(string id)
     {
         const string query =
             """
@@ -57,16 +39,10 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
                    post.postedAt AS postedAt,
                    post.body AS body
             """;
-        var session = driver.AsyncSession();
-        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
-        while (await reader.FetchAsync())
-        {
-            var post = MapPost(reader.Current);
-            yield return post;
-        }
+        return ExecuteReaderQueryAsync(query, new { id }, MapPost);
     }
 
-    async IAsyncEnumerable<ProfileSummary> GetFollowingAsync(string id)
+    IAsyncEnumerable<ProfileSummary> GetFollowingAsync(string id)
     {
         const string query =
             """
@@ -74,16 +50,10 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
             RETURN p.id as id,
                    p.displayName as displayName
             """;
-        var session = driver.AsyncSession();
-        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
-        while (await reader.FetchAsync())
-        {
-            var p = Mapping.MiniProfile(reader.Current);
-            yield return p;
-        }
+        return ExecuteReaderQueryAsync(query, new { id }, MapProfileSummary);
     }
 
-    async IAsyncEnumerable<ProfileSummary> GetFollowersAsync(string id)
+    IAsyncEnumerable<ProfileSummary> GetFollowersAsync(string id)
     {
         const string query =
             """
@@ -91,13 +61,28 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
             RETURN p.id as id,
                    p.displayName as displayName
             """;
-        var session = driver.AsyncSession();
-        var reader = await session.RunAsync(query, new { id }).ConfigureAwait(false);
-        while (await reader.FetchAsync())
-        {
-            var p = Mapping.MiniProfile(reader.Current);
-            yield return p;
-        }
+        return ExecuteReaderQueryAsync(query, new { id }, MapProfileSummary);
+    }
+
+    internal ProfileSummary MapProfileSummary(IReadOnlyDictionary<string, object> record)
+    {
+        var id = record["id"].As<string>();
+        var displayName = record["displayName"].As<string>();
+        return new(new(id), new(displayName), to => GetDegreesFromAsync(id, to.Value));
+    }
+
+    async Task<byte> GetDegreesFromAsync(string id, string to)
+    {
+        if (id == to) return 0;
+        const string query =
+            """
+            MATCH (from: Profile { id: $id })
+            MATCH (to: Profile { id: $id })
+            RETURN length(shortestPath((from)-[*]-(to))) AS degrees
+            """;
+        var results = await ExecuteQueryAsync(query, new { id, to }, x => x["degrees"].As<byte>())
+            .ConfigureAwait(false);
+        return results.Single();
     }
 
     Profile MapProfile(IRecord record)
@@ -107,10 +92,10 @@ public class ProfileRepository(IDriver driver) : IProfileRepository
         var posts = GetPostsAsync(id.Value);
         var following = GetFollowingAsync(id.Value);
         var followers = GetFollowersAsync(id.Value);
-        return new Profile(id, displayName, posts, following, followers);
+        return new(id, displayName, posts, following, followers);
     }
 
-    Post MapPost(IRecord record)
+    static Post MapPost(IRecord record)
     {
         var id = new PostId(record["id"].As<string>());
         var postedAt = record["postedAt"].As<DateTime>();

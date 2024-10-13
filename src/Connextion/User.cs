@@ -1,13 +1,23 @@
 namespace Connextion;
 
+public record CreateUserCmd(string Username, string DisplayName);
+
+public interface IUserRepository 
+{
+    IAsyncEnumerable<ProfileSummary> GetAllUsersAsync();
+    Task<Result> CreateUserAsync(CreateUserCmd cmd);
+}
+
 public class User : Profile
 {
-    internal User(ProfileId id, 
+    internal User(ProfileId username, 
         DisplayName displayName, 
         IAsyncEnumerable<Post> posts, 
         IAsyncEnumerable<ProfileSummary> following, 
-        IAsyncEnumerable<ProfileSummary> followers) : base(id, displayName, posts, following, followers)
+        IAsyncEnumerable<ProfileSummary> followers) : base(username, displayName, posts, following, followers)
     { }
+    
+    public ProfileId UserName => Id;
     
     public Result<PostCreated> CreatePost(string body)
     {
@@ -19,10 +29,10 @@ public class User : Profile
         return created;
     }
 
-    public async Task<Result<Followed>> FollowAsync(Profile toFollow)
+    public async Task<Result<FollowCmd>> FollowAsync(Profile toFollow)
     {
         var canFollow = await CanFollowAsync(toFollow);
-        return canFollow.Map(() => new Followed(Id.Value, toFollow.Id.Value));
+        return canFollow.Map(() => new FollowCmd(Id.Value, toFollow.Id.Value));
     }
 
     async Task<Result> CanFollowAsync(Profile toFollow)

@@ -1,4 +1,3 @@
-using Connextion.OldD;
 using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
@@ -6,15 +5,14 @@ namespace Connextion.GraphDbRepositories;
 internal class ConfigureTheDatabase(
     IDriver driver,
     IUserRepository userRepository,
-    IProfileRepositoryOld profileRepositoryOld,
+    IProfileRepository profileRepository,
     IPostRepository postRepository)
 {
     public async Task RunAsync()
     {
         await ConfigureConstraintsAsync().ConfigureAwait(false);
-        var users = await userRepository.GetAllUsersAsync().ConfigureAwait(false);
-        if (users.Length != 0) return;
-        await ConfigureDefaultUsers().ConfigureAwait(false);
+        var hasUsers = await userRepository.GetAllUsersAsync().AnyAsync().ConfigureAwait(false);
+        if (!hasUsers) await ConfigureDefaultUsers().ConfigureAwait(false);
     }
 
     async Task ConfigureConstraintsAsync()
@@ -83,8 +81,8 @@ internal class ConfigureTheDatabase(
 
             foreach (var userToFollow in usersToFollow)
             {
-                // Assuming you have a FollowAsync method in your UserRepository
-                await profileRepositoryOld.FollowAsync(user.Username, userToFollow);
+                var cmd = new FollowCmd(user.Username, userToFollow);
+                await profileRepository.FollowAsync(cmd);
             }
         }
     }

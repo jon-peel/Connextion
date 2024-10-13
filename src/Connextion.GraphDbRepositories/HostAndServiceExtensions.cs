@@ -1,5 +1,4 @@
-﻿using Connextion.OldD;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
 
@@ -14,7 +13,6 @@ public static class HostAndServiceExtensions
             .AddScoped<IProfileRepository, ProfileRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPostRepository, PostRepository>()
-            .AddScoped<IProfileRepositoryOld, ProfileRepositoryOld>()
             .AddScoped<ConfigureTheDatabase>();
 
     public static T ConfigureGraphDb<T>(this T host) where T : IHost
