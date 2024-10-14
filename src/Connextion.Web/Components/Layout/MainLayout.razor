@@ -3,7 +3,9 @@
 <UserTester/>
 @if (_visible && AppState.CurrentUser is not null)
 {
-    <h1>conNEXTion</h1>
+    <h1 class="bg-gradient-to-br from-green-400 to-blue-500 text-transparent bg-clip-text">
+        conNEXTion
+    </h1>
     <nav>
         <NavLink href="/">Home</NavLink>
         <NavLink href=@($"/profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink> 
