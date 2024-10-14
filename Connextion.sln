@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comp", "comp", "{9E137347-946E-4715-96AC-198D1E4F0210}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		tailwind.sh = tailwind.sh
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connextion", "src\Connextion\Connextion.csproj", "{ED6E904E-D3B7-4EB8-82DB-364F21FCB2E5}"

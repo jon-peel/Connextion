@@ -3,14 +3,18 @@
 <UserTester/>
 @if (_visible && AppState.CurrentUser is not null)
 {
-    <h1 class="bg-gradient-to-br from-green-400 to-blue-500 text-transparent bg-clip-text">
-        conNEXTion
-    </h1>
-    <nav>
-        <NavLink href="/">Home</NavLink>
-        <NavLink href=@($"/profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink> 
-    </nav>
-    @Body
+    <header>
+        <h1>
+            con<span class="emphasis">NEXT</span>ion
+        </h1>
+        <nav>
+            <NavLink href="/">Home</NavLink>
+            <NavLink href=@($"/profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink>
+        </nav>
+    </header>
+    <main>
+        @Body
+    </main>
 }
 <div id="blazor-error-ui">
     An unhandled error has occurred.
@@ -25,7 +29,7 @@
 
     protected override void OnInitialized()
     {
-        _visible = AppState.CurrentUser  is not null;
+        _visible = AppState.CurrentUser is not null;
         AppState.RegisterCallback(new(this, HandleAppSateChangedAsync));
     }
 
@@ -35,8 +39,10 @@
         if (AppState.CurrentUser is not null)
         {
             await Task.Delay(500).ConfigureAwait(false);
-            _visible = true;    
+            _visible = true;
         }
+
         _ = InvokeAsync(StateHasChanged);
     }
+
 }

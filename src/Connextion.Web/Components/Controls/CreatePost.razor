@@ -7,15 +7,18 @@
 
 @if (!ViewModel.IsBusy)
 {
+    <section class="post-status">
     <form @onsubmit="ViewModel.SubmitAsync">
-        <fieldset>
-            <label>
+        <fieldset class="grid grid-cols-3 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-500">
+            <p class="font-medium">Please enter a status</p>
+            <label class="text-sm col-span-2">
                 Post a status
-                <InputTextArea @bind-Value="ViewModel.Body"/>
+                <InputTextArea class="w-full rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" @bind-Value="ViewModel.Body"/>
             </label>
         </fieldset>
         <button disabled="@(!ViewModel.CanPost)" type="submit">Post</button>
     </form>
+    </section>
 }
 
 @if (ViewModel.ResultMessage is { } resultMessage)
