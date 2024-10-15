@@ -2,13 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body { @apply bg-gray-100 dark:bg-slate-900 }
+body {
+    @apply bg-gray-100 dark:bg-slate-900
+    text-gray-800 dark:text-gray-100
+}
 
 header {
-    @apply p-4 text-gray-800
+    @apply p-4 text-gray-800 dark:text-gray-100
     bg-gray-50 dark:bg-slate-800
-     /* dark:bg-gray-100 dark:text-gray-80 */
-     container flex justify-between h-16 mx-auto
+        /* dark:bg-gray-100 dark:text-gray-80 */
+    container flex justify-between h-16 mx-auto
 }
 
 header h1 {
@@ -17,13 +20,16 @@ header h1 {
 
 header nav {
     @apply flex
-     /*items-stretch hidden space-x-3 md:flex*/
+    /*items-stretch hidden space-x-3 md:flex*/
 }
 
-header nav a {  
-    @apply flex items-center px-4 -mb-1 border-b-2 
+header nav a {
+    @apply flex items-center px-4 -mb-1 border-b-2
 }
-header nav a.active { @apply border-b-red-800 }
+
+header nav a.active {
+    @apply border-b-red-800
+}
 
 main {
     @apply container p-4
@@ -32,15 +38,62 @@ main {
     container mx-auto
 }
 
-h1 { @apply text-4xl font-bold}
-h1 .emphasis { @apply text-red-800 }
+h1 {
+    @apply text-4xl font-bold
+}
 
-section.post-status { @apply p-6 dark:bg-gray-100 dark:text-gray-900 }
-form { @apply container flex flex-col mx-auto space-y-12 }
+h1 .emphasis {
+    @apply text-red-800
+}
 
+h2 { @apply text-2xl font-semibold }
+h3 { @apply text-xl font-semibold }
 
-button { @apply px-8 py-3 font-semibold rounded dark:bg-gray-800 dark:text-gray-100 }
+section.post-status {
+}
 
-p {
-     /*text-xl mb-10 bg-blue-300*/
+form {
+    @apply p-6
+    container flex flex-col mx-auto space-y-12
+    bg-gray-300 dark:bg-slate-900
+    text-gray-800 dark:text-gray-100
+    shadow-xl
+    rounded-md
+}
+
+fieldset {
+    @apply grid grid-cols-3 gap-6 p-6 rounded-md
+}
+
+button {
+    @apply px-8 py-3 font-semibold rounded dark:bg-gray-800 dark:text-gray-100
+}
+
+article.post {
+    @apply flex flex-col max-w-lg p-4 m-6 space-y-6 
+    overflow-hidden rounded-lg shadow-lg
+    mx-auto 
+    bg-gray-50 dark:bg-slate-800
+    text-gray-500 dark:text-gray-600
+}
+
+article.post p {
+    @apply leading-snug
+    text-gray-800 dark:text-gray-50
+}
+
+a[rel="author"] {
+    @apply text-sm font-semibold leading-none
+    text-gray-600 dark:text-gray-500
+}
+
+menu.tabs {
+    .active { @apply border-b-red-800 text-gray-800 dark:text-gray-100 }
+    @apply flex items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap 
+    text-gray-600 dark:text-gray-300
+}
+
+menu.tabs a {
+    @apply flex items-center flex-shrink-0 px-5 py-2 border-b-4 dark:border-gray-300 dark:text-gray-600
+    cursor-pointer
 }

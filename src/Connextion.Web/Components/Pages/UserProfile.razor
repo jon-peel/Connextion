@@ -14,46 +14,76 @@
             <RelationshipStatus ViewModel="rs"/>
         }
 
-        <section>
-            <h3>Following</h3>
-            <ul>
-                @foreach (var u in ViewModel.Following)
+        <menu class="tabs">
+            <a @onclick="() => _activeSection = ActiveSection.Following"
+               class="@(_activeSection == ActiveSection.Following ? "active" : null)">
+                Following
+            </a>
+            <a @onclick="() => _activeSection = ActiveSection.Followers"
+               class="@(_activeSection == ActiveSection.Followers ? "active" : null)">
+                Followers
+            </a>
+            <a @onclick="() => _activeSection = ActiveSection.LatestPosts"
+               class="@(_activeSection == ActiveSection.LatestPosts ? "active" : null)">
+                Recent Posts
+            </a>
+        </menu>
+        @if (_activeSection == ActiveSection.Following)
+        {
+            <section>
+                <h3 >Following</h3>
+                <ul>
+                    @foreach (var u in ViewModel.Following)
+                    {
+                        <li>
+                            <UserProfileLink ViewModel="u"/>
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+        @if (_activeSection == ActiveSection.Followers)
+        {
+            <section>
+                <h3>Followers</h3>
+                <ul>
+                    @foreach (var u in ViewModel.Followers)
+                    {
+                        <li>
+                            <UserProfileLink ViewModel="u"/>
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+    @if (_activeSection == ActiveSection.LatestPosts)
+        {
+            <section>
+                <h3>Recent Posts</h3>
+                @foreach (var post in ViewModel.LatestPosts)
                 {
-                    <li>
-                        <UserProfileLink ViewModel="u"/>
-                    </li>
+                    <Post ViewModel="post"/>
                 }
-            </ul>
-        </section>
-        <section>
-            <h3>Followers</h3>
-            <ul>
-                @foreach (var u in ViewModel.Followers)
-                {
-                    <li>
-                        <UserProfileLink ViewModel="u"/>
-                    </li>
-                }
-            </ul>
-        </section>
-        <section>
-            <h3>Recent Posts</h3>
-            @foreach (var post in ViewModel.LatestPosts)
-            {
-                <Post ViewModel="post"/>
-            }
-        </section>
+            </section>
+        }
     }
 </main>
 
 @code {
+    ActiveSection? _activeSection;
+    
+    
     [Parameter] public required string Username { get; init; }
     [CascadingParameter] public required AppState AppState { get; init; }
+    
+    
 
     protected override async Task OnParametersSetAsync()
     {
         if (AppState.CurrentUser is { } profile)
             await ViewModel.InitializeAsync(Username, profile).ConfigureAwait(false);
     }
+    
+    enum ActiveSection  { Following, Followers, LatestPosts }
 
 }
