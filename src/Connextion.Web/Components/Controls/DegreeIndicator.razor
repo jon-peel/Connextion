@@ -1,0 +1,19 @@
+@if (Degrees > 0)
+{
+    <div class="flex flex-col items-center justify-center">
+        <div class="flex -space-x-4">
+            @for (var i = 1; i < Degrees; i++)
+            {
+                <span class="w-12 h-12 border rounded-full dark:bg-gray-500 dark:border-gray-300"></span>
+            }
+            <span class="flex items-center justify-center w-12 h-12 font-semibold border rounded-full dark:bg-gray-50 dark:text-gray-800 dark:border-gray-300">
+                @Degrees
+            </span>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public required int Degrees { get; init; }
+
+}

@@ -46,8 +46,13 @@ h1 .emphasis {
     @apply text-red-800
 }
 
-h2 { @apply text-2xl font-semibold }
-h3 { @apply text-xl font-semibold }
+h2 {
+    @apply text-2xl font-semibold
+}
+
+h3 {
+    @apply text-xl font-semibold
+}
 
 section.post-status {
 }
@@ -70,9 +75,9 @@ button {
 }
 
 article.post {
-    @apply flex flex-col max-w-lg p-4 m-6 space-y-6 
+    @apply flex flex-col max-w-lg p-4 m-6 space-y-6
     overflow-hidden rounded-lg shadow-lg
-    mx-auto 
+    mx-auto
     bg-gray-50 dark:bg-slate-800
     text-gray-500 dark:text-gray-600
 }
@@ -88,8 +93,11 @@ a[rel="author"] {
 }
 
 menu.tabs {
-    .active { @apply border-b-red-800 text-gray-800 dark:text-gray-100 }
-    @apply flex items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap 
+    .active {
+        @apply border-b-red-800 text-gray-800 dark:text-gray-100
+    }
+
+    @apply flex items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap
     text-gray-600 dark:text-gray-300
 }
 
@@ -97,3 +105,4 @@ menu.tabs a {
     @apply flex items-center flex-shrink-0 px-5 py-2 border-b-4 dark:border-gray-300 dark:text-gray-600
     cursor-pointer
 }
+
