@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
 
@@ -8,8 +9,7 @@ public static class HostAndServiceExtensions
 {
     public static IServiceCollection AddGraphDbRepositories(this IServiceCollection services) =>
         services
-            .AddSingleton<IDriver>(_ =>
-                GraphDatabase.Driver("neo4j://neo4j:7687", AuthTokens.Basic("neo4j", "neo4j_pass")))
+            .AddSingleton(DriverFactory)
             .AddScoped<IProfileRepository, ProfileRepository>()
             .AddScoped<UserRepository>()
             .AddScoped<IUserRepository, UserRepository>()
@@ -23,4 +23,14 @@ public static class HostAndServiceExtensions
         configureTheDatabase.RunAsync().GetAwaiter().GetResult();
         return host;
     }
+
+    static IDriver DriverFactory(IServiceProvider services)
+    {
+        var config = services.GetRequiredService<IConfiguration>();
+        var uri = config["Neo4j:Uri"];
+        var user = config["Neo4j:User"];
+        var pass = config["Neo4j:Password"];
+        return GraphDatabase.Driver(uri, AuthTokens.Basic(user, pass));
+    }
+
 }

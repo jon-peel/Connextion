@@ -3,6 +3,8 @@
     image: connextion.web
     depends_on:
       - neo4j
+    environment:
+      Neo4j__Uri: neo4j://neo4j:7687
     build:
       context: .
       dockerfile: src/Connextion.Web/Dockerfile

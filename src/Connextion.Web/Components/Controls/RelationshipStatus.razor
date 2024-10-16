@@ -3,9 +3,7 @@
     @ViewModel.Description
     @if (ViewModel.CanFollow)
     {
-        <form @onsubmit="ViewModel.FollowAsync">
-            <button type="submit">Follow</button>
-        </form>
+        <button type="button" @onclick="ViewModel.FollowAsync">Follow</button>
     }
     @if (ViewModel.IsBusy)
     {

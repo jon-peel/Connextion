@@ -8,11 +8,18 @@
     }
     @if (!ViewModel.IsBusy)
     {
-        <h2>@ViewModel.DisplayName</h2>
-        @if (ViewModel.RelationshipStatus is { } rs)
-        {
-            <RelationshipStatus ViewModel="rs"/>
-        }
+        <div class="flex flex-row gap-4">
+            <div class="">
+                <h2>@ViewModel.DisplayName</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    TODO: Add short bio
+                </p>
+            </div>
+            @if (ViewModel.RelationshipStatus is { } rs)
+            {
+                <RelationshipStatus ViewModel="rs"/>
+            }
+        </div>
 
         <menu class="tabs">
             <a @onclick="() => _activeSection = ActiveSection.Following"
@@ -42,6 +49,7 @@
                 </ul>
             </section>
         }
+
         @if (_activeSection == ActiveSection.Followers)
         {
             <section>
@@ -56,7 +64,8 @@
                 </ul>
             </section>
         }
-    @if (_activeSection == ActiveSection.LatestPosts)
+
+        @if (_activeSection == ActiveSection.LatestPosts)
         {
             <section>
                 <h3>Recent Posts</h3>
@@ -71,19 +80,23 @@
 
 @code {
     ActiveSection? _activeSection;
-    
-    
+
+
     [Parameter] public required string Username { get; init; }
     [CascadingParameter] public required AppState AppState { get; init; }
-    
-    
+
 
     protected override async Task OnParametersSetAsync()
     {
         if (AppState.CurrentUser is { } profile)
             await ViewModel.InitializeAsync(Username, profile).ConfigureAwait(false);
     }
-    
-    enum ActiveSection  { Following, Followers, LatestPosts }
+
+    enum ActiveSection
+    {
+        Following,
+        Followers,
+        LatestPosts
+    }
 
 }
