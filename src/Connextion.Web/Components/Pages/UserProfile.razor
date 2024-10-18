@@ -8,18 +8,19 @@
     }
     @if (!ViewModel.IsBusy)
     {
-        <div class="flex flex-row gap-4">
-            <div class="">
+        <a class="flex flex-row gap-4">
+            <div class="grid-cols-6">
                 <h2>@ViewModel.DisplayName</h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    TODO: Add short bio
-                </p>
+                @if (ViewModel.Bio is { } bio)
+                {
+                    <Bio ViewModel="bio"/>
+                }
             </div>
             @if (ViewModel.RelationshipStatus is { } rs)
             {
                 <RelationshipStatus ViewModel="rs"/>
             }
-        </div>
+        </a>
 
         <menu class="tabs">
             <a @onclick="() => _activeSection = ActiveSection.Following"

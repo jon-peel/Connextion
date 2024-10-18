@@ -1,8 +1,8 @@
 namespace Connextion;
 
 public record ProfileId(string Value);
-
 public record DisplayName(string Value);
+public record Bio(string Value);
 
 public record PostId(Guid Value)
 {
@@ -15,15 +15,17 @@ public class ProfileSummary
 {
     readonly Func<ProfileId, Task<byte>> _getDegreesFrom;
 
-    public ProfileSummary(ProfileId id, DisplayName displayName, Func<ProfileId, Task<byte>> getDegreesFrom)
+    public ProfileSummary(ProfileId id, DisplayName displayName, Bio bio, Func<ProfileId, Task<byte>> getDegreesFrom)
     {
         _getDegreesFrom = getDegreesFrom;
         Id = id;
         DisplayName = displayName;
+        Bio = bio;
     }
     
     public ProfileId Id { get; }
     public DisplayName DisplayName { get; }
+    public Bio Bio { get; }
     public Task<byte> GetDegreesFromAsync(ProfileId id) => _getDegreesFrom(id);
 };
 
@@ -39,16 +41,18 @@ public interface IProfileRepository
 {
     Task<Profile> GetProfileAsync(string id);
     Task<Result> FollowAsync(FollowCmd cmd);
+    Task<Result> UpdateBioAsync(UpdateBioCmd arg);
 }
 
 public class Profile : ProfileSummary
 {
     public Profile(ProfileId id,
         DisplayName displayName,
+        Bio bio,
         IAsyncEnumerable<Post> posts,
         IAsyncEnumerable<ProfileSummary> following,
         IAsyncEnumerable<ProfileSummary> followers)
-    : base(id, displayName, _ => Task.FromResult<byte>(0))
+    : base(id, displayName, bio,_ => Task.FromResult<byte>(0))
     {
         Posts = posts;
         Following = following;

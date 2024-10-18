@@ -8,4 +8,8 @@ public class ProfileService(IProfileRepository profileRepository)
         var result = await eventResult.BindAsync(profileRepository.FollowAsync).ConfigureAwait(false);
         return result;
     }
+
+    public Task<Result> UpdateBioAsync(User user, string text) => 
+        user.UpdateBio(text)
+            .BindAsync(profileRepository.UpdateBioAsync);
 }

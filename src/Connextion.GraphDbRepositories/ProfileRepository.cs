@@ -21,4 +21,15 @@ class ProfileRepository(IDriver driver, IUserRepository userRepository) : Reposi
         var parameters = new { currentUser = cmd.CurrentUser, toFollow = cmd.IsFollowing };
         return ExecuteWriteAsync(query, parameters);
     }
+
+    public Task<Result> UpdateBioAsync(UpdateBioCmd arg)
+    {
+        const string query =
+            """
+            MATCH (profile:Profile {profileId: $id})
+            SET profile.bio = $bio
+            """;
+        var parameters = new { id = arg.ProfileId, bio = arg.Bio };
+        return ExecuteWriteAsync(query, parameters);
+    }
 }

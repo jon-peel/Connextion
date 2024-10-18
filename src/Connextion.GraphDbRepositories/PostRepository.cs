@@ -32,7 +32,7 @@ class PostRepository(IDriver driver, UserRepository userRepository) : Repository
             WHERE currentUser.id = $id
             ORDER by post.postedAt DESC
             RETURN post.id AS id,
-                   { id: postedBy.id, displayName: postedBy.displayName } AS postedBy,
+                   { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
                    post.postedAt AS postedAt,
                    post.body AS body
             """;

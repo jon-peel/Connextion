@@ -10,7 +10,8 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
             """
             MATCH (user:User:Profile) 
             RETURN user.id AS id, 
-                   user.displayName AS displayName
+                   user.displayName AS displayName,
+                   user.bio AS bio
             """;
         return ExecuteReaderQueryAsync(query, new { }, MapProfileSummary);
     }
@@ -18,8 +19,9 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
     public Task<Result> CreateUserAsync(CreateUserCmd cmd)
     {
         const string query =
-            "CREATE (u:User:Profile { id: $username, username: $username, displayName: $displayName })";
-        var parameters = new { username = cmd.Username, displayName = cmd.DisplayName };
+            "CREATE (u:User:Profile { id: $username, username: $username, displayName: $displayName, bio: $bio })";
+        var parameters = 
+            new { username = cmd.Username, displayName = cmd.DisplayName, bio = cmd.Bio };
         return ExecuteWriteAsync(query, parameters);
     }
 
@@ -29,7 +31,8 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
             """
             MATCH (profile:Profile { id: $id })
             RETURN profile.id AS id,
-                   profile.displayName as displayName
+                   profile.displayName as displayName,
+                   profile.bio as bio
             """;
         var profiles = await ExecuteQueryAsync(query, new { id }, MapProfile).ConfigureAwait(false);
         return profiles.Single();
@@ -39,17 +42,19 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
     {
         var id = new ProfileId(record["id"].As<string>());
         var displayName = new DisplayName(record["displayName"].As<string>());
+        var bio = new Bio(record["bio"].As<string>());
         var posts = GetPostsAsync(id.Value);
         var following = GetFollowingAsync(id.Value);
         var followers = GetFollowersAsync(id.Value);
-        return new(id, displayName, posts, following, followers);
+        return new(id, displayName, bio, posts, following, followers);
     }
     
     internal ProfileSummary MapProfileSummary(IReadOnlyDictionary<string, object> record)
     {
         var id = record["id"].As<string>();
         var displayName = record["displayName"].As<string>();
-        return new(new(id), new(displayName), to => GetDegreesFromAsync(id, to.Value));
+        var bio =  record["bio"].As<string>();
+        return new(new(id), new(displayName), new(bio), to => GetDegreesFromAsync(id, to.Value));
     }
     
     async Task<byte> GetDegreesFromAsync(string id, string to)
@@ -94,7 +99,8 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
             """
             MATCH (Profile { id: $id })-[:FOLLOWS]->(p:Profile)
             RETURN p.id as id,
-                   p.displayName as displayName
+                   p.displayName as displayName,
+                   p.bio as bio
             """;
         return ExecuteReaderQueryAsync(query, new { id }, MapProfileSummary);
     }
@@ -105,7 +111,8 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
             """
             MATCH (Profile { id: $id })<-[:FOLLOWS]-(p:Profile)
             RETURN p.id as id,
-                   p.displayName as displayName
+                   p.displayName as displayName,
+                   p.bio as bio
             """;
         return ExecuteReaderQueryAsync(query, new { id }, MapProfileSummary);
     }

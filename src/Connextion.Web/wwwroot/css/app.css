@@ -562,6 +562,10 @@ video {
   grid-column: span 2 / span 2;
 }
 
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+
 .m-4 {
   margin: 1rem;
 }
@@ -570,20 +574,16 @@ video {
   display: flex;
 }
 
+.grid {
+  display: grid;
+}
+
 .h-12 {
   height: 3rem;
 }
 
-.h-24 {
-  height: 6rem;
-}
-
 .w-12 {
   width: 3rem;
-}
-
-.w-24 {
-  width: 6rem;
 }
 
 .w-full {
@@ -594,12 +594,12 @@ video {
   max-width: 32rem;
 }
 
-.flex-auto {
-  flex: 1 1 auto;
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.flex-shrink-0 {
-  flex-shrink: 0;
+.grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -622,6 +622,10 @@ video {
   gap: 1rem;
 }
 
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .-space-x-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(-1rem * var(--tw-space-x-reverse));
@@ -632,10 +636,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
-}
-
-.self-center {
-  align-self: center;
 }
 
 .rounded-full {
@@ -655,9 +655,9 @@ video {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-gray-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(107 114 128 / var(--tw-border-opacity));
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .p-4 {
@@ -679,6 +679,11 @@ video {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .text-gray-600 {
@@ -1110,10 +1115,6 @@ menu.tabs a {
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
-
-  .md\:justify-self-start {
-    justify-self: start;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1137,6 +1138,21 @@ menu.tabs a {
     background-color: rgb(107 114 128 / var(--tw-bg-opacity));
   }
 
+  .dark\:bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  }
+
+  .dark\:text-black {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
+  }
+
+  .dark\:text-gray-400 {
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity));
+  }
+
   .dark\:text-gray-50 {
     --tw-text-opacity: 1;
     color: rgb(249 250 251 / var(--tw-text-opacity));
@@ -1145,11 +1161,6 @@ menu.tabs a {
   .dark\:text-gray-800 {
     --tw-text-opacity: 1;
     color: rgb(31 41 55 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-gray-400 {
-    --tw-text-opacity: 1;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
   }
 
   .focus\:dark\:ring-violet-600:focus {
