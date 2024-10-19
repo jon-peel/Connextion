@@ -31,7 +31,20 @@ public class ProfileSummary
 
 public record PostBody(string Value);
 
-public record Post(PostId Id, DateTime PostedAt, PostBody Body);
+public record Post(PostId Id, ProfileSummary PostedBy, DateTime PostedAt, PostBody Body, IReadOnlySet<ProfileId> LikedBy)
+{
+    public Result<LikePostCommand> Like(User currentUser)
+    {
+        if (LikedBy.Contains(currentUser.Id)) return Result<LikePostCommand>.Error("already liked");
+        return new LikePostCommand(Id, currentUser.Id).ToResult();
+    }
+    
+    public Result<UnLikePostCommand> UnLike(User currentUser)
+    {
+        if (!LikedBy.Contains(currentUser.Id)) return Result<UnLikePostCommand>.Error("not liked");
+        return new UnLikePostCommand(Id, currentUser.Id).ToResult();
+    }
+}
 
 public record PostCreated(PostId Id, ProfileId CreatedBy, DateTime PostedAt, PostBody Body);
 

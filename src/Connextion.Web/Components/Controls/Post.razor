@@ -1,6 +1,7 @@
 <article class="post">
     <p>@ViewModel.Body</p>
     <footer>
+        <LikeButton ViewModel="ViewModel.LikeButton" />
         <address>
             <time>@ViewModel.Time</time>
             by <NavLink rel="author" href="@ViewModel.AuthorProfileUrl">@ViewModel.PostedBy</NavLink>

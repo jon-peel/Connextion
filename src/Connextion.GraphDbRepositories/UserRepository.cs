@@ -43,7 +43,7 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
         var id = new ProfileId(record["id"].As<string>());
         var displayName = new DisplayName(record["displayName"].As<string>());
         var bio = new Bio(record["bio"].As<string>());
-        var posts = GetPostsAsync(id.Value);
+        var posts = GetPostsByUserAsync(id.Value);
         var following = GetFollowingAsync(id.Value);
         var followers = GetFollowersAsync(id.Value);
         return new(id, displayName, bio, posts, following, followers);
@@ -71,27 +71,7 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
         return results.Single();
     }
     
-    IAsyncEnumerable<Post> GetPostsAsync(string id)
-    {
-        const string query =
-            """
-            MATCH (profile:Profile { id: $id })
-            MATCH (profile)<-[:POSTED_BY]-(post:Post)
-            ORDER BY post.postedAt DESC 
-            RETURN post.id AS id,
-                   post.postedAt AS postedAt,
-                   post.body AS body
-            """;
-        return ExecuteReaderQueryAsync(query, new { id }, MapPost);
-    }
     
-    static Post MapPost(IRecord record)
-    {
-        var id = new PostId(record["id"].As<string>());
-        var postedAt = record["postedAt"].As<DateTime>();
-        var body = new PostBody(record["body"].As<string>());
-        return new(id, postedAt, body);
-    }
 
     IAsyncEnumerable<ProfileSummary> GetFollowingAsync(string id)
     {
@@ -115,5 +95,36 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
                    p.bio as bio
             """;
         return ExecuteReaderQueryAsync(query, new { id }, MapProfileSummary);
+    }
+    
+    public IAsyncEnumerable<Post> GetPostsByUserAsync(string profileId)
+    {
+        const string query =
+            """
+            MATCH (profile:Profile { id: profileId })
+            MATCH (profile)<-[:POSTED_BY]-(post:Post)
+            ORDER BY post.postedAt DESC 
+            RETURN post.id AS id,
+                   { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
+                   post.postedAt AS postedAt,
+                   post.body AS body
+                   COLLECT { MATCH (post)<-[:LIKES]-(likedBy:Profile)
+                             RETURN likedBy.id } AS likedBy
+            """;
+        return ExecuteReaderQueryAsync(query, new { profileId }, MapPost);
+    }
+    
+    public Post MapPost(IRecord record)
+    {
+        var id = new PostId(record["id"].As<string>());
+        var postedBy = MapProfileSummary(
+            record["postedBy"].As<IReadOnlyDictionary<string, object>>());
+        var postedAt = record["postedAt"].As<DateTime>();
+        var body = new PostBody(record["body"].As<string>());
+        var likedBy = record["likedBy"]
+            .As<IReadOnlyList<string>>()
+            .Select(x => new ProfileId(x))
+            .ToHashSet();
+        return new(id, postedBy, postedAt, body, likedBy);
     }
 }

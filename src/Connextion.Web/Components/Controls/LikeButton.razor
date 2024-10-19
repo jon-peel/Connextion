@@ -1,0 +1,24 @@
+@if (ViewModel is { CanBeLiked: true })
+{
+    <button @onclick="ViewModel.LikeAsync">@ViewModel.ButtonText</button>
+}
+else if (ViewModel is { CanBeUnLiked: true })
+{
+    <button @onclick="ViewModel.UnLikeAsync">@ViewModel.ButtonText</button>
+}
+else
+{
+    <span>@ViewModel.ButtonText</span>
+}
+
+@code {
+    [Parameter] public required LikeButtonViewModel ViewModel { get; init; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Console.WriteLine("d");
+    }
+
+}
+

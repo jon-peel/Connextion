@@ -29,7 +29,7 @@ public class User : Profile
 
         var id = new PostId(Guid.NewGuid());
         var created = new PostCreated(id, Id, DateTime.UtcNow, new(body));
-        return created;
+        return created.ToResult();
     }
 
     public async Task<Result<FollowCmd>> FollowAsync(Profile toFollow)

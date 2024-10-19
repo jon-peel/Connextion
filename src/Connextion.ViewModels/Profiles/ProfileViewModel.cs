@@ -2,7 +2,7 @@
 
 namespace Connextion.ViewModels.Profiles;
 
-public class ProfileViewModel(ProfileService profileService, IProfileRepository profileRepository)
+public class ProfileViewModel(PostService postService, ProfileService profileService, IProfileRepository profileRepository)
 {
     string _profileUser = "";
 
@@ -27,7 +27,7 @@ public class ProfileViewModel(ProfileService profileService, IProfileRepository 
         DisplayName = profile.DisplayName.Value;
         Bio = new (profileService, currentUser, profile);
         
-        LatestPosts = await profile.Posts.Take(10).Select(post => new PostViewModel(post, currentUser)).ToArrayAsync().ConfigureAwait(false);
+        LatestPosts = await profile.Posts.Take(10).Select(post => new PostViewModel(postService, post, currentUser)).ToArrayAsync().ConfigureAwait(false);
         Following = await profile.Following.Select(u => new ProfileLinkViewModel(u)).ToArrayAsync().ConfigureAwait(false);
         Followers = await profile.Followers.Select(u => new ProfileLinkViewModel(u)).ToArrayAsync().ConfigureAwait(false);
         
