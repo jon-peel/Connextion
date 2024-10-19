@@ -66,6 +66,11 @@ form {
     rounded-md
 }
 
+textarea {
+    @apply bg-white dark:bg-white text-black dark:text-black
+    rounded-md focus:ring focus:ring-opacity-75 focus:dark:ring-violet-600 dark:border-gray-300
+}
+
 fieldset {
     @apply grid grid-cols-3 gap-6 p-6 rounded-md
 }

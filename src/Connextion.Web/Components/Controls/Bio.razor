@@ -7,8 +7,8 @@
         @<text>
              <form class="col-span-6 grid grid-cols-2 gap-2"
                    @onsubmit="ViewModel.SaveAsync">
-                 <InputTextArea class="col-span-2 bg-white dark:bg-white text-black dark:text-black p-4"
-                                aria-label="Bio"
+                 <InputTextArea class="col-span-2 p-4 bg-white dark:bg-white text-black dark:text-black"
+                                aria-label="Bio" rows="4"
                                 @bind-Value="ViewModel.EditText"/>
                  <button type="submit">Save</button>
                  <button type="button" @onclick="ViewModel.CancelEdit">Cancel</button>
