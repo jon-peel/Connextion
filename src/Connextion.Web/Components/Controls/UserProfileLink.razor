@@ -2,9 +2,7 @@
             border border-gray-300 dark:border-gray-700">
     <NavLink class="w-full align-middle" href="@ViewModel.Url">
         @ViewModel.DisplayName
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-            TODO: Add short bio
-        </p>
+        <Bio ViewModel="ViewModel.Bio" />
     </NavLink>
     <DegreeIndicator Degrees="ViewModel.Degrees"/>
 

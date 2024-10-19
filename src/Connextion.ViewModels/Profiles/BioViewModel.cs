@@ -2,19 +2,22 @@ namespace Connextion.ViewModels.Profiles;
 
 public class BioViewModel
 {
-    private readonly ProfileService _profileService;
-    private readonly User _currentUser;
+    private readonly ProfileService? _profileService;
+    private readonly User? _currentUser;
     
     public BioViewModel(
-        ProfileService profileService, 
-        ProfileSummary profile,
-        User currentUser,
-        bool editable)
+        ProfileService? profileService,
+        User? currentUser,
+        ProfileSummary profile)
     {
         _profileService = profileService;
         _currentUser = currentUser;
-        CanEdit = editable && profile.Id == currentUser.Id;
+        CanEdit = profileService is not null && profile.Id == currentUser?.Id;
         Text = profile.Bio.Value;
+    }
+
+    public BioViewModel(ProfileSummary profile) : this(null, null, profile) 
+    {
     }
     
     public string Text { get; private set; }
@@ -36,10 +39,13 @@ public class BioViewModel
 
     public async Task SaveAsync()
     {
+        if (_profileService is null || _currentUser is null) return;
+        IsBusy = true;
         (Text, ShowEdit) = await _profileService
             .UpdateBioAsync(_currentUser, EditText)
             .MapAsync(() => (EditText, false))
             .DefaultAsync(_ => (Text, true))
             .ConfigureAwait(false);
+        IsBusy = false;
     }
 }

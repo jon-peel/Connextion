@@ -1,31 +1,32 @@
-@if (ViewModel.IsBusy)
+@(ViewModel switch
 {
-    <BusyIndicator />
-}
-@if (!ViewModel.IsBusy)
-{
-    @if (!ViewModel.ShowEdit)
-    {
-        <p class="text-sm text-gray-600 dark:text-gray-400">
-            @if (ViewModel.CanEdit)
-            {
-                <button @onclick="ViewModel.Edit">Edit</button>
-            }
-            @ViewModel.Text
-        </p>
-    }
+    { IsBusy: true } => (
+        @<BusyIndicator/>
+    ),
+    { ShowEdit: true } => (
+        @<text>
+             <form class="col-span-6 grid grid-cols-2 gap-2"
+                   @onsubmit="ViewModel.SaveAsync">
+                 <InputTextArea class="col-span-2 bg-white dark:bg-white text-black dark:text-black p-4"
+                                aria-label="Bio"
+                                @bind-Value="ViewModel.EditText"/>
+                 <button type="submit">Save</button>
+                 <button type="button" @onclick="ViewModel.CancelEdit">Cancel</button>
+             </form>
+         </text>),
+    _ => (
+        @<text>
+             <p class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line
+                        col-span-4">
+                 @ViewModel.Text
+             </p>
+             @if (ViewModel.CanEdit)
+             {
+                 <button @onclick="ViewModel.Edit">Edit Bio</button>
+             }
+         </text>)
+})
 
-    @if (ViewModel.ShowEdit)
-    {
-        <form class="col-span-3 grid grid-cols-2 gap-2"
-              @onsubmit="ViewModel.SaveAsync">
-            <InputTextArea class="col-span-2 bg-white dark:bg-white text-black dark:text-black p-4"
-                           @bind-Value="ViewModel.EditText"/>
-            <button type="submit">Save</button>
-            <button type="button" @onclick="ViewModel.CancelEdit">Cancel</button>
-        </form>
-    }
-}
 
 @code {
     [Parameter] public required BioViewModel ViewModel { get; init; }

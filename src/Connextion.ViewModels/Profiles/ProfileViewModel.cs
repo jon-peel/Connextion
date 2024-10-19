@@ -25,7 +25,7 @@ public class ProfileViewModel(ProfileService profileService, IProfileRepository 
             .ConfigureAwait(false);
         RelationshipStatus = new RelationshipStatusViewModel(profileService, currentUser, profile);
         DisplayName = profile.DisplayName.Value;
-        Bio = new (profileService, profile, currentUser, true);
+        Bio = new (profileService, currentUser, profile);
         
         LatestPosts = await profile.Posts.Take(10).Select(post => new PostViewModel(post, currentUser)).ToArrayAsync().ConfigureAwait(false);
         Following = await profile.Following.Select(u => new ProfileLinkViewModel(u)).ToArrayAsync().ConfigureAwait(false);

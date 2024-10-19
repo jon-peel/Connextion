@@ -26,7 +26,7 @@ class ProfileRepository(IDriver driver, IUserRepository userRepository) : Reposi
     {
         const string query =
             """
-            MATCH (profile:Profile {profileId: $id})
+            MATCH (profile:Profile {id: $id})
             SET profile.bio = $bio
             """;
         var parameters = new { id = arg.ProfileId, bio = arg.Bio };
