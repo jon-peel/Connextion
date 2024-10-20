@@ -97,6 +97,10 @@ The implementation of a full user authentication and login system is planned for
 
 ** Posting and Timeline
 
+#+CAPTION: Home page view, with "post" option and timeline
+#+NAME: fig:posting-timeline
+[[./img/ss1.png]]
+
 Users can share updates in the form of basic text statuses. This functionality forms the core of user engagement, allowing professionals to share insights, updates, and relevant information.
 
 + Status Posting :: Users have the ability to post simple text updates.
@@ -109,6 +113,10 @@ This approach helps users discover content indirectly through their network, enc
 
 ** User Profiles
 
+#+CAPTION: A user profile, showing recent posts
+#+NAME: fig:recent-posts
+[[./img/ss2.png]]
+
 The platform includes basic user profile functionality, allowing users to explore the professional backgrounds and connections of others.
 
 + Profile Details: When a user profile is opened, the following information is displayed:
@@ -118,7 +126,16 @@ The platform includes basic user profile functionality, allowing users to explor
     + Who follows them :: A list of the profile owner’s followers.
   + Posts: A history of posts made by the user, providing insight into their activity and contributions.
 
+#+CAPTION: Who this user is following
+#+NAME: fig:following
+[[./img/ss3.png]]
+
 This feature allows users to understand each other's network and professional footprint more comprehensively.
+
+#+CAPTION: Who followes this user
+#+NAME: fig:followers
+[[./img/ss4.png]]
+
 
 
 * Future features
@@ -136,3 +153,7 @@ The platform will support the creation of events, both virtual and in-person. Us
 ** Search and Discovery
 
 A search tool will be implemented to enable users to find other professionals, events, and posts based on specific filters like industry, location, or interests. This feature will make it easier for users to discover new connections and expand their professional networks.
+
+
+* References
+#+print_bibliography:

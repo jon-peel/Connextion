@@ -101,13 +101,13 @@ class UserRepository(IDriver driver) : RepositoryBase(driver), IUserRepository
     {
         const string query =
             """
-            MATCH (profile:Profile { id: profileId })
+            MATCH (profile:Profile { id: $profileId })
             MATCH (profile)<-[:POSTED_BY]-(post:Post)
             ORDER BY post.postedAt DESC 
             RETURN post.id AS id,
-                   { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
+                   { id: profile.id, displayName: profile.displayName, bio: profile.bio } AS postedBy,
                    post.postedAt AS postedAt,
-                   post.body AS body
+                   post.body AS body,
                    COLLECT { MATCH (post)<-[:LIKES]-(likedBy:Profile)
                              RETURN likedBy.id } AS likedBy
             """;
