@@ -76,6 +76,7 @@ class PostRepository(IDriver driver, UserRepository userRepository) : Repository
         const string query =
             """
             MATCH (profile:Profile { id: $profileId })-[like:LIKES]->(post:Post { id: $postId })
+            MATCH (post)-[:POSTED_BY]->(postedBy:Profile)
             DELETE like
             RETURN post.id AS id,
                    { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
