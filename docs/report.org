@@ -1,0 +1,138 @@
+#+title: Intermediate Project Report
+#+AUTHOR: Jonathan Peel
+#+STARTUP: overview
+#+EXPORT_FILE_NAME: ~/Documents/IntermediateProjectReport
+#+OPTIONS: toc:3
+#+OPTIONS: ^:nil
+
+#+MODULE: UU-COM-4010-MW Computer Science Project
+
+
+#+SETUPFILE: ".org/setup.org"
+
+#+LATEX_HEADER: \newcommand\modulename{Information Systems and Network Security}
+#+LATEX_HEADER: \newcommand\modulenumber{UU-COM-4024-MW}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LaTeX_HEADER: \usepackage{pdfpages}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: % \renewcommand*{\thesection}{\arabic{section}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsection}{\alph{subsection}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsubsection}{\roman{subsubsection}}
+#+LATEX_HEADER: \let\oldsection\section
+#+LATEX_HEADER: \renewcommand\section{\clearpage\oldsection}
+#+LATEX_HEADER: \usepackage{pgfplots}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{backgrounds}
+#+LATEX_HEADER: \usemintedstyle{native}
+#+LATEX_HEADER: \usepackage{array}
+
+#+bibliography: .org/index.bib
+#+cite_export: csl .org/apa.csl
+#+INCLUDE: ".org/cover.org"
+
+#+TOC: headlines 1
+
+
+* Topic and subject area
+
+This project aims to creating a professional social networking platform aimed at improving networking opportunities. Users will be able to build profiles, view their existing professional connections, and discover the networks of other users. Additionally, the platform will facilitate connection expansion through local and global events, whether they are formal or informal.
+
+The project is categorized under *web development*, focusing on essential aspects such as *network visualization*, *social networking*, and *event management*.
+
+The current status of the project can be seen as a [[https://github.com/jon-peel/Connextion][repository on GitHub]].
+
+
+* Techknowlogies chosen
+
+** .Net, C#, and Blazor
+
+The selection of .NET as the underlying framework for this project is driven by its robust performance, extensive libraries, and strong community support.
+.NET provides a versatile environment for building scalable web applications, ensuring that our platform can handle a growing user base without compromising speed or reliability [cite:@Montano2023Aug].
+Its cross-platform capabilities allow for seamless deployment across various operating systems, enhancing accessibility for users. Additionally, the framework's built-in security features help protect user data, which is crucial for a social networking platform.
+
+C# was chosen as the programming language for its simplicity and effectiveness in building complex applications. With a strong type system and modern programming constructs,
+C# enables developers to write clean, maintainable code [cite:@BibEntry2024Jun].
+This not only accelerates the development process but also reduces the likelihood of bugs. Coupled with Blazor, a powerful web framework that allows for building interactive web applications using C#, the project can leverage the advantages of both server-side and client-side rendering. Blazor’s component-based architecture promotes code reusability and simplifies the user interface development, making it an ideal choice for creating a dynamic and engaging professional networking platform.
+
+** Neo4J
+
+Neo4j was selected as the database for this project due to its powerful graph database capabilities, which are particularly well-suited for modeling complex relationships inherent in social networking.
+In a professional social network, the connections between users, their interactions, and the relationships among posts are fundamental.
+Neo4j’s graph structure allows for intuitive representation of these relationships, enabling efficient queries that can uncover insights about user connections and engagement patterns [cite:@Giannakis2024Oct;@Dey2023Aug].
+This is particularly beneficial for features like recommendations, network visualizations, and relationship explorations, which enhance the overall user experience.
+
+Additionally, Neo4j’s flexible schema design facilitates easy adaptation to changing data requirements, making it an excellent choice for a platform that may evolve over time. Its robust querying language, Cypher, allows developers to express complex queries succinctly and intuitively, streamlining the process of retrieving and manipulating data. By leveraging Neo4j, the project can provide a responsive and dynamic user experience while ensuring that the underlying data architecture is capable of supporting future growth and feature expansions.
+
+** Tailwind
+
+I prioritize the use of semantic HTML and accessibility in this project to ensure that all users, including those utilizing screen readers and other assistive technologies, can navigate and interact with the web application effectively.
+By adhering to best practices for semantic markup, we enhance the overall user experience and create a more inclusive platform [cite:@BibEntry2024Mar].
+This commitment goes beyond aesthetics; it lays a strong foundation for usability, making our professional social network accessible to a wider audience. While a visually appealing interface is important, it should never come at the expense of functionality and inclusivity.
+
+To streamline the styling process while maintaining a focus on accessibility, I chose Tailwind CSS. This utility-first framework allows for rapid and consistent styling, enabling developers to create visually appealing layouts without compromising on semantic structure.
+Tailwind’s approach encourages the use of descriptive class names, making the code more readable and maintainable [cite:@Phutson2024Jul].
+Additionally, its customization capabilities ensure that we can implement a cohesive design that aligns with the project’s branding while adhering to accessibility guidelines. Overall, Tailwind CSS supports our goal of delivering an accessible and user-friendly application that prioritizes both functionality and aesthetic appeal.
+
+** Docker
+
+Docker is an ideal technology choice for this project due to its ability to simplify the deployment and management of applications and databases. By containerizing the app and the Neo4j database, we can easily create consistent and reproducible environments that eliminate the "it works on my machine" problem [cite:@Kumar2024Sep].
+This capability allows for rapid testing and development cycles, as developers can quickly spin up or tear down containers to match the specific needs of the project. With Docker, we ensure that all team members work within the same environment, which enhances collaboration and reduces the likelihood of configuration-related issues.
+
+Additionally, Docker’s portability facilitates smooth rollout processes, whether in staging or production environments. Containers can run seamlessly on any platform that supports Docker, making it easier to deploy the application across various infrastructures, whether on local machines, cloud services, or on-premises servers [cite:@Dubey2023Jul].
+This flexibility not only accelerates the deployment process but also provides the scalability necessary for future growth. Overall, Docker empowers our development workflow and helps maintain a streamlined, efficient approach to managing our application's lifecycle.
+
+
+* Current features
+
+The platform has made significant progress in core features related to user interaction and content sharing. Three key areas of development include user management for testing, posting and timeline functionality, and the user profile system. These features lay the groundwork for the platform’s ability to facilitate professional networking by allowing users to explore connections, share updates, and engage with content across their network.
+
+** User Management
+
+At this stage, user authentication has not been fully implemented as the platform is still undergoing testing. Instead of a login system, a temporary user selection mechanism has been set up. A select box allows testers to choose a pre-generated user to view and interact with the platform.
+
++ Test Users :: A set of test users is automatically generated the first time the application runs, providing diverse scenarios for testing various features and interactions without the need for actual user accounts.
+
+The implementation of a full user authentication and login system is planned for future development stages.
+
+** Posting and Timeline
+
+Users can share updates in the form of basic text statuses. This functionality forms the core of user engagement, allowing professionals to share insights, updates, and relevant information.
+
++ Status Posting :: Users have the ability to post simple text updates.
+
++ Timeline View :: A user’s timeline displays a curated feed based on their connections and interactions. Posts visible on the timeline include:
+  + Posts created by users they follow.
+  + Posts that have been liked by someone they follow.
+
+This approach helps users discover content indirectly through their network, encouraging engagement and interaction beyond direct connections.
+
+** User Profiles
+
+The platform includes basic user profile functionality, allowing users to explore the professional backgrounds and connections of others.
+
++ Profile Details: When a user profile is opened, the following information is displayed:
+  + Bio :: A brief summary of the user’s professional background.
+  + Connections ::
+    + Who they follow :: A list of users the profile owner follows.
+    + Who follows them :: A list of the profile owner’s followers.
+  + Posts: A history of posts made by the user, providing insight into their activity and contributions.
+
+This feature allows users to understand each other's network and professional footprint more comprehensively.
+
+
+* Future features
+
+As the platform continues to evolve, several important features are planned to enhance user engagement and networking opportunities:
+
+** Direct Messaging
+
+A direct messaging system will be introduced to allow users to communicate privately. This feature is critical for professionals seeking to establish deeper, one-on-one interactions beyond public posts or timelines.
+
+** Event Creation and RSVP System
+
+The platform will support the creation of events, both virtual and in-person. Users will be able to create, share, and invite others to networking events. An RSVP system will allow attendees to confirm their participation, making event management streamlined and user-friendly.
+
+** Search and Discovery
+
+A search tool will be implemented to enable users to find other professionals, events, and posts based on specific filters like industry, location, or interests. This feature will make it easier for users to discover new connections and expand their professional networks.
