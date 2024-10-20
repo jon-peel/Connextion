@@ -29,10 +29,18 @@ class PostRepository(IDriver driver, UserRepository userRepository) : Repository
 
     public IAsyncEnumerable<Post> GetTimeLineAsync(ProfileId id)
     {
+        // To return any post created by, or liked by someone the current user follows.
         const string query =
             """
-            MATCH (post:Post)-[:POSTED_BY]->(postedBy:Profile)<-[:FOLLOWS]-(currentUser:User)
-            WHERE currentUser.id = $id
+            MATCH (fol:Profile)<-[:FOLLOWS]-(currentUser:User:Profile { id: $id })
+            MATCH (fol)-[:LIKES]->(p1:Post)
+            WITH collect(p1) as likedPost
+            MATCH (fol)<-[:POSTED_BY]-(p2:Post)
+            WITH collect(p2) as posted, likedPost
+            WITH posted + likedPost as allPosts
+            UNWIND allPosts AS post
+            WITH DISTINCT post
+            MATCH (post)-[:POSTED_BY]->(postedBy:Profile)
             ORDER by post.postedAt DESC
             RETURN post.id AS id,
                    { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
@@ -63,8 +71,21 @@ class PostRepository(IDriver driver, UserRepository userRepository) : Repository
         return result.Single().ToResult();
     }
 
-    public Task<Result<Post>> UnLikeAsync(UnLikePostCommand cmd)
+    public async Task<Result<Post>> UnLikeAsync(UnLikePostCommand cmd)
     {
-        throw new NotImplementedException();
+        const string query =
+            """
+            MATCH (profile:Profile { id: $profileId })-[like:LIKES]->(post:Post { id: $postId })
+            DELETE like
+            RETURN post.id AS id,
+                   { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
+                   post.postedAt AS postedAt,
+                   post.body AS body,
+                   COLLECT { MATCH (post)<-[:LIKES]-(likedBy:Profile)
+                             RETURN likedBy.id } AS likedBy
+            """;
+        var parameters = new { profileId = cmd.ProfileId.Value, postId = cmd.PostId.Value.ToString() };
+        var result = await ExecuteQueryAsync(query, parameters, userRepository.MapPost).ConfigureAwait(false);
+        return result.Single().ToResult();
     }
 }

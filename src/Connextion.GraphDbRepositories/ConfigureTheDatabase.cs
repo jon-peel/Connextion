@@ -37,26 +37,43 @@ internal class ConfigureTheDatabase(
         var users = UserCommands();
         await CreateUsersAsync(users).ConfigureAwait(false);
         await FollowUsersAsync(users).ConfigureAwait(false);
-        await CreatePostsAsync(users).ConfigureAwait(false);
+        var posts = await CreatePostsAsync(users).ToArrayAsync().ConfigureAwait(false);
+        await CreateLikesAsync(users, posts).ConfigureAwait(false);
     }
 
-    async Task CreatePostsAsync(IReadOnlyList<CreateUserCmd> users)
+    async Task CreateLikesAsync(IReadOnlyList<CreateUserCmd> users, (ProfileId, PostId)[] posts)
+    {
+        var random = new Random();
+        foreach (var (profileId, postId) in posts)
+        {
+            var usersToLike = users.Where(u => u.Username != profileId.Value).OrderBy(_ => random.Next()).Take(random.Next(1, users.Count / 4));
+            foreach (var userToLike in usersToLike)
+            {
+                var likeCmd = new LikePostCommand(postId, new(userToLike.Username));
+                await postRepository.LikeAsync(likeCmd);
+            }
+        }
+    }
+
+    async IAsyncEnumerable<(ProfileId, PostId)> CreatePostsAsync(IReadOnlyList<CreateUserCmd> users)
     {
         var random = new Random();
         foreach (var user in users)
         {
+            var profileId = new ProfileId(user.Username);
             var numPosts = random.Next(1, 4);
             for (var i = 0; i < numPosts; i++)
             {
+                var postId = new PostId(Guid.NewGuid());
                 var postCmd = new PostCreated(
-                    new(Guid.NewGuid()),
-                    new(user.Username),
+                    postId,
+                    profileId,
                     CreateRandomDate(),
                     new($"Post {i+1} from {user.DisplayName}"));
                 await postRepository.CreatePostAsync(postCmd).ConfigureAwait(false);
+                yield return (profileId, postId);
             }
         }
-        return;
         
         DateTime CreateRandomDate()
         {

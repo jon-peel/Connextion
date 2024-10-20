@@ -3,7 +3,7 @@ namespace Connextion.ViewModels;
 public class LikeButtonViewModel(PostService postService, Post post, User currentUser)
 {
     public bool CanBeLiked { get; private set; } = !post.LikedBy.Contains(currentUser.Id);
-    public bool CanBeUnLiked { get; private set; } = !post.LikedBy.Contains(currentUser.Id);
+    public bool CanBeUnLiked { get; private set; } = post.LikedBy.Contains(currentUser.Id);
     public string ButtonText { get; private set; } = GenerateButtonText(post, currentUser);
 
 
