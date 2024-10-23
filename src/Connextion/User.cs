@@ -56,4 +56,12 @@ public class User : Profile
     public Result<UpdateBioCmd> UpdateBio(string text) => 
         CanSetBio(text)
             .Map(() => new UpdateBioCmd(Id.Value, text));
+
+    public async Task<bool> CanMessageAsync(ProfileId profileId)
+    {
+        var followed = await Followers.AnyAsync(x => x.Id == profileId).ConfigureAwait(false);
+        if (!followed) return false;
+        var following = await Following.AnyAsync(x => x.Id == profileId).ConfigureAwait(false);
+        return following && followed;
+    }
 }

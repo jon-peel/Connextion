@@ -14,6 +14,7 @@ public static class HostAndServiceExtensions
             .AddScoped<UserRepository>()
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IPostRepository, PostRepository>()
+            .AddTransient<IMessageRepository, MessageRepository>()
             .AddScoped<ConfigureTheDatabase>();
 
     public static T ConfigureGraphDb<T>(this T host) where T : IHost

@@ -1,0 +1,24 @@
+@if (!string.IsNullOrEmpty(ViewModel.Error))
+{
+    <p class="error">@ViewModel.Error</p>
+}
+
+@if (ViewModel.IsBusy)
+{
+    <BusyIndicator />
+}
+else
+{
+    <form @onsubmit="ViewModel.SendMessageAsync">
+        <label>
+            Message :
+            <InputTextArea @bind-Value="ViewModel.NewMessage"></InputTextArea>
+        </label>
+        <button type="submit">Send</button>
+    </form>
+}
+
+@code {
+    [Parameter] public required MessagesConversationViewModel ViewModel { get; init; }
+
+}

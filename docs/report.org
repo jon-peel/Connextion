@@ -144,11 +144,14 @@ As the platform continues to evolve, several important features are planned to e
 
 ** Direct Messaging
 
-A direct messaging system will be introduced to allow users to communicate privately. This feature is critical for professionals seeking to establish deeper, one-on-one interactions beyond public posts or timelines.
+A direct messaging system will be introduced to allow users to communicate privately. 
+This feature is critical for professionals seeking to establish deeper, one-on-one interactions beyond public posts or timelines.
 
 ** Event Creation and RSVP System
 
-The platform will support the creation of events, both virtual and in-person. Users will be able to create, share, and invite others to networking events. An RSVP system will allow attendees to confirm their participation, making event management streamlined and user-friendly.
+The platform will support the creation of events, both virtual and in-person. 
+Users will be able to create, share, and invite others to networking events. 
+An RSVP system will allow attendees to confirm their participation, making event management streamlined and user-friendly.
 
 ** Search and Discovery
 

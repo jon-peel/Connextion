@@ -20,6 +20,10 @@
             {
                 <RelationshipStatus ViewModel="rs"/>
             }
+            @if (ViewModel.DirectMessageLink is { } dm)
+            {
+                <DirectMessageLink ViewModel="dm" />
+            }
         </a>
 
         <menu class="tabs">

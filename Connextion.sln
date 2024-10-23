@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4ADCF793-1EA2-4CD7-B12A-A007F592818B}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		docs\proposal.org = docs\proposal.org
+		docs\report.org = docs\report.org
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B4269569-51DF-4EB6-BC1A-226E345FA0B6}"

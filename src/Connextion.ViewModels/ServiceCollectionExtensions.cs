@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
         return services
             .AddTransient<TimeLineViewModel>()
             .AddTransient<ProfileViewModel>()
+            .AddTransient<MessagesViewModel>()
             .AddTransient<CreatePostViewModel>();
     }
 }

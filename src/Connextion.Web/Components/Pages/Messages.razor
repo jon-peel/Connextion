@@ -1,0 +1,26 @@
+@inject MessagesViewModel ViewModel;
+
+@page "/Messages"
+@page "/Messages/{profileId}"
+
+<h3>Messages</h3>
+
+<nav>
+    <h4>Inbox</h4>
+</nav>
+
+@if (ViewModel.Conversation is { } conversation) {
+    <MessagesConversation ViewModel="@conversation" />    
+}
+
+
+@code {
+    [Parameter] public string? ProfileId { get; init; }
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override Task OnInitializedAsync() =>
+        AppState.CurrentUser is { } currentUser
+            ? ViewModel.InitializeAsync(currentUser, ProfileId)
+            : Task.CompletedTask;
+
+}
