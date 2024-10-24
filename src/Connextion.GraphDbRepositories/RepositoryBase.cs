@@ -42,26 +42,3 @@ public abstract class RepositoryBase(IDriver driver)
         }
     }
 }
-
-public class MessageRepository(IDriver driver) : RepositoryBase(driver), IMessageRepository
-{
-    public Task<Result> SendMessageAsync(SendMessageCmd arg)
-    {
-        const string query =
-            """
-            MATCH (from:Profile {id: $from})
-            MATCH (to:Profile {id: $to})
-            CREATE (from)-[m:MESSAGE]->(to)
-            SET m.sentAt = $sentAt
-            SET m.body = $body
-            """;
-        var parameters = new
-        {
-            from = arg.From.Value,
-            to = arg.To.Value,
-            sentAt = arg.SentAt,
-            body = arg.Body.Value
-        };
-        return ExecuteWriteAsync(query, parameters);
-    }
-}

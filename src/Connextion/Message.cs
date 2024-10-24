@@ -6,12 +6,15 @@ public record MessageId(Guid Value) {
 
 public record MessageBody(string Value);
 public record SendMessageCmd(MessageId Id, DateTime SentAt, ProfileId From, ProfileId To, MessageBody Body);
-public record InboxProfileDto();
+
+public record InboxProfileDto(ProfileId Id, DisplayName DisplayName);
+
 public record MessageDto();
 
 public interface IMessageRepository
 {
-    Task<Result> SendMessageAsync(SendMessageCmd arg);
+    Task<Result> SendMessageAsync(SendMessageCmd cmd);
+    Task<IReadOnlyList<InboxProfileDto>> GetInboxAsync(ProfileId id);
 }
 
 public class MessageService(IMessageRepository messageRepository)

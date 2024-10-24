@@ -1,6 +1,6 @@
 namespace Connextion.ViewModels.Profiles;
 
-public class MessagesViewModel(MessageService messageService) //IMessageRepository messageRepository)
+public class MessagesViewModel(MessageService messageService, IMessageRepository messageRepository)
 {
     // ttt 
 
@@ -16,7 +16,6 @@ public class MessagesViewModel(MessageService messageService) //IMessageReposito
         _openProfileId = openProfileId;
         Conversation = openProfileId != null ? new(messageService, currentUser, openProfileId) : null;
 
-        await Task.CompletedTask.ConfigureAwait(false);
-        // Inbox = await messageRepository.GetInboxAsync(currentUser.UserName).ConfigureAwait(false);
+        Inbox = await messageRepository.GetInboxAsync(currentUser.UserName).ConfigureAwait(false);
     }
 }

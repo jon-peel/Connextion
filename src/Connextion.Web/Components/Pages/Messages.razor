@@ -7,6 +7,14 @@
 
 <nav>
     <h4>Inbox</h4>
+    <ul>
+    @foreach (var item in ViewModel.Inbox)
+    {
+        <NavLink href=@($"/Messages/{item.Id.Value}")>
+            @item.DisplayName.Value
+        </NavLink>
+    }
+    </ul>
 </nav>
 
 @if (ViewModel.Conversation is { } conversation) {
