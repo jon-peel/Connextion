@@ -5,16 +5,15 @@ public record MessageId(Guid Value) {
 }
 
 public record MessageBody(string Value);
-public record SendMessageCmd(MessageId Id, DateTime SentAt, ProfileId From, ProfileId To, MessageBody Body);
-
+public record SendMessageCmd(MessageId Id, DateTimeOffset SentAt, ProfileId From, ProfileId To, MessageBody Body);
 public record InboxProfileDto(ProfileId Id, DisplayName DisplayName);
-
-public record MessageDto();
+public record MessageDto(MessageId Id, ProfileId From, ProfileId To, DateTimeOffset SentAt, MessageBody Body);
 
 public interface IMessageRepository
 {
     Task<Result> SendMessageAsync(SendMessageCmd cmd);
     Task<IReadOnlyList<InboxProfileDto>> GetInboxAsync(ProfileId id);
+    IAsyncEnumerable<MessageDto> GetMessagesAsync(string idValue, string openProfileId);
 }
 
 public class MessageService(IMessageRepository messageRepository)
@@ -26,10 +25,10 @@ public class MessageService(IMessageRepository messageRepository)
     }
 }
 
-public class Message(MessageId id, DateTime sentAt, ProfileId from, ProfileId to, MessageBody body)
+public class Message(MessageId id, DateTimeOffset sentAt, ProfileId from, ProfileId to, MessageBody body)
 {
     public static Message Create(ProfileId from, ProfileId to, string body) => 
-        new (MessageId.Create(), DateTime.UtcNow, from, to, new(body));
+        new (MessageId.Create(), DateTimeOffset.Now, from, to, new(body));
 
     public Result<SendMessageCmd> Send()
     {

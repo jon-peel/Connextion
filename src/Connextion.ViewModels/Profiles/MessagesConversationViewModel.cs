@@ -1,11 +1,11 @@
 namespace Connextion.ViewModels.Profiles;
 
-public class MessagesConversationViewModel(MessageService messageService, User currentUser, string openProfileId)
+public class MessagesConversationViewModel(MessageService messageService, IMessageRepository messageRepository, User currentUser, string openProfileId)
 {
-    // IAsyncEnumerable<MessageDto> _messages = messageRepository.GetMessagesAsync(currentUser.UserName, openProfileId);
     public bool IsBusy { get; private set; }
     public string NewMessage { get; set; } = "";
     public string? Error { get; private set; }
+    public IAsyncEnumerable<MessageDto> Messages { get; } = messageRepository.GetMessagesAsync(currentUser.Id.Value, openProfileId);
 
     public async Task SendMessageAsync()
     {

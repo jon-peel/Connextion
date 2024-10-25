@@ -26,7 +26,7 @@
     [Parameter] public string? ProfileId { get; init; }
     [CascadingParameter] public required AppState AppState { get; init; }
 
-    protected override Task OnInitializedAsync() =>
+    protected override Task OnParametersSetAsync() =>
         AppState.CurrentUser is { } currentUser
             ? ViewModel.InitializeAsync(currentUser, ProfileId)
             : Task.CompletedTask;

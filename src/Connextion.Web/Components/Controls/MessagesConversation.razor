@@ -1,24 +1,38 @@
-@if (!string.IsNullOrEmpty(ViewModel.Error))
-{
-    <p class="error">@ViewModel.Error</p>
-}
+<section>
+    @if (!string.IsNullOrEmpty(ViewModel.Error))
+    {
+        <p class="error">@ViewModel.Error</p>
+    }
 
-@if (ViewModel.IsBusy)
-{
-    <BusyIndicator />
-}
-else
-{
-    <form @onsubmit="ViewModel.SendMessageAsync">
-        <label>
-            Message :
-            <InputTextArea @bind-Value="ViewModel.NewMessage"></InputTextArea>
-        </label>
-        <button type="submit">Send</button>
-    </form>
-}
+    @foreach (var message in _messages)
+    {
+        <article>@message</article>
+    }
+    
+    @if (ViewModel.IsBusy)
+    {
+        <BusyIndicator />
+    }
+    else
+    {
+        <form @onsubmit="ViewModel.SendMessageAsync">
+            <label>
+                Message :
+                <InputTextArea @bind-Value="ViewModel.NewMessage"></InputTextArea>
+            </label>
+            <button type="submit">Send</button>
+        </form>
+    }
+</section>
 
 @code {
+    MessageDto[] _messages = Array.Empty<MessageDto>();
+    
     [Parameter] public required MessagesConversationViewModel ViewModel { get; init; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _messages = await ViewModel.Messages.ToArrayAsync().ConfigureAwait(false);
+    }
 
 }

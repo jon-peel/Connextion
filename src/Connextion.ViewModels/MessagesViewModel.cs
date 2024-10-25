@@ -14,7 +14,7 @@ public class MessagesViewModel(MessageService messageService, IMessageRepository
     {
         _currentUser = currentUser;
         _openProfileId = openProfileId;
-        Conversation = openProfileId != null ? new(messageService, currentUser, openProfileId) : null;
+        Conversation = openProfileId != null ? new(messageService, messageRepository, currentUser, openProfileId) : null;
 
         Inbox = await messageRepository.GetInboxAsync(currentUser.UserName).ConfigureAwait(false);
     }

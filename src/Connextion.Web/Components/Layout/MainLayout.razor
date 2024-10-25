@@ -9,7 +9,8 @@
         </h1>
         <nav>
             <NavLink href="/">Home</NavLink>
-            <NavLink href=@($"/profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink>
+            <NavLink href=@($"/Messages")>Messages</NavLink>
+            <NavLink href=@($"/Profile/{AppState.CurrentUser.Id.Value}")>Profile</NavLink>
         </nav>
     </header>
     <main>
