@@ -1,0 +1,37 @@
+
+<article class="mb-6 w-1/2">
+    <div class="flex justify-between">
+        @if (ViewModel.FromMe)
+        {
+            <span class="@SentAtClass">@ViewModel.SentAt</span>
+            <span class="@FromClass">@ViewModel.From</span>
+
+        }
+        else
+        {
+            <span class="@FromClass">@ViewModel.From</span>
+            <span class="@SentAtClass">@ViewModel.SentAt</span>
+        }
+    </div>
+    <div class="@GenerateClass()">
+        <p class="text-sm font-normal text-gray-900 dark:text-white">
+            @ViewModel.Message
+        </p>
+    </div>
+</article>
+
+@code {
+    const string SentAtClass = "text-sm font-normal text-gray-500 dark:text-gray-400";
+    const string FromClass = "text-sm font-semibold text-gray-900 dark:text-white";
+    
+    [Parameter] public required MessageBlockViewModel ViewModel { get; init; }
+
+    string GenerateClass()
+    {
+        const string tailwindClasses = "flex flex-col leading-1.5 p-4  ";
+        return tailwindClasses +
+               (ViewModel.FromMe
+                   ? "border-green-200 bg-green-100 dark:bg-green-700 rounded-s-xl rounded-ee-xl self-end"
+                   : "border-gray-200 bg-gray-100 dark:bg-gray-700 rounded-es-xl rounded-e-xl self-start");
+    }
+}

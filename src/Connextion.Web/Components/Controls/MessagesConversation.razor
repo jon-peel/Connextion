@@ -1,4 +1,5 @@
-<section>
+
+<section class="bg-gray-200 dark:bg-gray-900 rounded-lg p-4 shadow-md flex flex-col justify-start items-center">
     @if (!string.IsNullOrEmpty(ViewModel.Error))
     {
         <p class="error">@ViewModel.Error</p>
@@ -6,7 +7,7 @@
 
     @foreach (var message in _messages)
     {
-        <article>@message</article>
+        <MessageBlock ViewModel="@message" />
     }
     
     @if (ViewModel.IsBusy)
@@ -26,7 +27,7 @@
 </section>
 
 @code {
-    MessageDto[] _messages = Array.Empty<MessageDto>();
+    MessageBlockViewModel[] _messages = [];
     
     [Parameter] public required MessagesConversationViewModel ViewModel { get; init; }
 
