@@ -6,6 +6,12 @@ public class Result : Result<object>
 
     public static Result Ok() => new(true, new {}, null);
     public new static Result Error(string errorValue) => new(false, default, errorValue);
+
+    public Result Do(Action action)
+    {
+        _ = base.Do(_ => action());
+        return this;
+    }
 }
 
 public class Result<T> {
@@ -92,12 +98,25 @@ public class Result<T> {
     {
         return _success ? _value! : transformError(_errorValue!);
     }
+
+    protected Result<T> Do(Action<T> action)
+    {
+        if (_success) action(_value!);
+        return this;
+    }
 }
 
 public static class ResultExtensions
 {
     public static Result<TOut> ToResult<TOut>(this TOut value) => Result<TOut>.Ok(value);
     
+    
+    public static async Task<Result> DoAsync(this Task<Result> resultTask, Action action)
+    {
+        var result = await resultTask.ConfigureAwait(false);
+        return result.Do(action);
+    }
+
     public static async Task<Result<TOut>> MapAsync<TOut>(this Task<Result> resultTask, Func<TOut> transform)
     {
         var result = await resultTask.ConfigureAwait(false);

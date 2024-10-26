@@ -5,7 +5,7 @@
         <p class="error">@ViewModel.Error</p>
     }
 
-    @foreach (var message in _messages)
+    @foreach (var message in ViewModel.Messages)
     {
         <MessageBlock ViewModel="@message" />
     }
@@ -27,13 +27,14 @@
 </section>
 
 @code {
-    MessageBlockViewModel[] _messages = [];
+    // MessageBlockViewModel[] _messages = [];
     
     [Parameter] public required MessagesConversationViewModel ViewModel { get; init; }
 
     protected override async Task OnInitializedAsync()
     {
-        _messages = await ViewModel.Messages.ToArrayAsync().ConfigureAwait(false);
+        ViewModel.PropertyChanged += (_,_) => _ = InvokeAsync(StateHasChanged);
+        await ViewModel.InitializeAsync().ConfigureAwait(false);
     }
 
 }
