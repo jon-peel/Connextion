@@ -3,10 +3,10 @@
 @page "/Messages"
 @page "/Messages/{profileId}"
 
-<h3>Messages</h3>
+<section class="grid grid-cols-6">
 
-<nav>
-    <h4>Inbox</h4>
+<nav class="col-span-2">
+    <h3>Inbox</h3>
     <ul>
     @foreach (var item in ViewModel.Inbox)
     {
@@ -20,7 +20,7 @@
 @if (ViewModel.Conversation is { } conversation) {
     <MessagesConversation ViewModel="@conversation" />    
 }
-
+</section>
 
 @code {
     [Parameter] public string? ProfileId { get; init; }

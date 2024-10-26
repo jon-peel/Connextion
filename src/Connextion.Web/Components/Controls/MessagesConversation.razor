@@ -1,5 +1,5 @@
 
-<section class="bg-gray-200 dark:bg-gray-900 rounded-lg p-4 shadow-md flex flex-col justify-start items-center">
+<section class="col-span-4 bg-gray-200 dark:bg-gray-900 rounded-lg p-4 shadow-md flex flex-col justify-start items-center">
     @if (!string.IsNullOrEmpty(ViewModel.Error))
     {
         <p class="error">@ViewModel.Error</p>
@@ -16,12 +16,12 @@
     }
     else
     {
-        <form @onsubmit="ViewModel.SendMessageAsync">
-            <label>
+        <form class="flex flex-row justify-between gap-2" @onsubmit="ViewModel.SendMessageAsync">
+            <label class="w-1/4" for="newMessage">
                 Message :
-                <InputTextArea @bind-Value="ViewModel.NewMessage"></InputTextArea>
             </label>
-            <button type="submit">Send</button>
+            <InputTextArea id="newMessage" class="w-1/2 !m-0" @bind-Value="ViewModel.NewMessage"></InputTextArea>
+            <button class="w-1/4" type="submit">Send</button>
         </form>
     }
 </section>
