@@ -4,26 +4,52 @@
 
 <h3>Events</h3>
 
-<ul>
-    @foreach (var e in ViewModel.AvailableEvents)
-    {
-        <li>@e</li>
-    }
-</ul>
+@if(ViewModel.IsBusy) { <BusyIndicator /> }
 
-<ul>
-    @foreach (var e in ViewModel.AttendingEvents)
-    {
-        <li>@e</li>
-    }
-</ul>
+<menu class="tabs">
+    <a @onclick="() => ViewModel.Show = EventsViewModel.Tab.Available"
+       class="@(ViewModel.Show == EventsViewModel.Tab.Available ? "active" : null)">
+        Available
+    </a>
+    <a @onclick="() => ViewModel.Show = EventsViewModel.Tab.Attending"
+       class="@(ViewModel.Show == EventsViewModel.Tab.Attending ? "active" : null)">
+        Attending
+    </a>
+    <a @onclick="() => ViewModel.Show = EventsViewModel.Tab.Organising"
+       class="@(ViewModel.Show == EventsViewModel.Tab.Organising ? "active" : null)">
+        Organising
+    </a>
+</menu>
 
-<ul>
-    @foreach (var e in ViewModel.OrganisingEvents)
-    {
-        <li>@e</li>
-    }
-</ul>
+@if (ViewModel.Show == EventsViewModel.Tab.Available)
+{
+    <ul>
+        @foreach (var e in ViewModel.AvailableEvents)
+        {
+            <li>@e</li>
+        }
+    </ul>
+}
+
+@if (ViewModel.Show == EventsViewModel.Tab.Attending)
+{
+    <ul>
+        @foreach (var e in ViewModel.AttendingEvents)
+        {
+            <li> @e </li>
+        }
+    </ul>
+}
+
+@if (ViewModel.Show == EventsViewModel.Tab.Organising)
+{
+    <ul>
+        @foreach (var e in ViewModel.OrganisingEvents)
+        {
+            <li> @e </li>
+        }
+    </ul>
+}
 
 @code {
     [CascadingParameter] public required AppState AppState { get; init; }

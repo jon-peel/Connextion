@@ -9,6 +9,7 @@ public class EventsViewModel(IEventRepository eventRepository)
     public IReadOnlyList<EventDetailsDto> AttendingEvents { get; private set; } = Array.Empty<EventDetailsDto>();
     public IReadOnlyList<EventDetailsDto> OrganisingEvents { get; private set; } = Array.Empty<EventDetailsDto>();
     public IReadOnlyList<EventDetailsDto> AvailableEvents { get; private set; } = Array.Empty<EventDetailsDto>();
+    public bool IsBusy { get; private set; } = true;
 
 
     public async Task InitializeAsync(User currentUser)
@@ -19,6 +20,7 @@ public class EventsViewModel(IEventRepository eventRepository)
         OrganisingEvents = result.OrganisingEvents;
         AttendingEvents = result.AttendingEvents;
         AvailableEvents = result.AvailableEvents;
+        IsBusy = false;
     }
 
     public enum Tab
