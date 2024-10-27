@@ -37,7 +37,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
             MATCH (p:Profile { id: $profileId })
             RETURN 
                 COLLECT { 
-                    MATCH (e:Event)-[:ORGANISED_BY]->(p) WHERE e.startDate > date
+                    MATCH (e:Event)-[:ORGANISED_BY]->(p) // WHERE e.startDate > date
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,
@@ -45,7 +45,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
                              attendees: COUNT{ (e)-[:ATTENDED_BY]->(a) }, 
                              startDate: e.startDate } AS D } AS organising,
                 COLLECT { 
-                    MATCH (e:Event)-[:ATTENDED_BY]->(p) WHERE e.startDate > date 
+                    MATCH (e:Event)-[:ATTENDED_BY]->(p) // WHERE e.startDate > date 
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,
@@ -53,7 +53,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
                              attendees: COUNT{ (e)-[:ATTENDED_BY]->(a) }, 
                              startDate: e.startDate } AS D } AS attending,
                 COLLECT { 
-                    MATCH (e:Event) WHERE e.startDate > date 
+                    MATCH (e:Event) // WHERE e.startDate > date 
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,
@@ -80,7 +80,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
         var description = record["description"].As<string>();
         var capacity = (ushort) record["capacity"].As<int>();
         var attendees = (ushort) record["attendees"].As<int>();
-        var startDate = record["startDate"].As<DateOnly>();
+        var startDate = DateOnly.FromDateTime(record["startDate"].As<DateTime>());
         return new(key, name, description, capacity, attendees, startDate); 
     }
 }

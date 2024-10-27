@@ -1,0 +1,37 @@
+@page "/Events"
+
+@inject EventsViewModel ViewModel
+
+<h3>Events</h3>
+
+<ul>
+    @foreach (var e in ViewModel.AvailableEvents)
+    {
+        <li>@e</li>
+    }
+</ul>
+
+<ul>
+    @foreach (var e in ViewModel.AttendingEvents)
+    {
+        <li>@e</li>
+    }
+</ul>
+
+<ul>
+    @foreach (var e in ViewModel.OrganisingEvents)
+    {
+        <li>@e</li>
+    }
+</ul>
+
+@code {
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AppState.CurrentUser is { } user)
+            await ViewModel.InitializeAsync(user).ConfigureAwait(false);
+    }
+
+}

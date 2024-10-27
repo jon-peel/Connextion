@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<ProfileViewModel>()
             .AddTransient<MessagesViewModel>()
             .AddTransient<CreatePostViewModel>()
-            .AddTransient<CreateEventViewModel>();
+            .AddTransient<CreateEventViewModel>()
+            .AddTransient<EventsViewModel>();
     }
 }
