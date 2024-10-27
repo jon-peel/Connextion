@@ -1,0 +1,107 @@
+@page "/Events/CreateEvent"
+@using Connextion.Events
+@using Connextion.ViewModels.Events
+
+@inject NavigationManager NavigationManager;
+@inject CreateEventViewModel ViewModel; 
+
+<h2>Create Event</h2
+
+    @if (!string.IsNullOrEmpty(ViewModel.Error))
+    {
+    <p class="error">@ViewModel.Error</p>
+    }
+
+    @if (ViewModel.IsBusy)
+    {
+        <BusyIndicator/>
+    }
+    else
+    {
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form @onsubmit="OnSubmitAsync">
+                <div class="mb-4">
+                    <label for="Name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                    <InputText id="Name"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black  leading-tight focus:outline-none focus:shadow-outline"
+                               @bind-Value="ViewModel.Name"
+                    />
+                </div>
+                <div class="mb-4">
+                    <label for="Description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                    <InputTextArea Id="Description"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                   rows="5"
+                                   @bind-Value="ViewModel.Description">
+                    </InputTextArea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Capacity" class="block text-gray-700 text-sm font-bold mb-2">Capacity</label>
+                    <InputNumber id="Capacity"
+                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                 type="datetime-local"
+                                 @bind-Value="ViewModel.Capacity"
+                    />
+                </div>
+
+                <div class="mb-4">
+                    <label for="MultiDay" class="block text-gray-700 text-sm font-bold mb-2">Multi Day</label>
+                    <InputCheckbox id="MultiDay"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                   type="datetime-local"
+                                   @bind-Value="ViewModel.MultiDay"
+                    />
+                </div>
+                @if (ViewModel.MultiDay)
+                {
+                    <div class="mb-4">
+                        <label for="StartDate" class="block text-gray-700 text-sm font-bold mb-2">Start Date</label>
+                        <InputDate id="StartDate" TValue="DateOnly"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                   @bind-Value="ViewModel.StartDate"/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="EndDate" class="block text-gray-700 text-sm font-bold mb-2">End Date</label>
+                        <InputDate id="EndDate" TValue="DateOnly"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                   @bind-Value="ViewModel.EndDate"/>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-4">
+                        <label for="Date" class="block text-gray-700 text-sm font-bold mb-2">Date</label>
+                        <InputDate id="Date" TValue="DateOnly"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-black leading-tight focus:outline-none focus:shadow-outline"
+                                   @bind-Value="ViewModel.StartDate"/>
+                    </div>
+                }
+
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    }
+
+
+@code {
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override void OnInitialized()
+    {
+        if (AppState.CurrentUser is { } currentUser)
+            ViewModel.Initialize(currentUser);
+    }
+
+    async Task OnSubmitAsync()
+    {
+        await ViewModel.CreateEventAsync().DoAsync(OpenEvent).ConfigureAwait(false);
+    }
+
+    void OpenEvent(EventName name) => 
+        InvokeAsync(() => NavigationManager.NavigateTo($"/Events/{name.Key}"));
+}

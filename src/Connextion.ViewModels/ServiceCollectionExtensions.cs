@@ -1,4 +1,5 @@
-﻿using Connextion.ViewModels.Profiles;
+﻿using Connextion.ViewModels.Events;
+using Connextion.ViewModels.Profiles;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Connextion.ViewModels;
@@ -11,6 +12,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<TimeLineViewModel>()
             .AddTransient<ProfileViewModel>()
             .AddTransient<MessagesViewModel>()
-            .AddTransient<CreatePostViewModel>();
+            .AddTransient<CreatePostViewModel>()
+            .AddTransient<CreateEventViewModel>();
     }
 }

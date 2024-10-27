@@ -99,7 +99,7 @@ public class Result<T> {
         return _success ? _value! : transformError(_errorValue!);
     }
 
-    protected Result<T> Do(Action<T> action)
+    public Result<T> Do(Action<T> action)
     {
         if (_success) action(_value!);
         return this;
@@ -112,6 +112,12 @@ public static class ResultExtensions
     
     
     public static async Task<Result> DoAsync(this Task<Result> resultTask, Action action)
+    {
+        var result = await resultTask.ConfigureAwait(false);
+        return result.Do(action);
+    }
+
+    public static async Task<Result<T>> DoAsync<T>(this Task<Result<T>> resultTask, Action<T> action)
     {
         var result = await resultTask.ConfigureAwait(false);
         return result.Do(action);

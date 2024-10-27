@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Connextion.Events;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
@@ -10,12 +11,13 @@ public static class HostAndServiceExtensions
     public static IServiceCollection AddGraphDbRepositories(this IServiceCollection services) =>
         services
             .AddSingleton(DriverFactory)
-            .AddScoped<IProfileRepository, ProfileRepository>()
-            .AddScoped<UserRepository>()
-            .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IPostRepository, PostRepository>()
+            .AddTransient<IEventRepository, EventRepository>()
+            .AddTransient<IProfileRepository, ProfileRepository>()
+            .AddTransient<UserRepository>()
+            .AddTransient<IUserRepository, UserRepository>()
+            .AddTransient<IPostRepository, PostRepository>()
             .AddTransient<IMessageRepository, MessageRepository>()
-            .AddScoped<ConfigureTheDatabase>();
+            .AddTransient<ConfigureTheDatabase>();
 
     public static T ConfigureGraphDb<T>(this T host) where T : IHost
     {
