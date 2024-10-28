@@ -22,6 +22,8 @@ internal class ConfigureTheDatabase(
             "CREATE CONSTRAINT IF NOT EXISTS FOR (user:User) REQUIRE user.username IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (profile:Profile) REQUIRE profile.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (post:Post) REQUIRE post.id IS UNIQUE",
+            "CREATE CONSTRAINT IF NOT EXISTS FOR (event:Event) REQUIRE event.id IS UNIQUE",
+            "CREATE CONSTRAINT IF NOT EXISTS FOR (event:Event) REQUIRE event.key IS UNIQUE",
             "CREATE INDEX IF NOT EXISTS FOR (p:Post) ON (p.postedAt)"
         ];
         await using var session = driver.AsyncSession();

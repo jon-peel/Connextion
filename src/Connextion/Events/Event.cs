@@ -6,27 +6,27 @@ public record EventName(string Key, string FullName);
 
 public record EventDescription(string Value);
 
-public record EventOrganisers(IReadOnlySet<ProfileSummary> People);
+public record EventOrganisers(IReadOnlyList<ProfileSummary> People);
 
-public record EventAttendees(ushort Capacity, IReadOnlySet<ProfileSummary> People);
+public record EventAttendees(ushort Capacity, IReadOnlyList<ProfileSummary> People);
 
 public abstract class Event
 {
     protected Event(EventId id, EventName name, EventDescription description, EventOrganisers organisers,
-        EventAttendees eventAttendees)
+        EventAttendees attendees)
     {
         Id = id;
         Name = name;
         Description = description;
         Organisers = organisers;
-        EventAttendees = eventAttendees;
+        Attendees = attendees;
     }
 
     EventId Id { get; }
-    EventName Name { get; }
-    EventDescription Description { get; }
-    EventOrganisers Organisers { get; }
-    EventAttendees EventAttendees { get; }
+    public EventName Name { get; }
+    public EventDescription Description { get; }
+    public EventOrganisers Organisers { get; }
+    public EventAttendees Attendees { get; }
 
     public static Result<CreateEventCmd> CreateCommand(
         string name,
@@ -57,7 +57,7 @@ public abstract class Event
 
         var keyName = name.ToLower().Replace(" ", "-");
         var nameValue = new EventName(keyName, name);
-        var people = new[] { createdBy }.ToHashSet();
+        var people = new[] { createdBy };
         var organisers = new EventOrganisers(people);
         var attendees = new EventAttendees(capacity, people);
 
@@ -80,7 +80,7 @@ public abstract class Event
             Name.FullName,
             Description.Value,
             Organisers.People.Single().Id.Value,
-            EventAttendees.Capacity,
+            Attendees.Capacity,
             d.Item1,
             d.Item2));
 
@@ -89,8 +89,8 @@ public abstract class Event
 public class SingleDayEvent : Event
 {
     internal SingleDayEvent(EventId id, EventName name, EventDescription description, EventOrganisers organisers,
-        EventAttendees eventAttendees, DateOnly date)
-        : base(id, name, description, organisers, eventAttendees)
+        EventAttendees attendees, DateOnly date)
+        : base(id, name, description, organisers, attendees)
     {
         Date = date;
     }
@@ -101,8 +101,8 @@ public class SingleDayEvent : Event
 public class MultiDayEvent : Event
 {
     internal MultiDayEvent(EventId id, EventName name, EventDescription description, EventOrganisers organisers,
-        EventAttendees eventAttendees,
-        DateOnly startDate, DateOnly endDate) : base(id, name, description, organisers, eventAttendees)
+        EventAttendees attendees,
+        DateOnly startDate, DateOnly endDate) : base(id, name, description, organisers, attendees)
     {
         StartDate = startDate;
         EndDate = endDate;

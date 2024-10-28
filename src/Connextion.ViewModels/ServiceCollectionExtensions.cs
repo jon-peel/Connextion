@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<MessagesViewModel>()
             .AddTransient<CreatePostViewModel>()
             .AddTransient<CreateEventViewModel>()
-            .AddTransient<EventsViewModel>();
+            .AddTransient<EventsViewModel>()
+            .AddTransient<EventViewModel>();
     }
 }

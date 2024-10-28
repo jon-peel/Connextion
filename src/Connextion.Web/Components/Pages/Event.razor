@@ -1,0 +1,65 @@
+@page "/Events/{Key}"
+@inject EventViewModel ViewModel;
+
+<div class="container mx-auto p-4">
+    
+        <header class="mb-4">
+            <h2 class="text-2xl font-bold ">@ViewModel.Name</h2>
+        </header>
+
+        <section class="mb-6">
+            <p>@ViewModel.Description</p>
+        </section>
+
+        <section class="mb-6">
+            <p>
+                @if (ViewModel.MultiDay)
+                {
+                    <text>
+                        Start Date: @ViewModel.StartDate?.ToString("MM/dd/yyyy")
+                        <br>
+                        End Date: @ViewModel.EndDate?.ToString("MM/dd/yyyy")
+                    </text>
+                }
+                else
+                {
+                    <text>Date: @ViewModel.StartDate?.ToString("MM/dd/yyyy")</text>
+                }
+            </p>
+        </section>
+
+        <section class="mb-6">
+            <h3 class="text-xl font-semibold">Organisers</h3>
+            <ul class="pl-5">
+                @foreach (var organiser in ViewModel.Organisers)
+                {
+                    <li>@organiser.DisplayName</li>
+                }
+            </ul>
+        </section>
+
+        <section>
+            <h3 class="text-xl font-semibold">Attendees</h3>
+            <ul class="pl-5">
+                @foreach (var attendee in ViewModel.Attendees)
+                {
+                    <li>@attendee.DisplayName</li>
+                }
+            </ul>
+        </section>
+    
+</div>
+
+
+
+
+@code {
+    [Parameter] public required string Key { get; init; }
+    [CascadingParameter] public required AppState AppState { get; init; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AppState.CurrentUser is { } user) await ViewModel.InitializeAsync(user, Key);
+    }
+
+}

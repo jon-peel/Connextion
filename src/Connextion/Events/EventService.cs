@@ -20,6 +20,7 @@ public interface IEventRepository
 {
     Task<Result<EventName>> CreateEventAsync(CreateEventCmd cmd);
     Task<AllEventsDto> GetAllEventsAsync(ProfileId profileId, DateOnly date);
+    Task<Event?> GetEventsAsync(string key);
 }
 
 public class EventService(IEventRepository eventRepository)

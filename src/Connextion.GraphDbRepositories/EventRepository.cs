@@ -3,7 +3,7 @@ using Neo4j.Driver;
 
 namespace Connextion.GraphDbRepositories;
 
-public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRepository
+class EventRepository(UserRepository userRepository, IDriver driver) : RepositoryBase(driver), IEventRepository
 {
     public Task<Result<EventName>> CreateEventAsync(CreateEventCmd cmd)
     {
@@ -23,7 +23,8 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
             """;
         var parameters = new
         {
-            cmd.Id, cmd.Key, cmd.Name, cmd.Description, cmd.CreatedById, Capacity = (int)cmd.Capacity, cmd.StartDate, cmd.EndDate
+            cmd.Id, cmd.Key, cmd.Name, cmd.Description, cmd.CreatedById, Capacity = (int)cmd.Capacity, cmd.StartDate,
+            cmd.EndDate
         };
         return ExecuteWriteAsync(query, parameters)
             .MapAsync(() => new EventName(cmd.Key, cmd.Name));
@@ -66,21 +67,74 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
         return results.Single();
     }
 
+    public async Task<Event?> GetEventsAsync(string key)
+    {
+        const string query =
+            """
+            MATCH (event:Event { key: $key })
+            RETURN 
+                event.id AS id,
+                event.key AS key,
+                event.name AS name,
+                event.description AS description,
+                event.capacity AS capacity,
+                event.startDate AS startDate,
+                event.endDate AS endDate,
+                COLLECT { MATCH (event)-[:ORGANISED_BY]->(p) RETURN { id: p.id, displayName: p.displayName, bio: p.bio } AS p } AS organisers,
+                COLLECT { MATCH (event)-[:ATTENDED_BY]->(p) RETURN { id: p.id, displayName: p.displayName, bio: p.bio } AS p } AS attendees
+            """;
+        var parameters = new { key };
+        var results = await ExecuteQueryAsync(query, parameters, MapEvent).ConfigureAwait(false);
+        return results.SingleOrDefault();
+    }
+
+    Event MapEvent(IRecord record)
+    {
+        var id = new EventId(Guid.Parse(record["id"].As<string>()));
+        var name = new EventName(record["key"].As<string>(), record["name"].As<string>());
+        var description = new EventDescription(record["description"].As<string>());
+        var startDate = DateOnly.FromDateTime(record["startDate"].As<DateTime>());
+        var endDate = DateOnly.FromDateTime(record["endDate"].As<DateTime>());
+        var capacity = (ushort)record["capacity"].As<int>();
+
+        var organisers =
+            new EventOrganisers(
+                record["organisers"]
+                    .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+                    .Select(userRepository.MapProfileSummary)
+                    .ToArray());
+        var attendees =
+            new EventAttendees(
+                capacity,
+                record["attendees"]
+                    .As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+                    .Select(userRepository.MapProfileSummary)
+                    .ToArray());
+
+        return startDate == endDate
+            ? new SingleDayEvent(id, name, description, organisers, attendees, startDate)
+            : new MultiDayEvent(id, name, description, organisers, attendees, startDate, endDate);
+    }
+
     AllEventsDto MapAllEventsDto(IRecord record)
     {
-        var organising = record["organising"].As<IEnumerable<IReadOnlyDictionary<string, object>>>().Select(MapEventDetailsDto).ToArray();
-        var attending = record["attending"].As<IEnumerable<IReadOnlyDictionary<string, object>>>().Select(MapEventDetailsDto).ToArray();
-        var available = record["available"].As<IEnumerable<IReadOnlyDictionary<string, object>>>().Select(MapEventDetailsDto).ToArray();
+        var organising = record["organising"].As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+            .Select(MapEventDetailsDto).ToArray();
+        var attending = record["attending"].As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+            .Select(MapEventDetailsDto).ToArray();
+        var available = record["available"].As<IEnumerable<IReadOnlyDictionary<string, object>>>()
+            .Select(MapEventDetailsDto).ToArray();
         return new(organising, attending, available);
     }
 
-    EventDetailsDto MapEventDetailsDto(IReadOnlyDictionary<string, object> record){
+    EventDetailsDto MapEventDetailsDto(IReadOnlyDictionary<string, object> record)
+    {
         var key = record["key"].As<string>();
         var name = record["name"].As<string>();
         var description = record["description"].As<string>();
-        var capacity = (ushort) record["capacity"].As<int>();
-        var attendees = (ushort) record["attendees"].As<int>();
+        var capacity = (ushort)record["capacity"].As<int>();
+        var attendees = (ushort)record["attendees"].As<int>();
         var startDate = DateOnly.FromDateTime(record["startDate"].As<DateTime>());
-        return new(key, name, description, capacity, attendees, startDate); 
+        return new(key, name, description, capacity, attendees, startDate);
     }
 }
