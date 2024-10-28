@@ -37,7 +37,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
             MATCH (p:Profile { id: $profileId })
             RETURN 
                 COLLECT { 
-                    MATCH (e:Event)-[:ORGANISED_BY]->(p) // WHERE e.startDate > date
+                    MATCH (e:Event)-[:ORGANISED_BY]->(p) WHERE e.startDate > date
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,
@@ -45,7 +45,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
                              attendees: COUNT{ (e)-[:ATTENDED_BY]->(a) }, 
                              startDate: e.startDate } AS D } AS organising,
                 COLLECT { 
-                    MATCH (e:Event)-[:ATTENDED_BY]->(p) // WHERE e.startDate > date 
+                    MATCH (e:Event)-[:ATTENDED_BY]->(p) WHERE e.startDate > date 
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,
@@ -53,7 +53,7 @@ public class EventRepository(IDriver driver) : RepositoryBase(driver), IEventRep
                              attendees: COUNT{ (e)-[:ATTENDED_BY]->(a) }, 
                              startDate: e.startDate } AS D } AS attending,
                 COLLECT { 
-                    MATCH (e:Event) // WHERE e.startDate > date 
+                    MATCH (e:Event) WHERE e.startDate > date 
                     RETURN { key: e.key,
                              name: e.name,
                              description: e.description,

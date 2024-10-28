@@ -19,6 +19,7 @@
        class="@(ViewModel.Show == EventsViewModel.Tab.Organising ? "active" : null)">
         Organising
     </a>
+    <NavLink href="/Events/CreateEvent">Create New</NavLink>
 </menu>
 
 @if (ViewModel.Show == EventsViewModel.Tab.Available)
@@ -26,7 +27,7 @@
     <ul>
         @foreach (var e in ViewModel.AvailableEvents)
         {
-            <li>@e</li>
+            <li><EventCard ViewModel="@e" /></li>
         }
     </ul>
 }
@@ -36,7 +37,7 @@
     <ul>
         @foreach (var e in ViewModel.AttendingEvents)
         {
-            <li> @e </li>
+            <li><EventCard ViewModel="@e" /></li>
         }
     </ul>
 }
@@ -46,7 +47,7 @@
     <ul>
         @foreach (var e in ViewModel.OrganisingEvents)
         {
-            <li> @e </li>
+            <li><EventCard ViewModel="@e" /></li>
         }
     </ul>
 }

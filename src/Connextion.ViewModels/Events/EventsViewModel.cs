@@ -15,7 +15,7 @@ public class EventsViewModel(IEventRepository eventRepository)
     public async Task InitializeAsync(User currentUser)
     {
         var result = await eventRepository
-            .GetAllEventsAsync(currentUser.Id, DateOnly.FromDateTime(DateTime.Now))
+            .GetAllEventsAsync(currentUser.Id, DateOnly.FromDateTime(DateTime.Today))
             .ConfigureAwait(false);
         OrganisingEvents = result.OrganisingEvents;
         AttendingEvents = result.AttendingEvents;
