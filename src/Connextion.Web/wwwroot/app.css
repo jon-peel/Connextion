@@ -115,3 +115,6 @@ menu.tabs a {
     cursor-pointer
 }
 
+p.error {
+    @apply text-red-600 bg-red-100 p-4 rounded
+}

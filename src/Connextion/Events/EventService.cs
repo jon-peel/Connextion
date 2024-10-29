@@ -1,5 +1,7 @@
 namespace Connextion.Events;
 
+public record AddAttendeeCmd(string EventId, string AttendeeId);
+    
 public record CreateEventCmd(
     string Id,
     string Key,
@@ -19,8 +21,9 @@ public record AllEventsDto(
 public interface IEventRepository
 {
     Task<Result<EventName>> CreateEventAsync(CreateEventCmd cmd);
+    Task<Result> AddAttendeeAsync(AddAttendeeCmd cmd);
     Task<AllEventsDto> GetAllEventsAsync(ProfileId profileId, DateOnly date);
-    Task<Event?> GetEventsAsync(string key);
+    Task<Event?> GetEventAsync(string key);
 }
 
 public class EventService(IEventRepository eventRepository)
@@ -29,4 +32,11 @@ public class EventService(IEventRepository eventRepository)
         Event
             .CreateCommand(name, description, createdBy, capacity, startDate, endDate)
             .BindAsync(eventRepository.CreateEventAsync);
+
+    public async Task<Result> AttendEventAsync(string key, ProfileId currentUserId)
+    {
+        var e = await eventRepository.GetEventAsync(key).ConfigureAwait(false);
+        if (e is null) return Result.Error("Event not found");
+        return await e.AddAttendee(currentUserId).BindAsync(eventRepository.AddAttendeeAsync).ConfigureAwait(false);
+    }
 }

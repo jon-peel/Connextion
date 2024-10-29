@@ -84,6 +84,15 @@ public abstract class Event
             d.Item1,
             d.Item2));
 
+    public Result<AddAttendeeCmd> AddAttendee(ProfileId currentUserId)
+    {
+        if (Attendees.People.Any(p => p.Id == currentUserId)) 
+            return Result<AddAttendeeCmd>.Error("Already attending");
+        if (Attendees.People.Count >= Attendees.Capacity) 
+            return Result<AddAttendeeCmd>.Error("Capacity reached");
+        
+        return new AddAttendeeCmd(Id.Value.ToString(), currentUserId.Value).ToResult();
+    }
 }
 
 public class SingleDayEvent : Event

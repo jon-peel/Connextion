@@ -30,6 +30,18 @@ class EventRepository(UserRepository userRepository, IDriver driver) : Repositor
             .MapAsync(() => new EventName(cmd.Key, cmd.Name));
     }
 
+    public Task<Result> AddAttendeeAsync(AddAttendeeCmd cmd)
+    {
+        const string query =
+            """
+            MATCH (e:Event { id: $eventId })
+            MATCH (a:Profile { id: $attendeeId })
+            CREATE (e)-[:ATTENDED_BY]->(a)
+            """;
+        var parameters = new { eventId= cmd.EventId, attendeeId= cmd.AttendeeId };
+        return ExecuteWriteAsync(query, parameters);
+    }
+
     public async Task<AllEventsDto> GetAllEventsAsync(ProfileId profileId, DateOnly date)
     {
         const string query =
@@ -67,7 +79,7 @@ class EventRepository(UserRepository userRepository, IDriver driver) : Repositor
         return results.Single();
     }
 
-    public async Task<Event?> GetEventsAsync(string key)
+    public async Task<Event?> GetEventAsync(string key)
     {
         const string query =
             """

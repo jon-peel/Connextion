@@ -1,55 +1,89 @@
 @page "/Events/{Key}"
 @inject EventViewModel ViewModel;
 
-<div class="container mx-auto p-4">
-    
+@if (ViewModel.IsBusy)
+{
+    <BusyIndicator/>
+}
+else
+{
+    <div class="container mx-auto p-4">
+
         <header class="mb-4">
             <h2 class="text-2xl font-bold ">@ViewModel.Name</h2>
         </header>
 
         <section class="mb-6">
-            <p>@ViewModel.Description</p>
+            <p class="whitespace-pre-line">@ViewModel.Description</p>
         </section>
 
         <section class="mb-6">
             <p>
-                @if (ViewModel.MultiDay)
+                @if (ViewModel.MultiDay && ViewModel.StartDate is { } sd && ViewModel.EndDate is { } ed)
                 {
                     <text>
-                        Start Date: @ViewModel.StartDate?.ToString("MM/dd/yyyy")
+                        Start Date:
+                        <time datetime="@sd.ToString("O")">@sd.ToString("D")</time>
                         <br>
-                        End Date: @ViewModel.EndDate?.ToString("MM/dd/yyyy")
+                        End Date:
+                        <time datetime="@ed.ToString("O")">@ed.ToString("D")</time>
                     </text>
                 }
-                else
+                else if (ViewModel.StartDate is { } d)
                 {
-                    <text>Date: @ViewModel.StartDate?.ToString("MM/dd/yyyy")</text>
+                    <text>Date:
+                        <time datetime="@d.ToString("O")">@d.ToString("D")</time></text>
                 }
             </p>
         </section>
 
+        @if (!string.IsNullOrEmpty(ViewModel.AttendeeError))
+        {
+            <p class="error">@ViewModel.AttendeeError</p>
+        }
+        else
+        {
+            <button @onclick="ViewModel.AttendAsync"
+                    class="!bg-red-500 dark:!bg-red-700 hover:!bg-red-700 dark:hover:!bg-red-500 text-white font-bold py-2 px-4 rounded">
+                Attend Event
+            </button>
+        }
+
+        <menu class="tabs">
+            <a @onclick="() => ViewModel.Show = EventViewModel.Tab.Attendees"
+               class="@(ViewModel.Show == EventViewModel.Tab.Attendees ? "active" : null)">
+                Attendees
+            </a>
+            <a @onclick="() => ViewModel.Show = EventViewModel.Tab.Organisers"
+               class="@(ViewModel.Show == EventViewModel.Tab.Organisers ? "active" : null)">
+                Organisers
+            </a>
+        </menu>
+
         <section class="mb-6">
-            <h3 class="text-xl font-semibold">Organisers</h3>
-            <ul class="pl-5">
-                @foreach (var organiser in ViewModel.Organisers)
-                {
-                    <li>@organiser.DisplayName</li>
-                }
-            </ul>
+            @if (ViewModel.Show == EventViewModel.Tab.Attendees)
+            {
+                <ul class="pl-5">
+                    @foreach (var attendee in ViewModel.Attendees)
+                    {
+                        <li>
+                            <UserProfileLink ViewModel="@attendee" />
+                        </li>
+                    }
+                </ul>
+            }
+            @if (ViewModel.Show == EventViewModel.Tab.Organisers)
+            {
+                <ul class="pl-5">
+                    @foreach (var organiser in ViewModel.Organisers)
+                    {
+                        <UserProfileLink ViewModel="@organiser" />
+                    }
+                </ul>
+            }
         </section>
-
-        <section>
-            <h3 class="text-xl font-semibold">Attendees</h3>
-            <ul class="pl-5">
-                @foreach (var attendee in ViewModel.Attendees)
-                {
-                    <li>@attendee.DisplayName</li>
-                }
-            </ul>
-        </section>
-    
-</div>
-
+    </div>
+}
 
 
 
