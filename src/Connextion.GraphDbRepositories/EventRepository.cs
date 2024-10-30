@@ -100,6 +100,18 @@ class EventRepository(UserRepository userRepository, IDriver driver) : Repositor
         return results.SingleOrDefault();
     }
 
+    public Task<Result> AddOrganiserAsync(AddOrganiser cmd)
+    {
+        const string query =
+            """
+            MATCH (e:Event { id: $eventId })
+            MATCH (a:Profile { id: $attendeeId })
+            CREATE (e)-[:ORGANISED_BY]->(a)
+            """;
+        var parameters = new { eventId= cmd.EventId, attendeeId= cmd.AttendeeId };
+        return ExecuteWriteAsync(query, parameters);
+    }
+
     Event MapEvent(IRecord record)
     {
         var id = new EventId(Guid.Parse(record["id"].As<string>()));

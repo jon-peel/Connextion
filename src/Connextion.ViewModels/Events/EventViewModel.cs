@@ -17,8 +17,9 @@ public class EventViewModel(EventService eventService, IEventRepository eventRep
     public DateOnly? EndDate { get; private set; }
     public IReadOnlyList<ProfileLinkViewModel> Organisers { get; private set; } = Array.Empty<ProfileLinkViewModel>();
     public IReadOnlyList<ProfileLinkViewModel> Attendees { get; private set; } = Array.Empty<ProfileLinkViewModel>();
+    public bool CanAddOrganiser { get; private set; }
     public Tab Show { get; set; }
-     
+    
 
     public async Task InitializeAsync(User currentUser, string key)
     {
@@ -37,6 +38,7 @@ public class EventViewModel(EventService eventService, IEventRepository eventRep
         Description = e.Description.Value;
         Organisers = e.Organisers.People.Select(x => new ProfileLinkViewModel(x)).ToArray();
         Attendees = e.Attendees.People.Select(x => new ProfileLinkViewModel(x)).ToArray();
+        CanAddOrganiser = e.Organisers.People.Any(x => x.Id == _currentUser?.Id);
 
         (MultiDay, StartDate, EndDate) = e switch
         {
@@ -60,4 +62,16 @@ public class EventViewModel(EventService eventService, IEventRepository eventRep
     }
     
     public enum Tab { Attendees, Organisers }
+
+    public async Task AddOrganiserAsync(string id)
+    {
+        if (string.IsNullOrEmpty(_key)) return;
+        IsBusy = true;
+        AttendeeError = await eventService
+            .AddOrganiserAsync(_key, id)
+            .MapAsync(() => "Success")
+            .DefaultAsync(x => x)
+            .ConfigureAwait(false);
+        IsBusy = false;
+    }
 }

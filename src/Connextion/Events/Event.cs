@@ -84,14 +84,24 @@ public abstract class Event
             d.Item1,
             d.Item2));
 
-    public Result<AddAttendeeCmd> AddAttendee(ProfileId currentUserId)
+    public Result<AddAttendeeCmd> AddAttendee(ProfileId id)
     {
-        if (Attendees.People.Any(p => p.Id == currentUserId)) 
+        if (Attendees.People.Any(p => p.Id == id)) 
             return Result<AddAttendeeCmd>.Error("Already attending");
         if (Attendees.People.Count >= Attendees.Capacity) 
             return Result<AddAttendeeCmd>.Error("Capacity reached");
         
-        return new AddAttendeeCmd(Id.Value.ToString(), currentUserId.Value).ToResult();
+        return new AddAttendeeCmd(Id.Value.ToString(), id.Value).ToResult();
+    }
+
+    public Result<AddOrganiser> AddOrganiser(string id)
+    {
+        if (Attendees.People.All(p => p.Id.Value != id))
+            return Result<AddOrganiser>.Error("Not an attendee");
+        if (Organisers.People.Any(p => p.Id.Value == id))
+            return Result<AddOrganiser>.Error("Already an organiser");
+
+        return new AddOrganiser(Id.Value.ToString(), id).ToResult();
     }
 }
 

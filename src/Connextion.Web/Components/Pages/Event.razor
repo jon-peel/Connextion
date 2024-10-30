@@ -67,7 +67,12 @@ else
                     @foreach (var attendee in ViewModel.Attendees)
                     {
                         <li>
-                            <UserProfileLink ViewModel="@attendee" />
+                            <UserProfileLink ViewModel="@attendee">
+                                @if (ViewModel.CanAddOrganiser)
+                                {
+                                    <button type="button" @onclick="() => ViewModel.AddOrganiserAsync(attendee.Id)">Make Organiser</button>
+                                }
+                            </UserProfileLink>
                         </li>
                     }
                 </ul>
