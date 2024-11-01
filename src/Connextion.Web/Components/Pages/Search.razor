@@ -1,0 +1,27 @@
+@page "/Search"
+@inject SearchViewModel ViewModel
+
+<h3>Search</h3>
+<sub>@Query</sub>
+
+@if (ViewModel.IsBusy)
+{
+    <BusyIndicator/>
+}
+@foreach (var post in ViewModel.PostResults)
+{
+    <Post ViewModel="post" />
+}
+
+
+@code {
+    [CascadingParameter] public required AppState AppState { get; init; }
+    [SupplyParameterFromQuery(Name = "q")] public required string Query { get; init; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AppState.CurrentUser is { } user)
+            await ViewModel.InitializeAsync(user, Query).ConfigureAwait(false);
+    }
+
+}

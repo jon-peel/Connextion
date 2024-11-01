@@ -1,3 +1,10 @@
+/* 
+This CSS file utilizes Tailwind CSS for styling. Tailwind is a utility-first CSS framework that provides low-level utility classes 
+to build custom designs directly in your markup. It allows for rapid building of custom user interfaces by composing styles directly 
+through utility classes, making it highly customizable and efficient for modern web development. The `@tailwind` directives are used 
+to include Tailwind's base styles, components, and utility classes in this file.
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,7 +68,7 @@ h3 {
 section.post-status {
 }
 
-form {
+form:not(.form-inline) {
     @apply p-6
     container flex flex-col mx-auto space-y-12
     bg-gray-300 dark:bg-slate-900
@@ -70,9 +77,30 @@ form {
     rounded-md
 }
 
-textarea {
-    @apply bg-white dark:bg-white text-black dark:text-black
-    rounded-md focus:ring focus:ring-opacity-75 focus:dark:ring-violet-600 dark:border-gray-300
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea,
+input[type="date"] {
+    @apply bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100
+    border border-gray-300 dark:border-gray-700
+    rounded-md p-2
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
+    transition duration-150 ease-in-out
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus,
+input[type="date"]:focus {
+    @apply ring-2 ring-indigo-500 dark:ring-indigo-400
 }
 
 fieldset {

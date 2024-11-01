@@ -89,4 +89,20 @@ class PostRepository(IDriver driver, UserRepository userRepository) : Repository
         var result = await ExecuteQueryAsync(query, parameters, userRepository.MapPost).ConfigureAwait(false);
         return result.Single().ToResult();
     }
+
+    public IAsyncEnumerable<Post> SearchPostsAsync(string searchTerm)
+    {
+        const string query =
+            """
+            CALL db.index.fulltext.queryNodes('postBody', $searchTerm) YIELD node AS post
+            MATCH (post)-[:POSTED_BY]->(postedBy:Profile)
+            RETURN post.id AS id,
+                   { id: postedBy.id, displayName: postedBy.displayName, bio: postedBy.bio } AS postedBy,
+                   post.postedAt AS postedAt,
+                   post.body AS body,
+                   COLLECT { MATCH (post)<-[:LIKES]-(likedBy:Profile)
+                             RETURN likedBy.id } AS likedBy
+            """;
+        return ExecuteReaderQueryAsync(query, new { searchTerm }, userRepository.MapPost);
+    }
 }

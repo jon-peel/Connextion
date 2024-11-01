@@ -10,6 +10,7 @@ public interface IPostRepository
     IAsyncEnumerable<Post> GetTimeLineAsync(ProfileId currentUserId);
     Task<Result<Post>> LikeAsync(LikePostCommand cmd);
     Task<Result<Post>> UnLikeAsync(UnLikePostCommand cmd);
+    IAsyncEnumerable<Post> SearchPostsAsync(string query);
 }
 
 public class PostService(IPostRepository postRepository)

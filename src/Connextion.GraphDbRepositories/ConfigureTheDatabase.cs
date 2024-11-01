@@ -17,8 +17,16 @@ internal class ConfigureTheDatabase(
 
     async Task ConfigureConstraintsAsync()
     {
+        // Constraints provide a way to ensure data consistency and integrity in a database.
+        // With constraints, you can ensure that data is valid and consistent, which can
+        // prevent bugs and errors from occurring. For example, a constraint for a unique
+        // username can prevent two users from having the same username.
+        // Fulltext indexes are specialized indexes that are used to speed up full text searches.
+        // They are typically used in search engines and text search applications.
+        
         string[] constraints =
         [
+            "CREATE FULLTEXT INDEX postBody IF NOT EXISTS FOR (p:Post) ON EACH [p.body]",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (user:User) REQUIRE user.username IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (profile:Profile) REQUIRE profile.id IS UNIQUE",
             "CREATE CONSTRAINT IF NOT EXISTS FOR (post:Post) REQUIRE post.id IS UNIQUE",

@@ -1,5 +1,12 @@
 namespace Connextion;
 
+
+// The Result pattern is a functional programming concept used to represent the outcome of an operation that may succeed or fail.
+// In this implementation, the Result class encapsulates the success state, a value (if successful), and an error message (if failed).
+// The class provides static methods like Ok() and Error() to easily create Result instances for successful and failed outcomes.
+// Methods like Do, Bind, and Map are provided to allow chaining operations on the Result while handling errors gracefully.
+// This pattern helps avoid exceptions and promotes explicit error handling in a functional style.
+
 public class Result : Result<object>
 {
     Result(bool success, object? value, string? errorValue) : base(success, value, errorValue) { }
