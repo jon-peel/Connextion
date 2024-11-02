@@ -1,0 +1,215 @@
+#+title: Computer Science Project Report
+#+AUTHOR: Jonathan Peel
+#+STARTUP: overview
+#+EXPORT_FILE_NAME: ~/Documents/ProjectReport
+#+OPTIONS: toc:3
+#+OPTIONS: ^:nil
+
+#+MODULE: UU-COM-4010-MW Computer Science Project
+
+#+SETUPFILE: ".org/setup.org"
+
+#+LATEX_HEADER: \newcommand\modulename{Information Systems and Network Security}
+#+LATEX_HEADER: \newcommand\modulenumber{UU-COM-4024-MW}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LaTeX_HEADER: \usepackage{pdfpages}
+#+LATEX_HEADER: \usepackage{enumerate}
+#+LATEX_HEADER: % \renewcommand*{\thesection}{\arabic{section}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsection}{\alph{subsection}}
+#+LATEX_HEADER: % \renewcommand*{\thesubsubsection}{\roman{subsubsection}}
+#+LATEX_HEADER: \let\oldsection\section
+#+LATEX_HEADER: \renewcommand\section{\clearpage\oldsection}
+#+LATEX_HEADER: \usepackage{pgfplots}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{backgrounds}
+#+LATEX_HEADER: \usemintedstyle{native}
+#+LATEX_HEADER: \usepackage{array}
+
+#+bibliography: .org/index.bib
+#+cite_export: csl .org/apa.csl
+#+INCLUDE: ".org/cover.org"
+
+* Abstarct
+
+This report presents the development of a professional social networking platform designed to enhance networking opportunities for users. The platform allows individuals to create profiles, visualize their professional connections, and explore extended networks, facilitating both formal and informal event participation. Built using a modular architecture, the application leverages C# with .NET for the back end, Blazor for a dynamic web-based interface, and Neo4j as a graph database to efficiently manage and visualize relationships. Docker and Docker Compose were utilized for seamless deployment, ensuring a consistent environment for both the web application and database.
+
+The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives. While the project successfully implements core features such as profile management and network visualization, limitations such as the absence of automated testing and a complete authentication system are acknowledged. This report concludes with insights for future improvements, highlighting the potential of technology to facilitate professional networking in an increasingly interconnected world.
+
+#+TOC: headlines 1
+
+* Introduction
+
+In today’s fast-paced professional landscape, networking is essential for career growth, collaboration, and knowledge sharing. This project focused on developing a professional social networking platform tailored to the needs of users looking to build, visualize, and expand their networks. The platform allows users to create personal profiles, view their connections, explore extended professional networks, and discover events that facilitate meaningful interactions.
+
+The primary goal of this project was to create a user-friendly platform that highlights existing connections and helps users find new opportunities through both local and global events. Leveraging a graph-based database, Neo4j, for efficient network visualization, and Blazor for a responsive web interface, the platform was built with modularity and scalability in mind. Docker was utilized to simplify deployment and manage the database and web application in a containerized environment.
+
+This report presents a detailed overview of the project’s objectives, the technologies and methodologies used, and an analysis of the results. Through this platform, the project aims to provide a practical tool for professionals to map out their networks, discover new connections, and participate in professional events that can further their careers.
+
+
+* Project Objectives and Scope
+
+The objective of this project is to create a social networking platform designed specifically for professionals seeking to enhance their networking opportunities. The platform aims to empower users to visualize their current professional networks, discover connections within those networks, and expand their reach through both structured and informal events. By focusing on professional networking, the platform addresses the need for a space that emphasizes meaningful, career-oriented relationships rather than general social connections.
+
+** Key objectives of the project are as follows
+
++ *Network Visualization*
+  + Users can build detailed profiles showcasing their professional backgrounds, skills, and interests.
+  + The platform provides a visualization of each user’s network, allowing users to see the connections they already have and explore potential new contacts within their extended network.
+
++ *Event-Based Networking Opportunities*
+  + Users are encouraged to expand their networks by participating in both local and global events.
+  + Events are structured to include formal gatherings, like conferences or industry meetups, and informal ones, such as small-group discussions or ad-hoc networking sessions.
+
++ *Interactive Networking and Discovery Tools*
+  + The platform includes tools that help users explore connections beyond direct contacts, providing insights into who their contacts know and enabling organic network growth.
+  + Users can engage with others through simple status updates, fostering interactions that may lead to new professional relationships.
+
++ *Focused User Experience for Professional Growth*
+  + The platform emphasizes professional connections and career growth, making it distinct from general social media sites.
+  + Features are designed to support users in their career journeys, whether they are seeking job opportunities, collaborations, mentorship, or industry insights.
+
+** Scope of the Project
+
+This phase of the project focuses on implementing the core functionality needed to support basic networking interactions and profile visualization. The scope includes:
+
++ Developing a user profile system that displays the user's bio, followers, and the people they follow.
++ Creating a network visualization feature that enables users to see their connections and explore extended networks.
++ Implementing a basic timeline where users can post updates, view posts from their connections, and engage through likes.
++ Setting up test accounts to simulate user interaction and validate the features in a controlled environment, since full user login implementation is outside the initial scope.
++ Supporting event-based connections in a preliminary form, allowing users to explore potential networking activities.
+
+This initial scope establishes a foundation for the platform’s core functionalities, while leaving room for additional features and enhancements in future iterations. The platform’s architecture is designed to be scalable, allowing for the potential integration of advanced features, such as personalized event recommendations and more sophisticated network insights, in future versions.
+
+
+* Literature Review
+
+The development of a professional networking platform requires an understanding of existing solutions, the unique challenges associated with online networking, and the specific needs of professionals seeking to expand their networks. This literature review examines the state of current professional networking platforms, identifies key gaps in their offerings, and explores theoretical perspectives on effective networking practices.
+
+** Existing Professional Networking Platforms
+
+The professional networking space is dominated by platforms such as LinkedIn, which provides a comprehensive set of tools for connecting professionals across various industries. LinkedIn offers features such as profile creation, connection requests, and interest-based groups, enabling professionals to showcase their backgrounds and engage with industry-relevant content. However, while LinkedIn provides a robust networking infrastructure, its interface and functionalities are often limited in terms of visualizing indirect connections or providing meaningful networking insights beyond the first-degree connections.
+
+Other platforms, like Xing and Handshake, cater to more specific professional needs, such as regional job markets or student and recent graduate networking. Despite their targeted approaches, these platforms also face challenges in enabling users to explore connections beyond their immediate circles. Literature suggests that network expansion often requires visibility into "weak ties" or indirect connections, which facilitate introductions and resource sharing across otherwise disconnected groups (Granovetter, 1973). This insight underscores the importance of network visualization and the need for a more dynamic approach to networking.
+
+** Gaps in Current Professional Networking Platforms
+
+While existing platforms fulfill basic networking needs, they often lack features that enhance network visualization and interactive discovery. Studies on professional networking emphasize that individuals benefit from understanding both the structure and reach of their networks, as this can uncover new opportunities and potential partnerships (Burt, 2004). Many platforms prioritize direct networking over exploring extended networks, which limits users’ ability to discover new connections within their larger professional ecosystems.
+
+Another gap is the limited focus on event-based networking. Events play a crucial role in professional networking, as they provide an opportunity for organic, in-person (or virtual) interactions. Research shows that individuals build stronger professional connections through shared activities and events (Eckerson, 2016). Although some platforms like LinkedIn provide event functionality, it remains a secondary feature and is not well-integrated with network visualization or user engagement tools.
+
+** Networking Theory and Platform Design
+
+Networking theory suggests that professional connections often stem from both strong ties (close contacts) and weak ties (acquaintances). Mark Granovetter’s work on the "strength of weak ties" emphasizes that acquaintances can be instrumental in connecting individuals to new networks and resources they might not access through close contacts alone (Granovetter, 1973). This theory aligns with the project’s goal of enabling users to explore their networks beyond first-degree connections, fostering broader and more diverse professional relationships.
+
+Moreover, graph theory and social network analysis (SNA) provide insights into how networks can be effectively visualized and navigated. SNA highlights that network structures influence the flow of information and access to opportunities within a network (Borgatti, 2009). By applying SNA principles, the project seeks to offer users an intuitive way to navigate and visualize their extended professional networks, identifying potential connections that may otherwise remain hidden.
+
+** Market Needs for Professional Networking Tools
+
+A growing number of professionals are seeking networking solutions that are tailored to their specific needs, such as targeted event discovery and visual, interactive network maps. Surveys of young professionals indicate a preference for platforms that allow them to connect based on common interests and career goals, rather than generic socializing (LinkedIn Global Talent Trends, 2022). Additionally, there is a demand for tools that support ad-hoc, informal gatherings, which facilitate more personal and less formal interactions than traditional professional events.
+
+This analysis supports the project’s focus on providing an experience that goes beyond typical connection-building features. By integrating network visualization, event-based networking, and interactive exploration tools, this platform aims to fill gaps left by traditional professional networks, creating a unique space for meaningful professional connections.
+
+
+* Methodology
+
+This section outlines the development approach and technical stack used to build the professional social networking platform. The methodology was designed to support the platform’s core objectives of network visualization, user interaction, and event-based connection expansion through a robust, graph-based architecture.
+
+*** Development Approach
+
+    Incremental Development: The platform was developed iteratively, focusing on one feature at a time. This approach allowed for continuous refinement of each component, particularly complex ones like network visualization and event discovery.
+
+    Modular and MVVM Architecture: A modular design was adopted to ensure that each feature could be developed and optimized independently. The user interface follows the Model-View-ViewModel (MVVM) pattern, which separates the user interface logic from the back-end logic, improving the scalability and maintainability of the codebase. This design pattern facilitated a more responsive and organized GUI, allowing each module to handle its own data and interactions.
+
+*** Technical Stack
+
++ Front-End :: The graphical user interface was built using Blazor, a framework that allows for interactive, client-side web UIs in C#. Blazor was selected to streamline development with .NET and provide a seamless experience for creating data-driven, interactive components. The MVVM pattern was applied within Blazor to manage UI logic and ensure smooth data binding, particularly for interactive features such as network exploration and event-based connections.
+
++ Back-End :: The back end was developed in C# using .NET. This choice allowed for efficient data processing, API management, and server-side logic. By integrating directly with Blazor, .NET enabled a more cohesive development process for both front and back ends.
+
++ Database :: Neo4j was chosen as the database due to its graph-based data structure, which is ideal for visualizing and managing relationships within a professional network. Neo4j’s ability to handle complex queries related to user connections enabled efficient implementation of the platform’s network visualization features, making it easy to retrieve direct and indirect connections for each user.
+
++ Containerization :: Docker and Docker Compose were used to run both the web application and the database in isolated containers, ensuring consistent deployment across different environments. This setup allowed the application and database to communicate seamlessly within a containerized environment, reducing dependencies and simplifying the deployment process.
+
+*** Feature Development Process
+
+Each key feature was implemented according to a structured process, including requirements definition, design, and implementation:
+
++ Requirement Definition :: Each feature was outlined with clear requirements. For instance, the network visualization required an efficient method to display direct and extended connections, while the posting and timeline features needed to support real-time updates.
+
++ Design and Prototyping :: Prototypes of UI elements were created to ensure a user-friendly design and intuitive interaction. This step was especially important for complex features like network exploration, where users need an easy way to navigate and view connections.
+
+**** Implementation
++ User Profiles :: This feature allowed users to create profiles displaying their bio, professional background, and followers.
++ Network Visualization :: Leveraging Neo4j’s graph capabilities, this feature enabled users to visualize connections and explore their extended networks, using efficient query structures to handle indirect relationships.
++ Timeline and Status Posting :: Users could post status updates and see posts from users they follow, encouraging interaction and content sharing within the platform.
+
+*** Testing and Validation
+
++ Manual Testing :: Each feature underwent extensive manual testing, where interactions like profile creation, posting, following, and network exploration were validated to ensure expected functionality. Test users were generated to simulate user interaction, and a selection feature enabled testers to view the application from different users’ perspectives.
+
++ Performance Considerations :: Performance assessments were conducted to ensure that the Neo4j database could handle relationship-based queries effectively, especially as network complexity increased with more test users.
+
+*** Deployment
+
++ Containerization with Docker :: Docker was used to deploy both the web application and the Neo4j database. Docker Compose facilitated the orchestration of multiple services, allowing for simplified startup and shutdown of the application. This setup ensured that the application could be deployed consistently across different environments with minimal configuration.
+
+
+* Discussion of Results
+
+** Evaluation of Core Objectives
+
+*** Profile Creation and Network Visualization
+    The project successfully implemented a user profile system that allows users to showcase their professional backgrounds and follow other users. The Neo4j database enabled efficient network visualization, allowing users to see their direct and indirect connections. The feature performed well in tests, with the graph structure supporting complex relationships and queries. Users were able to explore extended networks, meeting the objective of helping users gain insights into connections beyond their immediate circle.
+
+*** Event-Based Networking Opportunities
+    A preliminary structure for event-based networking was implemented, allowing users to view and participate in both formal and informal events. Although this feature was included, it was somewhat limited in scope. Future versions could expand the event functionality by integrating recommendations based on user interests or by providing real-time interaction options during events.
+
+*** Interactive Networking and Discovery Tools
+    The platform’s timeline and posting features allowed users to post updates, view posts from connections, and interact with content. This feature contributed to user engagement and provided a foundation for professional interactions. However, limitations in testing meant that some interactive aspects, like content personalization and advanced engagement metrics, were not fully explored. Future versions could benefit from more complex analytics and interaction tracking.
+
+** Performance Analysis
+
+*** Database Performance with Neo4j
+    Neo4j proved to be an effective choice for handling relationship-based data. The database could efficiently process network queries, even as the number of connections grew. However, performance testing highlighted a potential need for optimization when visualizing very large networks, as complex queries could increase response times. Indexing or query optimization strategies could further improve this in future versions.
+
+*** Front-End Responsiveness with Blazor
+    Blazor’s integration with .NET provided a cohesive framework, allowing for smooth data handling and rendering. The MVVM pattern contributed to responsive data binding and simplified UI management. However, some challenges with Blazor's loading times and its limited third-party library support slightly hindered development flexibility. In future versions, considering complementary front-end tools might enhance responsiveness.
+
+** Limitations and Challenges
+
+*** Lack of Automated Testing
+    The absence of unit tests limited the ability to systematically validate each feature. Manual testing was used extensively but did not cover all potential edge cases. Automated testing in future iterations would help improve reliability and reduce time spent on manual checks.
+
+*** Absence of User Login and Full Access Controls
+    Due to the testing focus, a full user authentication and access control system was not implemented. This limited the platform's applicability for real users, as profile switching had to be simulated with test users. Adding secure authentication and user roles will be essential for making the platform production-ready.
+
+*** Scalability Concerns with Dockerized Environment
+    While Docker provided a flexible deployment setup, scaling the containerized environment could present challenges as the platform grows. During testing, Docker and Docker Compose worked well for local deployment, but a cloud-based or managed solution might be necessary for a larger user base.
+
+** Insights and Future Recommendations
+
+*** Enhanced Event and Interaction Features
+    Given the importance of professional events in networking, future iterations could expand the event feature by integrating real-time interaction tools, personalized recommendations, and RSVP tracking to improve engagement.
+
+*** Advanced Network Analytics
+    Incorporating analytics into the network visualization feature could add significant value, helping users identify potential connections, common interests, or career opportunities within their extended network. This would align well with the professional focus of the platform.
+
+*** User Feedback and Usability Testing
+    Additional usability testing with real users could provide insights into the platform’s interface and experience. Incorporating feedback from professionals about the navigation, profile management, and event discovery features would allow for targeted improvements.
+
+*** Performance Optimization for Neo4j Queries
+    To support larger networks, future updates should consider optimization techniques for Neo4j, such as caching frequently accessed data, using indices, or refining query patterns.
+
+
+* Conclusion
+
+The development of this professional social networking platform represents a step forward in providing a focused, goal-oriented networking tool for professionals. The platform successfully met many of its core objectives, such as profile creation, network visualization, and interactive features that allow users to connect and engage with their network. By using Neo4j for its graph-based capabilities and Blazor with .NET for a cohesive, web-based GUI, the project was able to achieve efficient data management and an intuitive user experience.
+
+The platform’s modular structure and containerized deployment provide a strong foundation for future development. However, some limitations, such as the absence of a full authentication system and automated testing, present areas for improvement. Additionally, as the network grows, optimizing Neo4j queries and further testing Blazor’s scalability will be essential to ensure the platform remains responsive.
+
+In conclusion, this project demonstrates the potential of technology to enhance professional networking by leveraging relationship-based data structures, a modern web interface, and efficient deployment practices. With additional development and scalability testing, this platform could serve as a valuable tool for professionals looking to strengthen their connections and expand their networks. The insights gained throughout this project provide a roadmap for future enhancements and reflect the dynamic possibilities in professional networking platforms.
+
+
+* References
+#+print_bibliography:
