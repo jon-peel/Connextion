@@ -36,6 +36,11 @@ This report presents the development of a professional social networking platfor
 
 The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives. While the project successfully implements core features such as profile management and network visualization, limitations such as the absence of automated testing and a complete authentication system are acknowledged. This report concludes with insights for future improvements, highlighting the potential of technology to facilitate professional networking in an increasingly interconnected world.
 
+** Links
+
++ Code repository :: [https://github.com/jon-peel/Connextion]
++ Online Demo :: [http://project.jonathanpeel.co.za:8123/]
+
 #+TOC: headlines 1
 
 * Introduction
