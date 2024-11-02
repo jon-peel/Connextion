@@ -99,19 +99,27 @@ Other platforms, like Xing and Handshake, cater to more specific professional ne
 
 ** Gaps in Current Professional Networking Platforms
 
-While existing platforms fulfill basic networking needs, they often lack features that enhance network visualization and interactive discovery. Studies on professional networking emphasize that individuals benefit from understanding both the structure and reach of their networks, as this can uncover new opportunities and potential partnerships (Burt, 2004). Many platforms prioritize direct networking over exploring extended networks, which limits users’ ability to discover new connections within their larger professional ecosystems.
+While existing platforms fulfill basic networking needs, they often lack features that enhance network visualization and interactive discovery.
+Studies on professional networking emphasize that individuals benefit from understanding both the structure and reach of their networks, as this can uncover new opportunities and potential partnerships [cite:@deJanasz2007;@Burt2004].
+Many platforms prioritize direct networking over exploring extended networks, which limits users’ ability to discover new connections within their larger professional ecosystems.
 
-Another gap is the limited focus on event-based networking. Events play a crucial role in professional networking, as they provide an opportunity for organic, in-person (or virtual) interactions. Research shows that individuals build stronger professional connections through shared activities and events (Eckerson, 2016). Although some platforms like LinkedIn provide event functionality, it remains a secondary feature and is not well-integrated with network visualization or user engagement tools.
+Another gap is the limited focus on event-based networking.
+Events play a crucial role in professional networking, as they provide an opportunity for organic, in-person (or virtual) interactions.
+Research shows that individuals build stronger professional connections through shared activities and events [cite:@Quinn2018;@deJanasz2007].
+Although some platforms like LinkedIn provide event functionality, it remains a secondary feature and is not well-integrated with network visualization or user engagement tools.
 
 ** Networking Theory and Platform Design
 
-Networking theory suggests that professional connections often stem from both strong ties (close contacts) and weak ties (acquaintances). Mark Granovetter’s work on the "strength of weak ties" emphasizes that acquaintances can be instrumental in connecting individuals to new networks and resources they might not access through close contacts alone (Granovetter, 1973). This theory aligns with the project’s goal of enabling users to explore their networks beyond first-degree connections, fostering broader and more diverse professional relationships.
+Networking theory suggests that professional connections often stem from both strong ties (close contacts) and weak ties (acquaintances).
+This theory aligns with the project’s goal of enabling users to explore their networks beyond first-degree connections, fostering broader and more diverse professional relationships [cite:@Jack2005].
 
-Moreover, graph theory and social network analysis (SNA) provide insights into how networks can be effectively visualized and navigated. SNA highlights that network structures influence the flow of information and access to opportunities within a network (Borgatti, 2009). By applying SNA principles, the project seeks to offer users an intuitive way to navigate and visualize their extended professional networks, identifying potential connections that may otherwise remain hidden.
+Moreover, graph theory and social network analysis (SNA) provide insights into how networks can be effectively visualized and navigated.
+SNA highlights that network structures influence the flow of information and access to opportunities within a network [cite:@vanderHulst2008].
+By applying SNA principles, the project seeks to offer users an intuitive way to navigate and visualize their extended professional networks, identifying potential connections that may otherwise remain hidden.
 
 ** Market Needs for Professional Networking Tools
 
-A growing number of professionals are seeking networking solutions that are tailored to their specific needs, such as targeted event discovery and visual, interactive network maps. Surveys of young professionals indicate a preference for platforms that allow them to connect based on common interests and career goals, rather than generic socializing (LinkedIn Global Talent Trends, 2022). Additionally, there is a demand for tools that support ad-hoc, informal gatherings, which facilitate more personal and less formal interactions than traditional professional events.
+A growing number of professionals are seeking networking solutions that are tailored to their specific needs, such as targeted event discovery and visual, interactive network maps. Surveys of young professionals indicate a preference for platforms that allow them to connect based on common interests and career goals, rather than generic socializing [cite:@LinkedInGlobalTrends2022]. Additionally, there is a demand for tools that support ad-hoc, informal gatherings, which facilitate more personal and less formal interactions than traditional professional events.
 
 This analysis supports the project’s focus on providing an experience that goes beyond typical connection-building features. By integrating network visualization, event-based networking, and interactive exploration tools, this platform aims to fill gaps left by traditional professional networks, creating a unique space for meaningful professional connections.
 
