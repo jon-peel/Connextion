@@ -32,14 +32,19 @@
 
 * Abstarct
 
-This report presents the development of a professional social networking platform designed to enhance networking opportunities for users. The platform allows individuals to create profiles, visualize their professional connections, and explore extended networks, facilitating both formal and informal event participation. Built using a modular architecture, the application leverages C# with .NET for the back end, Blazor for a dynamic web-based interface, and Neo4j as a graph database to efficiently manage and visualize relationships. Docker and Docker Compose were utilized for seamless deployment, ensuring a consistent environment for both the web application and database.
+This report presents the development of a professional social networking platform designed to enhance networking opportunities for users. 
+The platform allows individuals to create profiles, visualize their professional connections, and explore extended networks, facilitating both formal and informal event participation. 
+Built using a modular architecture, the application leverages C# with .NET for the back end, Blazor for a dynamic web-based interface, and Neo4j as a graph database to efficiently manage and visualize relationships. 
+Docker and Docker Compose were utilized for seamless deployment, ensuring a consistent environment for both the web application and database.
 
-The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives. While the project successfully implements core features such as profile management and network visualization, limitations such as the absence of automated testing and a complete authentication system are acknowledged. This report concludes with insights for future improvements, highlighting the potential of technology to facilitate professional networking in an increasingly interconnected world.
+The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives. 
+While the project successfully implements core features such as profile management and network visualization, limitations such as the absence of automated testing and a complete authentication system are acknowledged. 
+This report concludes with insights for future improvements, highlighting the potential of technology to facilitate professional networking in an increasingly interconnected world.
 
 ** Links
 
-+ Code repository :: [https://github.com/jon-peel/Connextion]
-+ Online Demo :: [http://project.jonathanpeel.co.za:8123/]
++ Code repository :: [[https://github.com/jon-peel/Connextion]]
++ Online Demo :: [[http://project.jonathanpeel.co.za:8123/]]
 
 #+TOC: headlines 1
 
@@ -89,13 +94,14 @@ This initial scope establishes a foundation for the platform’s core functional
 
 * Literature Review
 
-The development of a professional networking platform requires an understanding of existing solutions, the unique challenges associated with online networking, and the specific needs of professionals seeking to expand their networks. This literature review examines the state of current professional networking platforms, identifies key gaps in their offerings, and explores theoretical perspectives on effective networking practices.
-
 ** Existing Professional Networking Platforms
 
-The professional networking space is dominated by platforms such as LinkedIn, which provides a comprehensive set of tools for connecting professionals across various industries. LinkedIn offers features such as profile creation, connection requests, and interest-based groups, enabling professionals to showcase their backgrounds and engage with industry-relevant content. However, while LinkedIn provides a robust networking infrastructure, its interface and functionalities are often limited in terms of visualizing indirect connections or providing meaningful networking insights beyond the first-degree connections.
+The professional networking space is dominated by platforms such as LinkedIn, which provides a comprehensive set of tools for connecting professionals across various industries. 
+LinkedIn offers features such as profile creation, connection requests, and interest-based groups, enabling professionals to showcase their backgrounds and engage with industry-relevant content [cite:@Smulders2024Sep]. 
+However, while LinkedIn provides a robust networking infrastructure, its interface and functionalities are often limited in terms of visualizing indirect connections or providing meaningful networking insights beyond the first-degree connections.
 
-Other platforms, like Xing and Handshake, cater to more specific professional needs, such as regional job markets or student and recent graduate networking. Despite their targeted approaches, these platforms also face challenges in enabling users to explore connections beyond their immediate circles. Literature suggests that network expansion often requires visibility into "weak ties" or indirect connections, which facilitate introductions and resource sharing across otherwise disconnected groups (Granovetter, 1973). This insight underscores the importance of network visualization and the need for a more dynamic approach to networking.
+Other platforms, like Xing and Handshake, cater to more specific professional needs, such as regional job markets or student and recent graduate networking. Despite their targeted approaches, these platforms also face challenges in enabling users to explore connections beyond their immediate circles. 
+Literature suggests that network expansion often requires visibility into "weak ties" or indirect connections, which facilitate introductions and resource sharing across otherwise disconnected groups [cite:@Granovetter1973]. This insight underscores the importance of network visualization and the need for a more dynamic approach to networking.
 
 ** Gaps in Current Professional Networking Platforms
 
@@ -126,13 +132,11 @@ This analysis supports the project’s focus on providing an experience that goe
 
 * Methodology
 
-This section outlines the development approach and technical stack used to build the professional social networking platform. The methodology was designed to support the platform’s core objectives of network visualization, user interaction, and event-based connection expansion through a robust, graph-based architecture.
-
 *** Development Approach
 
-    Incremental Development: The platform was developed iteratively, focusing on one feature at a time. This approach allowed for continuous refinement of each component, particularly complex ones like network visualization and event discovery.
++ Incremental Development :: The platform was developed iteratively, focusing on one feature at a time. This approach allowed for continuous refinement of each component, particularly complex ones like network visualization and event discovery.
 
-    Modular and MVVM Architecture: A modular design was adopted to ensure that each feature could be developed and optimized independently. The user interface follows the Model-View-ViewModel (MVVM) pattern, which separates the user interface logic from the back-end logic, improving the scalability and maintainability of the codebase. This design pattern facilitated a more responsive and organized GUI, allowing each module to handle its own data and interactions.
++ Modular and MVVM Architecture :: A modular design was adopted to ensure that each feature could be developed and optimized independently. The user interface follows the Model-View-ViewModel (MVVM) pattern, which separates the user interface logic from the back-end logic, improving the scalability and maintainability of the codebase. This design pattern facilitated a more responsive and organized GUI, allowing each module to handle its own data and interactions.
 
 *** Technical Stack
 
