@@ -26,6 +26,9 @@
 #+LATEX_HEADER: \usemintedstyle{native}
 #+LATEX_HEADER: \usepackage{array}
 #+LATEX_HEADER: \usepackage[font=scriptsize,labelfont=bf]{caption}
+#+latex_header: \hypersetup{colorlinks=true}
+#+latex_header: \hypersetup{colorlinks=true,linkcolor=black}
+
 
 #+bibliography: .org/index.bib
 #+cite_export: csl .org/apa.csl
@@ -54,9 +57,6 @@ This report concludes with insights for future improvements, highlighting the po
 In today’s fast-paced professional landscape, networking is essential for career growth, collaboration, and knowledge sharing. This project focused on developing a professional social networking platform tailored to the needs of users looking to build, visualize, and expand their networks. The platform allows users to create personal profiles, view their connections, explore extended professional networks, and discover events that facilitate meaningful interactions.
 
 The primary goal of this project was to create a user-friendly platform that highlights existing connections and helps users find new opportunities through both local and global events. Leveraging a graph-based database, Neo4j, for efficient network visualization, and Blazor for a responsive web interface, the platform was built with modularity and scalability in mind. Docker was utilized to simplify deployment and manage the database and web application in a containerized environment.
-
-This report presents a detailed overview of the project’s objectives, the technologies and methodologies used, and an analysis of the results. Through this platform, the project aims to provide a practical tool for professionals to map out their networks, discover new connections, and participate in professional events that can further their careers.
-
 
 * Project Objectives and Scope
 
@@ -101,8 +101,8 @@ The professional networking space is dominated by platforms such as LinkedIn, wh
 LinkedIn offers features such as profile creation, connection requests, and interest-based groups, enabling professionals to showcase their backgrounds and engage with industry-relevant content [cite:@Smulders2024Sep]. 
 However, while LinkedIn provides a robust networking infrastructure, its interface and functionalities are often limited in terms of visualizing indirect connections or providing meaningful networking insights beyond the first-degree connections.
 
-Other platforms, like Xing and Handshake, cater to more specific professional needs, such as regional job markets or student and recent graduate networking. Despite their targeted approaches, these platforms also face challenges in enabling users to explore connections beyond their immediate circles. 
-Literature suggests that network expansion often requires visibility into "weak ties" or indirect connections, which facilitate introductions and resource sharing across otherwise disconnected groups [cite:@Granovetter1973]. This insight underscores the importance of network visualization and the need for a more dynamic approach to networking.
+Other platforms cater to more specific professional needs, such as regional job markets or student and recent graduate networking. Despite their targeted approaches, these platforms also face challenges in enabling users to explore connections beyond their immediate circles. 
+Network expansion often requires visibility into "weak ties" or indirect connections, which facilitate introductions and resource sharing across otherwise disconnected groups [cite:@Granovetter1973]. This insight underscores the importance of network visualization and the need for a more dynamic approach to networking.
 
 ** Gaps in Current Professional Networking Platforms
 
