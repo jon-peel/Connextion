@@ -27,7 +27,7 @@
 #+LATEX_HEADER: \usepackage{array}
 #+LATEX_HEADER: \usepackage[font=scriptsize,labelfont=bf]{caption}
 #+latex_header: \hypersetup{colorlinks=true}
-#+latex_header: \hypersetup{colorlinks=true,linkcolor=black}
+#+latex_header: \hypersetup{colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black}
 
 
 #+bibliography: .org/index.bib
