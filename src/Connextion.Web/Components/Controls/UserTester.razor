@@ -2,7 +2,8 @@
 
 @if (_users.Any())
 {
-    <InputSelect
+    <label for="user-select">use con<span class="emphasis">NEXT</span>ion as :</label>
+    <InputSelect id="user-select"
         ValueExpression="() => CurrentUserName"
         ValueChanged="(string value) => CurrentUserValueChanged(value)">
         @foreach (var user in _users)
@@ -31,7 +32,6 @@
     async Task CurrentUserValueChanged(string value)
     {
         AppState.CurrentUser = null;
-        // await Task.Delay(100).ConfigureAwait(false);
         await UpdateProfileAsync(value).ConfigureAwait(false);
     }
 
