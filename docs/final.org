@@ -25,6 +25,7 @@
 #+LATEX_HEADER: \usetikzlibrary{backgrounds}
 #+LATEX_HEADER: \usemintedstyle{native}
 #+LATEX_HEADER: \usepackage{array}
+#+LATEX_HEADER: \usepackage[font=scriptsize,labelfont=bf]{caption}
 
 #+bibliography: .org/index.bib
 #+cite_export: csl .org/apa.csl
@@ -32,12 +33,12 @@
 
 * Abstarct
 
-This report presents the development of a professional social networking platform designed to enhance networking opportunities for users. 
+This report presents the development of a professional social networking platform designed to enhance networking opportunities for users.
 The platform allows individuals to create profiles, visualize their professional connections, and explore extended networks, facilitating both formal and informal event participation. 
 Built using a modular architecture, the application leverages C# with .NET for the back end, Blazor for a dynamic web-based interface, and Neo4j as a graph database to efficiently manage and visualize relationships. 
 Docker and Docker Compose were utilized for seamless deployment, ensuring a consistent environment for both the web application and database.
 
-The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives. 
+The methodology emphasizes iterative development, user-focused design, and manual testing, resulting in a functional platform that meets initial objectives.
 While the project successfully implements core features such as profile management and network visualization, limitations such as the absence of automated testing and a complete authentication system are acknowledged. 
 This report concludes with insights for future improvements, highlighting the potential of technology to facilitate professional networking in an increasingly interconnected world.
 
@@ -130,6 +131,8 @@ A growing number of professionals are seeking networking solutions that are tail
 This analysis supports the project’s focus on providing an experience that goes beyond typical connection-building features. By integrating network visualization, event-based networking, and interactive exploration tools, this platform aims to fill gaps left by traditional professional networks, creating a unique space for meaningful professional connections.
 
 
+
+
 * Methodology
 
 *** Development Approach
@@ -177,23 +180,52 @@ Each key feature was implemented according to a structured process, including re
 ** Evaluation of Core Objectives
 
 *** Profile Creation and Network Visualization
+
+#+CAPTION: Users have a customizable bio, to promote and advertise themselves
+#+NAME: fig:bio
+#+ATTR_LATEX: :float wrap :width 0.38\textwidth :placement {l}{0.4\textwidth}
+[[./img/bio.png]]
+
     The project successfully implemented a user profile system that allows users to showcase their professional backgrounds and follow other users. The Neo4j database enabled efficient network visualization, allowing users to see their direct and indirect connections. The feature performed well in tests, with the graph structure supporting complex relationships and queries. Users were able to explore extended networks, meeting the objective of helping users gain insights into connections beyond their immediate circle.
 
 *** Event-Based Networking Opportunities
+
+#+CAPTION: Users can create events. Other users are able to indicate they will be attending
+#+NAME: fig:event
+#+ATTR_LATEX: :float nil :width 0.68\textwidth :placement {c}{0.7\textwidth}
+[[./img/event.png]]
+
     A preliminary structure for event-based networking was implemented, allowing users to view and participate in both formal and informal events. Although this feature was included, it was somewhat limited in scope. Future versions could expand the event functionality by integrating recommendations based on user interests or by providing real-time interaction options during events.
 
 *** Interactive Networking and Discovery Tools
+
+#+CAPTION: A basic timeline shows a list of posts by users we follow. It will also show us posts our followers liked.
+#+NAME: fig:timeline
+#+ATTR_LATEX: :float wrap :width 0.38\textwidth :placement {r}{0.4\textwidth}
+[[./img/timeline.png]]
+
     The platform’s timeline and posting features allowed users to post updates, view posts from connections, and interact with content. This feature contributed to user engagement and provided a foundation for professional interactions. However, limitations in testing meant that some interactive aspects, like content personalization and advanced engagement metrics, were not fully explored. Future versions could benefit from more complex analytics and interaction tracking.
 
 ** Performance Analysis
 
 *** Database Performance with Neo4j
+
+#+CAPTION: A full-text index in the database allows basic searching of posts.
+#+NAME: fig:search
+#+ATTR_LATEX: :float wrap :width 0.28\textwidth :placement {r}{0.3\textwidth}
+[[./img/search.png]]
+
     Neo4j proved to be an effective choice for handling relationship-based data. The database could efficiently process network queries, even as the number of connections grew. However, performance testing highlighted a potential need for optimization when visualizing very large networks, as complex queries could increase response times. Indexing or query optimization strategies could further improve this in future versions.
 
 *** Front-End Responsiveness with Blazor
     Blazor’s integration with .NET provided a cohesive framework, allowing for smooth data handling and rendering. The MVVM pattern contributed to responsive data binding and simplified UI management. However, some challenges with Blazor's loading times and its limited third-party library support slightly hindered development flexibility. In future versions, considering complementary front-end tools might enhance responsiveness.
 
 ** Limitations and Challenges
+
+#+CAPTION: A basic messaging system is available for user interation.
+#+NAME: fig:messages
+#+ATTR_LATEX: :float nil :width 0.68\textwidth :placement {c}{0.7\textwidth}
+[[./img/messages.png]]
 
 *** Lack of Automated Testing
     The absence of unit tests limited the ability to systematically validate each feature. Manual testing was used extensively but did not cover all potential edge cases. Automated testing in future iterations would help improve reliability and reduce time spent on manual checks.
@@ -210,6 +242,12 @@ Each key feature was implemented according to a structured process, including re
     Given the importance of professional events in networking, future iterations could expand the event feature by integrating real-time interaction tools, personalized recommendations, and RSVP tracking to improve engagement.
 
 *** Advanced Network Analytics
+
+#+CAPTION: We can see the "degrees of seperation" between us, and other users.
+#+NAME: fig:degrees
+#+ATTR_LATEX: :float wrap :width 0.38\textwidth :placement {r}{0.4\textwidth}
+[[./img/degrees.png]]
+
     Incorporating analytics into the network visualization feature could add significant value, helping users identify potential connections, common interests, or career opportunities within their extended network. This would align well with the professional focus of the platform.
 
 *** User Feedback and Usability Testing
